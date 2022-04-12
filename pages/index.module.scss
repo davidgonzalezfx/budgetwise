@@ -1,0 +1,136 @@
+.home {
+  padding: 34px 24px 120px;
+  scrollbar-width: none; /* Firefox */
+
+  &::-webkit-scrollbar {
+    display: none;
+  }
+
+  .home {
+    &__label {
+      font-size: 26px;
+      margin: 21px 0 0;
+    }
+  }
+
+  .user {
+    color: #8e8383;
+    font-size: 14px;
+    margin: 0;
+  }
+
+  .card {
+    align-items: center;
+    background: linear-gradient(45deg, rgb(34 162 242 / 45.1%) 0%, rgb(223 235 242 / 43.4%) 100%);
+    border: 0.5px solid var(--dark);
+    border-radius: 24px;
+    display: flex;
+    flex-direction: column;
+    height: 208px;
+    justify-content: space-around;
+    margin: 46px 0 24px;
+    padding: 24px;
+
+    &__label {
+      font-size: 16px;
+      margin: 0;
+    }
+
+    &__balance {
+      font-size: 32px;
+      font-weight: bold;
+      margin: 14px 0 39px;
+    }
+
+    .resume {
+      align-items: center;
+      display: flex;
+      justify-content: space-between;
+      width: 100%;
+
+      &__expenses,
+      &__income {
+        align-items: center;
+        display: flex;
+      }
+
+      &__label {
+        font-size: 12px;
+        margin: 0;
+      }
+
+      &__amount {
+        font-size: 14px;
+        font-weight: bold;
+        margin: 0;
+      }
+    }
+
+    .resume svg {
+      margin-right: 8px;
+    }
+  }
+
+  .transactions {
+    &__header {
+      align-items: center;
+      display: flex;
+      justify-content: space-between;
+      margin: 0 0 8px;
+    }
+
+    &__label {
+      font-size: 19px;
+      font-weight: bold;
+      margin: 0;
+    }
+
+    &__view-all {
+      color: var(--dark);
+      font-size: 14px;
+      margin: 0;
+    }
+
+    .transaction {
+      &__card {
+        align-items: center;
+        background-color: var(--dark);
+
+        // max-width: 327px;
+        border-radius: 24px;
+        display: flex;
+        height: 88px;
+        justify-content: flex-start;
+        margin: 16px 0;
+        padding: 16px;
+      }
+
+      &__card svg {
+        margin-right: 16px;
+      }
+
+      &__info {
+        display: flex;
+        flex-direction: column;
+        flex-grow: 1;
+      }
+
+      &__title {
+        font-size: 16px;
+        font-weight: bold;
+        margin: 0;
+      }
+
+      &__date {
+        font-size: 10px;
+        margin: 0;
+      }
+
+      &__amount {
+        font-size: 16px;
+        font-weight: bold;
+        margin: 0;
+      }
+    }
+  }
+}

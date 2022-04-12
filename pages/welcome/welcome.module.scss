@@ -1,0 +1,41 @@
+.container {
+  align-items: center;
+  color: var(--white);
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+  padding: 50% 52px 0;
+  position: relative;
+  width: 100%;
+
+  h3,
+  p {
+    text-align: center;
+  }
+
+  h3 {
+    font-size: 24px;
+    font-weight: 800;
+    margin: 48px 0 16px;
+  }
+
+  p {
+    font-size: 14px;
+  }
+
+  button {
+    background-color: var(--primary);
+    border: none;
+    border-radius: 4px;
+    bottom: 24px;
+    color: var(--white);
+    cursor: pointer;
+    font-size: 14px;
+    font-weight: 600;
+    outline: none;
+    padding: 16px 48px;
+    position: absolute;
+    transition: all 0.2s ease-in-out;
+    width: 271px;
+  }
+}

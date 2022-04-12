@@ -1,0 +1,122 @@
+@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@400;700&display=swap');
+
+html,
+body {
+  align-items: center;
+  display: flex;
+  font-family: Poppins, sans-serif;
+  height: 100vh;
+  justify-content: center;
+  margin: 0;
+  padding: 0;
+  width: 100vw;
+  
+}
+
+a {
+  color: inherit;
+  text-decoration: none;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+:root {
+  --white: #fff;
+  --black: #0d0f12;
+  --primary: #22a2f2;
+  --secondary: #4590bf;
+  --green: #6ebf6b;
+  --red: #f25252;
+  --gray-light: #dfebf2;
+  --dark: #404040;
+}
+
+.app {
+  background-color: var(--black);
+  height: 100vh;
+  overflow: hidden;
+  position: relative;
+  width: 100vw;
+}
+
+@media screen and (min-width: 481px) {
+  body {
+    background-image: radial-gradient(#2e2e2e 1px, #0d0f12 1px),
+      radial-gradient(#2e2e2e 1px, #0d0f12 1px);
+    background-position: 0 0, 25px 25px;
+    background-size: 140px 140px;
+  }
+
+  .app {
+    border-radius: 16px;
+    box-shadow: 0 0 10px rgb(150 150 150 / 10%);
+    height: 95vh;
+    width: 480px;
+  }
+}
+
+// loader
+.loader {
+  animation: rotation 1.5s linear infinite;
+  border-radius: 50%;
+  border-right: 4px solid transparent;
+  border-top: 4px solid #fff;
+  box-sizing: border-box;
+  display: inline-block;
+  height: 48px;
+  margin-left: 50%;
+  margin-top: 10%;
+  width: 48px;
+
+  &.center {
+    animation: rotation 1s linear infinite;
+    margin: 75% 0 0 50%;
+  }
+}
+
+.loader::after {
+  border-bottom: 4px solid var(--primary);
+  border-left: 4px solid transparent;
+  border-radius: 50%;
+  box-sizing: border-box;
+  content: '';
+  height: 48px;
+  left: 0;
+  position: absolute;
+  top: 0;
+  width: 48px;
+}
+
+@keyframes rotation {
+  0% {
+    transform: rotate(0deg);
+  }
+
+  100% {
+    transform: rotate(360deg);
+  }
+}
+
+.footer-menu {
+  align-items: center;
+  background-color: var(--dark);
+  border-radius: 32px;
+  border-bottom-left-radius: 0;
+  border-bottom-right-radius: 0;
+  bottom: 0;
+  display: flex;
+  flex-direction: row;
+  height: 91px;
+  justify-content: space-between;
+  left: 0;
+  padding: 32px 34px;
+  position: absolute;
+  width: 100%;
+
+  button {
+    background: none;
+    border: none;
+  }
+}

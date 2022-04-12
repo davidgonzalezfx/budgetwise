@@ -1,0 +1,10 @@
+{
+  "extends": "stylelint-config-sass-guidelines",
+  "rules": {
+    "declaration-property-value-disallowed-list": {
+      "/^border/": []
+    },
+    "selector-max-compound-selectors": 3,
+    "max-nesting-depth": 3
+  }
+}
