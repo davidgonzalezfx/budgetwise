@@ -28,7 +28,7 @@
 }
 
 .field.active input + label {
-  top: 4px;
+  top: -1px;
   opacity: 1;
   color: var(--gray-light);
 }

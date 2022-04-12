@@ -32,6 +32,7 @@ const TextField = (
         placeholder={label}
         onChange={handleChange}
         {...props}
+        autoComplete="off"
         onFocus={() => !isLocked && setFocussed(true)}
         onBlur={() => !isLocked && setFocussed(false)}
       />

@@ -3,7 +3,7 @@ import { put } from 'redux-saga/effects'
 import UserActions from 'redux/User'
 import TransactionsActions from 'redux/Transactions'
 
-import { loginUserWithEmail } from 'services/firebase'
+import { loginUserWithEmail, createUserWithEmail, logOutUser } from 'services/firebase'
 
 export function* loginUser({ payload }) {
   try {
@@ -13,5 +13,24 @@ export function* loginUser({ payload }) {
     yield put(TransactionsActions.transactionsRequest())
   } catch (error) {
     yield put(UserActions.userLoginFailure(error))
+  }
+}
+
+export function* registerUser({ payload }) {
+  try {
+    const user = yield createUserWithEmail(payload)
+    yield put(UserActions.userLoginSuccess(user))
+    yield put(TransactionsActions.transactionsRequest())
+  } catch (error) {
+    yield put(UserActions.userLoginFailure(error))
+  }
+}
+
+export function* logoutUser() {
+  try {
+    yield logOutUser()
+    yield put(UserActions.userLogoutSuccess())
+  } catch (error) {
+    yield put(UserActions.userLogoutFailure(error))
   }
 }

@@ -1,65 +1,70 @@
 import { useRouter } from 'next/router'
 import { connect } from 'react-redux'
+
 import Layout from '../../components/Layout/Layout'
+
+import UserActions from 'redux/User'
 
 import styles from './profile.module.scss'
 
-const Profile = ({ user }) => {
+const Profile = ({ user, userLogoutRequest }) => {
   const router = useRouter()
 
   const handleGoBack = () => {
     router.back()
   }
 
-  if (!user) return <span className='loader center'></span>
+  const handleLogout = () => {
+    userLogoutRequest()
+  }
+
+  // if (!user) return <span className='loader center'></span>
 
   return (
     <Layout className={styles.container}>
-      <div className={styles[`container__buttons`]}>
+      <div className={styles.container__buttons}>
         <button type='button' onClick={handleGoBack}>
           <svg width={24} height={24} fill='none' xmlns='http://www.w3.org/2000/svg'>
             <path d='m16 6-8 6.5 8 6.5' stroke='#fff' strokeWidth={2} strokeLinecap='round' />
           </svg>
         </button>
-        <p className={styles[`container__buttons-text`]}>Profile</p>
-        <button type='button'>
+        <p className={styles['container__buttons-text']}>Profile</p>
+        <button type='button' onClick={handleLogout}>
           <svg width={24} height={24} fill='none' xmlns='http://www.w3.org/2000/svg'>
             <path
-              fillRule='evenodd'
-              clipRule='evenodd'
-              d='M12.335 1c-.658 0-1.23.422-2.373 1.265L8.24 3.533c-.18.133-.27.2-.367.255-.097.056-.2.101-.405.19l-1.959.857c-1.302.569-1.953.853-2.282 1.423-.328.57-.25 1.275-.091 2.687l.238 2.125c.025.223.037.334.037.445 0 .112-.012.223-.037.446l-.238 2.124c-.158 1.413-.237 2.119.091 2.688.329.57.98.854 2.282 1.423l1.96.856c.204.09.307.135.404.19.096.056.187.123.367.256l1.72 1.268c1.144.843 1.716 1.265 2.374 1.265.657 0 1.23-.422 2.373-1.265l1.721-1.268c.18-.133.27-.2.367-.256.097-.055.2-.1.405-.19l1.959-.856c1.302-.569 1.953-.854 2.282-1.423.328-.57.25-1.275.09-2.688l-.237-2.124c-.025-.223-.038-.334-.038-.446 0-.111.013-.223.038-.445l.238-2.125c.158-1.412.237-2.118-.091-2.687-.33-.57-.98-.854-2.282-1.423l-1.96-.856c-.204-.09-.307-.135-.404-.19-.096-.057-.187-.123-.367-.256l-1.72-1.268C13.563 1.422 12.991 1 12.334 1Zm0 14.515a4 4 0 1 0 0-8 4 4 0 0 0 0 8Z'
+              d='m17 7-1.41 1.41L18.17 11H8v2h10.17l-2.58 2.58L17 17l5-5-5-5ZM4 5h8V3H4c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h8v-2H4V5Z'
               fill='#fff'
             />
           </svg>
         </button>
       </div>
 
-      <div className={styles[`container__profile`]}>
-        <div className={styles[`container__profile-image`]}>
+      <div className={styles.container__profile}>
+        <div className={styles['container__profile-image']}>
           <svg width={100} height={100} fill='none' xmlns='http://www.w3.org/2000/svg'>
             <circle cx={50} cy={50} r={50} fill='#22a2f2' />
           </svg>
         </div>
-        <div className={styles[`container__profile-info`]}>
-          <p className={styles[`container__profile-info-name`]}>{user.displayName}</p>
-          <p className={styles[`container__profile-info-description`]}>Job position</p>
+        <div className={styles['container__profile-info']}>
+          <p className={styles['container__profile-info-name']}>{user?.displayName}</p>
+          <p className={styles['container__profile-info-description']}>Job position</p>
         </div>
 
-        <div className={styles[`container__profile-tabs`]}>
+        <div className={styles['container__profile-tabs']}>
           <p
             className={`
-              ${styles[`container__profile-tabs-item`]}
-              ${styles[`container__profile-tabs-item-active`]}`}
+              ${styles['container__profile-tabs-item']}
+              ${styles['container__profile-tabs-item-active']}`}
           >
             Details
           </p>
-          <p className={styles[`container__profile-tabs-item`]}>Goals</p>
-          <p className={styles[`container__profile-tabs-item`]}>Insights</p>
+          <p className={styles['container__profile-tabs-item']}>Goals</p>
+          <p className={styles['container__profile-tabs-item']}>Insights</p>
         </div>
 
-        <div className={styles[`container__profile-details`]}>
-          <p className={styles[`container__profile-details-label`]}>My card</p>
-          <div className={styles[`container__profile-details-card`]}>
+        <div className={styles['container__profile-details']}>
+          <p className={styles['container__profile-details-label']}>My card</p>
+          <div className={styles['container__profile-details-card']}>
             <p>Savelt</p>
             <svg
               width={63}
@@ -97,7 +102,7 @@ const Profile = ({ user }) => {
               height={33}
               fill='none'
               xmlns='http://www.w3.org/2000/svg'
-              className={styles[`card-bubbles`]}
+              className={styles['card-bubbles']}
             >
               <rect
                 opacity={0.75}
@@ -123,16 +128,16 @@ const Profile = ({ user }) => {
           </div>
         </div>
 
-        <div className={styles[`container__profile-login-details`]}>
+        <div className={styles['container__profile-login-details']}>
           <div>
             <svg width={50} height={50} fill='none' xmlns='http://www.w3.org/2000/svg'>
               <circle cx={25} cy={25} r={25} fill='#22a2f2' />
             </svg>
-            <div className={styles[`container__profile-login-details__labels`]}>
-              <p className={styles[`container__profile-login-details__labels__title`]}>
+            <div className={styles['container__profile-login-details__labels']}>
+              <p className={styles['container__profile-login-details__labels__title']}>
                 Login Details
               </p>
-              <p className={styles[`container__profile-login-details__labels__description`]}>
+              <p className={styles['container__profile-login-details__labels__description']}>
                 Username, password etc
               </p>
             </div>
@@ -146,6 +151,10 @@ const Profile = ({ user }) => {
   )
 }
 
+const mapDispatchToProps = (dispatch) => ({
+  userLogoutRequest: () => dispatch(UserActions.userLogoutRequest())
+})
+
 const mapStateToProps = ({ user }) => ({ user: user.data })
 
-export default connect(mapStateToProps)(Profile)
+export default connect(mapStateToProps, mapDispatchToProps)(Profile)

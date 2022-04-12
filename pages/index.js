@@ -8,7 +8,7 @@ import styles from './index.module.scss'
 const Home = ({ user, totalBalance, expenses, income, transactionList }) => {
   return (
     <Layout className={styles.home}>
-      <p className={styles.user}>Hi {user.displayName}</p>
+      <p className={styles.user}>Hi {user?.displayName}</p>
       <h4 className={styles.home__label}>Dashboard</h4>
 
       <div className={styles.card}>
@@ -48,10 +48,10 @@ const Home = ({ user, totalBalance, expenses, income, transactionList }) => {
       <div className={styles.transactions}>
         <div className={styles.transactions__header}>
           <p className={styles.transactions__label}>Transactions</p>
-          <p className={styles['transactions__view-all']}>View all</p>
+          {/* <p className={styles['transactions__view-all']}>View all</p> */}
         </div>
 
-        {!transactionList.length && <span className='loader '></span>}
+        {!transactionList.length && <p>Start adding transactions</p>}
 
         {transactionList.map((transaction, index) => {
           return (
@@ -77,6 +77,7 @@ const Home = ({ user, totalBalance, expenses, income, transactionList }) => {
               <div className={styles.transaction__info}>
                 <p className={styles.transaction__title}>{transaction.name}</p>
                 <p className={styles.transaction__date}>{transaction.createdAt}</p>
+                <p className={styles.transaction__date}>{transaction?.category}</p>
               </div>
               <p
                 className={styles.transaction__amount}

@@ -18,14 +18,25 @@ const transactionsRequest = (state) => ({
 })
 
 const transactionsSuccess = (state, { payload }) => {
+  const currentMonth = new Date().getMonth()
+
   const totalBalance = payload.reduce((acc, transaction) => acc + +transaction.amount, 0)
+
   const expenses = payload.reduce((acc, transaction) => {
-    if (transaction.amount < 0) {
+    const month = new Date(transaction.timestamp).getMonth()
+    if (transaction.amount < 0 && month === currentMonth) {
       return acc + +transaction.amount
     }
     return acc
   }, 0)
-  const income = totalBalance - expenses
+
+  const income = payload.reduce((acc, transaction) => {
+    const month = new Date(transaction.timestamp).getMonth()
+    if (transaction.amount > 0 && month === currentMonth) {
+      return acc + +transaction.amount
+    }
+    return acc
+  }, 0)
 
   return {
     ...state,

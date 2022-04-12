@@ -38,9 +38,28 @@ const userLoginFailure = (state, { payload }) => {
   }
 }
 
+const userLogoutRequest = (state) => ({
+  ...state,
+  loading: true
+})
+const userLogoutSuccess = (state) => ({
+  ...state,
+  data: {},
+  isLoggedIn: false,
+  loading: false
+})
+const userLogoutFailure = (state) => ({
+  ...state,
+  error: 'Something went wrong',
+  loading: false
+})
+
 /* ----------- Hookup Reducer to Types ----------- */
 export const UserReducer = createReducer(USER_INITIAL_STATE, {
   [UserTypes.userLoginRequest]: userLoginRequest,
   [UserTypes.userLoginSuccess]: userLoginSuccess,
-  [UserTypes.userLoginFailure]: userLoginFailure
+  [UserTypes.userLoginFailure]: userLoginFailure,
+  [UserTypes.userLogoutRequest]: userLogoutRequest,
+  [UserTypes.userLogoutSuccess]: userLogoutSuccess,
+  [UserTypes.userLogoutFailure]: userLogoutFailure
 })

@@ -25,12 +25,12 @@ const app = initializeApp(firebaseConfig)
 const auth = getAuth(app)
 const db = getFirestore()
 
-export const createUserWithEmail = async (email, password) => {
-  createUserWithEmailAndPassword(auth, email, password)
+export const createUserWithEmail = async ({ name, email, password }) => {
+  return createUserWithEmailAndPassword(auth, email, password)
     .then(({ user }) => {
       updateProfile(user, {
-        displayName: 'Dave Admin'
-      }).then((user) => user)
+        displayName: name
+      }).then((data) => data)
     })
     .catch((error) => {
       throw error
@@ -69,7 +69,7 @@ export const addTransaction = async (data) => {
   if (!user) return []
 
   try {
-    const docRef = await addDoc(collection(db, `users/${user.uid}/transactions`), data)
+    const docRef = await addDoc(collection(db, `users/${user.email}/transactions`), data)
     console.log('Document written: ', docRef)
   } catch (e) {
     console.error('Error adding document: ', e)

@@ -32,7 +32,7 @@ const Add = ({ addTransaction, loading }) => {
       category
     }
     await addTransaction(data)
-    router.back()
+    router.push('/')
   }
 
   return (
@@ -77,7 +77,7 @@ const Add = ({ addTransaction, loading }) => {
           value={amount}
           id='amount'
           label='Amount'
-          type='numeric'
+          type='tel'
           onChange={(value) => setAmount(value.replace(/-/g, ''))}
         />
         <TextField

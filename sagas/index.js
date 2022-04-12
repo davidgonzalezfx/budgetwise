@@ -7,7 +7,7 @@ import { UserTypes } from 'redux/User'
 
 /* ----------- Sagas ----------- */
 import { getAllTransactions, addNewTransaction } from 'sagas/Transactions'
-import { loginUser } from 'sagas/User'
+import { loginUser, logoutUser, registerUser } from 'sagas/User'
 
 export default function* root() {
   yield all([
@@ -15,6 +15,8 @@ export default function* root() {
     takeLatest(TransactionsTypes.transactionsRequest, getAllTransactions),
     takeLatest(TransactionsTypes.transactionsAddRequest, addNewTransaction),
     // User
-    takeLatest(UserTypes.userLoginRequest, loginUser)
+    takeLatest(UserTypes.userLoginRequest, loginUser),
+    takeLatest(UserTypes.userLogoutRequest, logoutUser),
+    takeLatest(UserTypes.userRegisterRequest, registerUser)
   ])
 }

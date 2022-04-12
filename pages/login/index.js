@@ -2,13 +2,17 @@ import { useEffect, useState } from 'react'
 import { useRouter } from 'next/router'
 import { connect } from 'react-redux'
 
+import TextField from 'components/TextField'
+
 import UserActions from 'redux/User'
 
 import styles from './login.module.scss'
 
-const Login = ({ isLoggedIn, loginError, loginUserWithEmail }) => {
+const Login = ({ isLoggedIn, loginError, userLoginRequest, userRegisterRequest }) => {
   const [email, setEmail] = useState('')
   const [password, setPassword] = useState('')
+  const [signup, setSignup] = useState(false)
+  const [name, setName] = useState('')
   const router = useRouter()
 
   useEffect(() => {
@@ -17,31 +21,51 @@ const Login = ({ isLoggedIn, loginError, loginUserWithEmail }) => {
     }
   }, [isLoggedIn, router])
 
-  const handleLogin = (event) => {
+  const handleSubmit = (event) => {
     event.preventDefault()
-    loginUserWithEmail(email, password)
+    if (signup && name.length > 3) {
+      userRegisterRequest({ name, email, password })
+    } else if (!signup) {
+      userLoginRequest(email, password)
+    }
+  }
+
+  const enableSignup = () => {
+    setSignup(!signup)
   }
 
   return (
     <div className={styles.container}>
       <h3>Wlecome to the journey of your financial well-being</h3>
       <p>Pls login or create and acocunt</p>
-      <form onSubmit={handleLogin}>
-        <input
-          type='email'
-          placeholder='Email'
+      <form onSubmit={handleSubmit} autoComplete='off'>
+        {signup && (
+          <TextField
+            value={name}
+            id='name'
+            label='Your name'
+            onChange={(value) => setName(value)}
+          />
+        )}
+        <TextField
           value={email}
-          onChange={(event) => setEmail(event.target.value)}
+          id='email'
+          label='Email'
+          type='email'
+          onChange={(value) => setEmail(value)}
         />
-        <input
-          type='password'
-          placeholder='Password'
+        <TextField
           value={password}
-          onChange={(event) => setPassword(event.target.value)}
+          id='password'
+          label='Password'
+          type='password'
+          onChange={(value) => setPassword(value)}
         />
         {loginError && <p className={styles.error}>{loginError}</p>}
-        <button type='submit' onClick={handleLogin}>
-          Login
+        <button type='submit'>{`${!signup ? 'Login' : 'Signup'}`}</button>
+
+        <button type='button' onClick={enableSignup}>
+          {`${!signup ? "Doesn't have an account?" : 'Already have an account?'}`}
         </button>
       </form>
     </div>
@@ -54,8 +78,9 @@ const mapStateToProps = ({ user }) => ({
 })
 
 const mapDispatchToProps = (dispatch) => ({
-  loginUserWithEmail: (email, password) =>
-    dispatch(UserActions.userLoginRequest({ email, password }))
+  userLoginRequest: (email, password) =>
+    dispatch(UserActions.userLoginRequest({ email, password })),
+  userRegisterRequest: (data) => dispatch(UserActions.userRegisterRequest(data))
 })
 
 export default connect(mapStateToProps, mapDispatchToProps)(Login)
