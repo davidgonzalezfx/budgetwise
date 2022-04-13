@@ -21,3 +21,11 @@ export function* addNewTransaction({ payload }) {
     yield put(TransactionsActions.transactionsFailure(error))
   }
 }
+
+export function* updateBudget({ payload }) {
+  try {
+    yield put(TransactionsActions.updateBudgetSuccess(payload))
+  } catch (error) {
+    yield put(TransactionsActions.updateBudgetFailure(error))
+  }
+}

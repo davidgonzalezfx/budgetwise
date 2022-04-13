@@ -7,6 +7,8 @@ export const TRANSACTIONS_INITIAL_STATE = {
   loading: false,
   error: null,
   totalBalance: 0,
+  expectedIncome: 10,
+  expectedSpending: 10,
   expenses: 0,
   income: 0
 }
@@ -69,6 +71,22 @@ const transactionsAddFailure = (state, { payload }) => ({
   error: payload
 })
 
+const updateBudgetRequest = (state) => ({
+  ...state,
+  loading: true
+})
+const updateBudgetSuccess = (state, { payload }) => ({
+  ...state,
+  loading: false,
+  error: null,
+  ...payload
+})
+const updateBudgetFailure = (state, { payload }) => ({
+  ...state,
+  loading: false,
+  error: payload
+})
+
 /* ----------- Hookup Reducer to Types ----------- */
 export const TransactionsReducer = createReducer(TRANSACTIONS_INITIAL_STATE, {
   [TransactionsTypes.transactionsRequest]: transactionsRequest,
@@ -77,5 +95,9 @@ export const TransactionsReducer = createReducer(TRANSACTIONS_INITIAL_STATE, {
 
   [TransactionsTypes.transactionsAddRequest]: transactionsAddRequest,
   [TransactionsTypes.transactionsAddSuccess]: transactionsAddSuccess,
-  [TransactionsTypes.transactionsAddFailure]: transactionsAddFailure
+  [TransactionsTypes.transactionsAddFailure]: transactionsAddFailure,
+
+  [TransactionsTypes.updateBudgetRequest]: updateBudgetRequest,
+  [TransactionsTypes.updateBudgetSuccess]: updateBudgetSuccess,
+  [TransactionsTypes.updateBudgetFailure]: updateBudgetFailure
 })

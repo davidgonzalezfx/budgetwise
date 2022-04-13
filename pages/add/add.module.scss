@@ -24,16 +24,16 @@
   }
 
   footer {
-    position: fixed;
-    bottom: 0;
     align-items: center;
     background-color: var(--dark);
+    bottom: 0;
     display: flex;
     flex-direction: row;
     height: 65px;
     justify-content: space-between;
 
     padding: 32px 34px;
+    position: fixed;
     width: 100%;
 
     button {
@@ -48,22 +48,22 @@
 .form {
   display: flex;
   flex-direction: column;
-  width: 90%;
   margin: 0 auto;
   padding-bottom: 24px;
+  width: 90%;
 
   &__type {
+    background-color: var(--red);
+    border: none;
     border-radius: 8px;
     color: var(--white);
-    border: none;
-    background-color: var(--red);
-    width: 56px;
     height: 56px;
+    width: 56px;
   }
 
   &__row {
-    display: flex;
     align-items: center;
+    display: flex;
     justify-content: space-between;
   }
 
@@ -72,56 +72,56 @@
   }
 
   button {
-    cursor: pointer;
-    font-weight: bold;
-    font-size: 18px;
     color: var(--white);
+    cursor: pointer;
+    font-size: 18px;
+    font-weight: bold;
   }
 
   input {
+    background-color: transparent;
+    border: none;
+    border-bottom: 1px solid #c4c4c4;
+    color: #c4c4c4;
+    color-scheme: dark;
     height: 32px;
     margin: 16px 0;
     width: 100%;
-    border: none;
-    border-bottom: 1px solid #c4c4c4;
-    background-color: transparent;
-    color: #c4c4c4;
-    color-scheme: dark;
   }
   // input placeholder white
-  input::-webkit-input-placeholder {
+  input::input-placeholder {
     color: #c4c4c4;
   }
 
   select {
-    border: none;
-    outline: none;
-    color: var(--white);
-    width: 100%;
-    height: 56px;
-    border-radius: 8px;
-    padding: 0px 16px;
-    // position: relative;
-    margin: 16px 0;
-    background-color: rgba(255, 255, 255, 0.3);
-    transition: 0.3s background-color ease-in-out, 0.3s box-shadow ease-in-out;
-    display: inline-block;
-    -webkit-box-sizing: border-box;
-    -moz-box-sizing: border-box;
-    box-sizing: border-box;
-    -webkit-appearance: none;
-    -moz-appearance: none;
+    appearance: none;
+    appearance: none;
 
-    -moz-appearance: none !important;
-    -webkit-appearance: none !important;
     appearance: none !important;
+    appearance: none !important;
+    appearance: none !important;
+    background-color: rgba(255, 255, 255, 0.3);
 
     background-image: url("data:image/svg+xml;utf8,<svg fill='white' height='34' viewBox='0 0 24 24' width='24' xmlns='http://www.w3.org/2000/svg'><path d='M7 10l5 5 5-5z'/><path d='M0 0h24v24H0z' fill='none'/></svg>");
-    background-repeat: no-repeat;
     background-position-x: 95%;
     background-position-y: 8px;
+    background-repeat: no-repeat;
+    border: none;
+    border-radius: 8px;
+    box-sizing: border-box;
+    box-sizing: border-box;
+    box-sizing: border-box;
+    color: var(--white);
+    display: inline-block;
 
     font-size: 16px;
     font-weight: 400;
+    height: 56px;
+    // position: relative;
+    margin: 16px 0;
+    outline: none;
+    padding: 0 16px;
+    transition: 0.3s background-color ease-in-out, 0.3s box-shadow ease-in-out;
+    width: 100%;
   }
 }

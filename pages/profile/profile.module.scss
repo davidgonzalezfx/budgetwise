@@ -99,11 +99,9 @@
       }
 
       &-card {
-        background: linear-gradient(
-          45deg,
-          rgb(223 235 242 / 43.4%) 0%,
-          rgb(34 162 242 / 45.1%) 100%
-        );
+        background: linear-gradient(45deg,
+        rgb(223 235 242 / 43.4%) 0%,
+        rgb(34 162 242 / 45.1%) 100%);
         border: 2px solid #4b4f50;
         border-radius: 16px;
         display: flex;

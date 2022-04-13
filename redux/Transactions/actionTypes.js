@@ -8,11 +8,18 @@ const transactionsAddRequest = createAction('transactions/add/request')
 const transactionsAddSuccess = createAction('transactions/add/success')
 const transactionsAddFailure = createAction('transactions/add/failure')
 
+const updateBudgetRequest = createAction('budget/update/request')
+const updateBudgetSuccess = createAction('budget/update/success')
+const updateBudgetFailure = createAction('budget/update/failure')
+
 export default {
   transactionsRequest,
   transactionsSuccess,
   transactionsFailure,
   transactionsAddRequest,
   transactionsAddSuccess,
-  transactionsAddFailure
+  transactionsAddFailure,
+  updateBudgetRequest,
+  updateBudgetSuccess,
+  updateBudgetFailure
 }

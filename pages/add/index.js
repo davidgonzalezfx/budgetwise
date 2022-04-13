@@ -15,9 +15,9 @@ const Add = ({ addTransaction }) => {
   const [title, setTitle] = useState('')
   const [amount, setAmount] = useState('')
   const [date, setDate] = useState(new Date(Date.now() - 18000000).toISOString().slice(0, 16))
-  const [category, setCategory] = useState('')
 
   const toggleType = (e, value) => {
+    e.preventDefault()
     if (value) setType(value)
     else setType(type === '-' ? '+' : '-')
   }
@@ -32,8 +32,7 @@ const Add = ({ addTransaction }) => {
     const data = {
       name: title,
       amount: type === '-' ? -amount : amount,
-      createdAt: new Date(date),
-      category
+      createdAt: new Date(date)
     }
     await addTransaction(data)
     router.push('/')
@@ -94,12 +93,12 @@ const Add = ({ addTransaction }) => {
           type='datetime-local'
           onChange={(value) => setDate(value)}
         />
-        <TextField
+        {/* <TextField
           value={category}
           id='categort'
           label='Category'
           onChange={(value) => setCategory(value)}
-        />
+        /> */}
         <select id='account' name='account'>
           <option value='Wallet'>Wallet</option>
           <option value='BankAccount'>Bank Account</option>

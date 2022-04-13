@@ -1,7 +1,7 @@
 .home {
+  overflow: auto;
   padding: 34px 24px;
   scrollbar-width: none; /* Firefox */
-  overflow: auto;
 
   &::-webkit-scrollbar {
     display: none;

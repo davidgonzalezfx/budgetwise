@@ -29,25 +29,26 @@ a {
 
 .app {
   background-color: var(--black);
-  height: 100vh;
+  box-sizing: border-box;
+  display: flex;
+  flex-direction: column;
+  max-height: 100vh;
+  height: -webkit-fill-available;
+  justify-content: space-between;
   overflow: hidden;
   width: 100vw;
-  display: flex;
-  box-sizing: border-box;
-  flex-direction: column;
-  justify-content: space-between;
 }
 
 @media screen and (min-width: 481px) {
   body {
+    align-items: center;
     background-image: radial-gradient(#2e2e2e 1px, #0d0f12 1px),
       radial-gradient(#2e2e2e 1px, #0d0f12 1px);
     background-position: 0 0, 25px 25px;
     background-size: 140px 140px;
-    height: 100vh;
     display: flex;
+    height: 100vh;
     justify-content: center;
-    align-items: center;
   }
 
   .app {
@@ -119,13 +120,13 @@ a {
 }
 
 .app-button {
-  position: fixed;
-  bottom: 72px;
-  right: 24px;
-  border-radius: 50%;
-  width: 56px;
-  height: 56px;
-  border: none;
   background-color: var(--green);
+  border: none;
+  border-radius: 50%;
+  bottom: 72px;
   color: var(--white);
+  height: 56px;
+  position: fixed;
+  right: 24px;
+  width: 56px;
 }

@@ -15,7 +15,7 @@ const Home = ({ user, totalBalance, expenses, income, transactionList }) => {
 
       <div className={styles.card}>
         <p className={styles.card__label}>Total Balance</p>
-        <h3 className={styles.card__balance}>{`$${totalBalance.toFixed(2)}`}</h3>
+        <h3 className={styles.card__balance}>{totalBalance.toFixed(2)}</h3>
 
         <div className={styles.resume}>
           <div className={styles.resume__expenses}>
@@ -27,7 +27,7 @@ const Home = ({ user, totalBalance, expenses, income, transactionList }) => {
               />
             </svg>
             <div>
-              <p className={styles.resume__amount}>{`$${expenses}`}</p>
+              <p className={styles.resume__amount}>{expenses}</p>
             </div>
           </div>
           <div className={styles.resume__income}>
@@ -39,7 +39,7 @@ const Home = ({ user, totalBalance, expenses, income, transactionList }) => {
               />
             </svg>
             <div>
-              <p className={styles.resume__amount}>{`$${income}`}</p>
+              <p className={styles.resume__amount}>{income}</p>
             </div>
           </div>
         </div>
@@ -77,7 +77,6 @@ const Home = ({ user, totalBalance, expenses, income, transactionList }) => {
               <div className={styles.transaction__info}>
                 <p className={styles.transaction__title}>{transaction.name}</p>
                 <p className={styles.transaction__date}>{transaction.createdAt}</p>
-                <p className={styles.transaction__date}>{transaction?.category}</p>
               </div>
               <p
                 className={styles.transaction__amount}

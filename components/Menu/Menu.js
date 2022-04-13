@@ -8,7 +8,7 @@ const Menu = () => {
   const hanldeHome = () => router.push('/')
   const handleProfile = () => router.push('/profile')
   const handleBudget = () => {
-    // router.push('/add')
+    router.push('/budget')
   }
 
   return (
@@ -25,18 +25,13 @@ const Menu = () => {
       </button>
 
       <button onClick={handleBudget}>
-        <svg width={25} height={25} fill='none' xmlns='http://www.w3.org/2000/svg' >
+        <svg width={24} height={25} fill='none' xmlns='http://www.w3.org/2000/svg'>
           <path
-            d='M13.727 10.92h-4.78M16.237 14.21h-5.29M18.597 18.44c3.67-3.67 3.23-9.89-1.31-12.95-2.83-1.91-6.65-1.85-9.43.12a8.407 8.407 0 0 0-2.28 11.4l-1.08 2.68c-.25.61.36 1.22.98.98l2.68-1.08a8.39 8.39 0 0 0 10.44-1.15Z'
-            stroke='#C4C4C4'
-            strokeWidth={1.2}
-            strokeMiterlimit={10}
-            strokeLinecap='round'
-            strokeLinejoin='round'
+            d='M5 9.7h3v9.8H5V9.7Zm5.6-4.2h2.8v14h-2.8v-14Zm5.6 8H19v6h-2.8v-6Z'
+            fill={`${activeRoute === '/budget' ? '#22A2F2' : '#C4C4C4'}`}
           />
         </svg>
       </button>
-
       <button onClick={handleProfile}>
         <svg width={24} height={25} fill='none' xmlns='http://www.w3.org/2000/svg'>
           <path
