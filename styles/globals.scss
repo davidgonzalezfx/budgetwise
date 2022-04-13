@@ -2,15 +2,9 @@
 
 html,
 body {
-  align-items: center;
-  display: flex;
   font-family: Poppins, sans-serif;
-  height: 100vh;
-  justify-content: center;
   margin: 0;
   padding: 0;
-  width: 100vw;
-  
 }
 
 a {
@@ -37,8 +31,11 @@ a {
   background-color: var(--black);
   height: 100vh;
   overflow: hidden;
-  position: relative;
   width: 100vw;
+  display: flex;
+  box-sizing: border-box;
+  flex-direction: column;
+  justify-content: space-between;
 }
 
 @media screen and (min-width: 481px) {
@@ -47,6 +44,10 @@ a {
       radial-gradient(#2e2e2e 1px, #0d0f12 1px);
     background-position: 0 0, 25px 25px;
     background-size: 140px 140px;
+    height: 100vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
   }
 
   .app {
@@ -102,17 +103,12 @@ a {
 .footer-menu {
   align-items: center;
   background-color: var(--dark);
-  border-radius: 32px;
-  border-bottom-left-radius: 0;
-  border-bottom-right-radius: 0;
-  bottom: 0;
   display: flex;
   flex-direction: row;
-  height: 91px;
+  height: 65px;
   justify-content: space-between;
-  left: 0;
+
   padding: 32px 34px;
-  position: absolute;
   width: 100%;
 
   button {
@@ -120,4 +116,16 @@ a {
     border: none;
     cursor: pointer;
   }
+}
+
+.app-button {
+  position: fixed;
+  bottom: 72px;
+  right: 24px;
+  border-radius: 50%;
+  width: 56px;
+  height: 56px;
+  border: none;
+  background-color: var(--green);
+  color: var(--white);
 }

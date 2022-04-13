@@ -14,8 +14,8 @@ export function* getAllTransactions() {
 
 export function* addNewTransaction({ payload }) {
   try {
-    const response = yield addTransaction(payload)
-    yield put(TransactionsActions.transactionsAddSuccess(response))
+    yield addTransaction(payload)
+    yield put(TransactionsActions.transactionsAddSuccess())
     yield put(TransactionsActions.transactionsRequest())
   } catch (error) {
     yield put(TransactionsActions.transactionsFailure(error))

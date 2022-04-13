@@ -9,7 +9,7 @@ import TransactionsActions from 'redux/Transactions'
 
 import styles from './add.module.scss'
 
-const Add = ({ addTransaction, loading }) => {
+const Add = ({ addTransaction }) => {
   const router = useRouter()
   const [type, setType] = useState('-')
   const [title, setTitle] = useState('')
@@ -17,9 +17,13 @@ const Add = ({ addTransaction, loading }) => {
   const [date, setDate] = useState(new Date(Date.now() - 18000000).toISOString().slice(0, 16))
   const [category, setCategory] = useState('')
 
-  const toggleType = () => setType(type === '-' ? '+' : '-')
+  const toggleType = (e, value) => {
+    if (value) setType(value)
+    else setType(type === '-' ? '+' : '-')
+  }
 
   const handleGoBack = (e) => {
+    e.preventDefault()
     router.back()
   }
 
@@ -36,7 +40,7 @@ const Add = ({ addTransaction, loading }) => {
   }
 
   return (
-    <Layout className={styles.add}>
+    <Layout className={styles.add} hideMenu>
       <div className={styles.add__buttons}>
         <button type='button' onClick={handleGoBack}>
           <svg width={24} height={24} fill='none' xmlns='http://www.w3.org/2000/svg'>
@@ -61,7 +65,10 @@ const Add = ({ addTransaction, loading }) => {
             type='button'
             onClick={toggleType}
             className={styles.form__type}
-            style={{ background: type === '+' && 'var(--green)' }}
+            style={{
+              background:
+                type === '+' ? 'var(--green)' : type === '-' ? 'var(--red)' : 'var(--primary)'
+            }}
           >
             {type}
           </button>
@@ -93,10 +100,30 @@ const Add = ({ addTransaction, loading }) => {
           label='Category'
           onChange={(value) => setCategory(value)}
         />
-        <button type='submit' className={styles.form__submit}>
+        <select id='account' name='account'>
+          <option value='Wallet'>Wallet</option>
+          <option value='BankAccount'>Bank Account</option>
+          <option value='CreditCard'>Credit Card</option>
+        </select>
+        <button type='submit' className='app-button'>
           ✓
         </button>
       </form>
+      <footer>
+        <button type='button' onClick={(e) => toggleType(e, '-')} style={{ color: 'var(--red)' }}>
+          Expense
+        </button>
+        <button type='button' onClick={(e) => toggleType(e, '+')} style={{ color: 'var(--green)' }}>
+          Income
+        </button>
+        <button
+          type='button'
+          onClick={(e) => toggleType(e, '=')}
+          style={{ color: 'var(--primary)' }}
+        >
+          Transfer
+        </button>
+      </footer>
     </Layout>
   )
 }
@@ -105,6 +132,4 @@ const mapDispatchToProps = (dispatch) => ({
   addTransaction: (data) => dispatch(TransactionsActions.transactionsAddRequest(data))
 })
 
-const mapStateToProps = ({ transactions }) => ({ loading: transactions.loading })
-
-export default connect(mapStateToProps, mapDispatchToProps)(Add)
+export default connect(null, mapDispatchToProps)(Add)

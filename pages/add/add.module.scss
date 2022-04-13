@@ -1,5 +1,7 @@
 .add {
-  padding: unset;
+  // padding-bottom: 120px;
+  min-height: 50vh;
+  // overflow: auto;
 
   &__buttons {
     align-items: center;
@@ -20,6 +22,27 @@
       cursor: pointer;
     }
   }
+
+  footer {
+    position: fixed;
+    bottom: 0;
+    align-items: center;
+    background-color: var(--dark);
+    display: flex;
+    flex-direction: row;
+    height: 65px;
+    justify-content: space-between;
+
+    padding: 32px 34px;
+    width: 100%;
+
+    button {
+      background: none;
+      border: none;
+      cursor: pointer;
+      font-weight: bold;
+    }
+  }
 }
 
 .form {
@@ -27,6 +50,7 @@
   flex-direction: column;
   width: 90%;
   margin: 0 auto;
+  padding-bottom: 24px;
 
   &__type {
     border-radius: 8px;
@@ -45,18 +69,6 @@
 
   &__title {
     width: 70%;
-
-  }
-
-  &__submit {
-    position: absolute;
-    bottom: 120px;
-    right: 24px;
-    border-radius: 50%;
-    width: 56px;
-    height: 56px;
-    border: none;
-    background-color: var(--green);
   }
 
   button {
@@ -79,5 +91,37 @@
   // input placeholder white
   input::-webkit-input-placeholder {
     color: #c4c4c4;
+  }
+
+  select {
+    border: none;
+    outline: none;
+    color: var(--white);
+    width: 100%;
+    height: 56px;
+    border-radius: 8px;
+    padding: 0px 16px;
+    // position: relative;
+    margin: 16px 0;
+    background-color: rgba(255, 255, 255, 0.3);
+    transition: 0.3s background-color ease-in-out, 0.3s box-shadow ease-in-out;
+    display: inline-block;
+    -webkit-box-sizing: border-box;
+    -moz-box-sizing: border-box;
+    box-sizing: border-box;
+    -webkit-appearance: none;
+    -moz-appearance: none;
+
+    -moz-appearance: none !important;
+    -webkit-appearance: none !important;
+    appearance: none !important;
+
+    background-image: url("data:image/svg+xml;utf8,<svg fill='white' height='34' viewBox='0 0 24 24' width='24' xmlns='http://www.w3.org/2000/svg'><path d='M7 10l5 5 5-5z'/><path d='M0 0h24v24H0z' fill='none'/></svg>");
+    background-repeat: no-repeat;
+    background-position-x: 95%;
+    background-position-y: 8px;
+
+    font-size: 16px;
+    font-weight: 400;
   }
 }

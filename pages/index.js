@@ -1,4 +1,5 @@
 /* eslint-disable multiline-ternary */
+import { useRouter } from 'next/router'
 import { connect } from 'react-redux'
 
 import Layout from '../components/Layout/Layout'
@@ -6,6 +7,7 @@ import Layout from '../components/Layout/Layout'
 import styles from './index.module.scss'
 
 const Home = ({ user, totalBalance, expenses, income, transactionList }) => {
+  const router = useRouter()
   return (
     <Layout className={styles.home}>
       <p className={styles.user}>Hi {user?.displayName}</p>
@@ -13,7 +15,7 @@ const Home = ({ user, totalBalance, expenses, income, transactionList }) => {
 
       <div className={styles.card}>
         <p className={styles.card__label}>Total Balance</p>
-        <h3 className={styles.card__balance}>{totalBalance}</h3>
+        <h3 className={styles.card__balance}>{`$${totalBalance.toFixed(2)}`}</h3>
 
         <div className={styles.resume}>
           <div className={styles.resume__expenses}>
@@ -25,8 +27,7 @@ const Home = ({ user, totalBalance, expenses, income, transactionList }) => {
               />
             </svg>
             <div>
-              <p className={styles.resume__label}>Expenses</p>
-              <p className={styles.resume__amount}>{expenses}</p>
+              <p className={styles.resume__amount}>{`$${expenses}`}</p>
             </div>
           </div>
           <div className={styles.resume__income}>
@@ -38,8 +39,7 @@ const Home = ({ user, totalBalance, expenses, income, transactionList }) => {
               />
             </svg>
             <div>
-              <p className={styles.resume__label}>Income</p>
-              <p className={styles.resume__amount}>{income}</p>
+              <p className={styles.resume__amount}>{`$${income}`}</p>
             </div>
           </div>
         </div>
@@ -89,6 +89,9 @@ const Home = ({ user, totalBalance, expenses, income, transactionList }) => {
           )
         })}
       </div>
+      <button type='button' onClick={() => router.push('/add')} className='app-button'>
+        +
+      </button>
     </Layout>
   )
 }

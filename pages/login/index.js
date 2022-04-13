@@ -11,9 +11,14 @@ import styles from './login.module.scss'
 const Login = ({ isLoggedIn, loginError, userLoginRequest, userRegisterRequest }) => {
   const [email, setEmail] = useState('')
   const [password, setPassword] = useState('')
+  const [error, setError] = useState(loginError)
   const [signup, setSignup] = useState(false)
   const [name, setName] = useState('')
   const router = useRouter()
+
+  useEffect(() => {
+    if (loginError) setError(loginError)
+  }, [loginError])
 
   useEffect(() => {
     if (isLoggedIn) {
@@ -44,7 +49,10 @@ const Login = ({ isLoggedIn, loginError, userLoginRequest, userRegisterRequest }
             value={name}
             id='name'
             label='Your name'
-            onChange={(value) => setName(value)}
+            onChange={(value) => {
+              setError(null)
+              setName(value)
+            }}
           />
         )}
         <TextField
@@ -52,16 +60,22 @@ const Login = ({ isLoggedIn, loginError, userLoginRequest, userRegisterRequest }
           id='email'
           label='Email'
           type='email'
-          onChange={(value) => setEmail(value)}
+          onChange={(value) => {
+            setError(null)
+            setEmail(value)
+          }}
         />
         <TextField
           value={password}
           id='password'
           label='Password'
           type='password'
-          onChange={(value) => setPassword(value)}
+          onChange={(value) => {
+            setError(null)
+            setPassword(value)
+          }}
         />
-        {loginError && <p className={styles.error}>{loginError}</p>}
+        {loginError && <p className={styles.error}>{error}</p>}
         <button type='submit'>{`${!signup ? 'Login' : 'Signup'}`}</button>
 
         <button type='button' onClick={enableSignup}>

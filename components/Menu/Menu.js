@@ -7,10 +7,12 @@ const Menu = () => {
 
   const hanldeHome = () => router.push('/')
   const handleProfile = () => router.push('/profile')
-  const handleAdd = () => router.push('/add')
+  const handleBudget = () => {
+    // router.push('/add')
+  }
 
   return (
-    <footer className={'footer-menu'}>
+    <footer className={'footer-menu'} tabIndex={-1}>
       <button onClick={hanldeHome}>
         <svg width={24} height={25} fill='none' xmlns='http://www.w3.org/2000/svg'>
           <path
@@ -22,11 +24,15 @@ const Menu = () => {
         </svg>
       </button>
 
-      <button onClick={handleAdd}>
-        <svg width={24} height={24} fill='none' xmlns='http://www.w3.org/2000/svg'>
+      <button onClick={handleBudget}>
+        <svg width={25} height={25} fill='none' xmlns='http://www.w3.org/2000/svg' >
           <path
-            d='M19 13h-6v6h-2v-6H5v-2h6V5h2v6h6v2Z'
-            fill={`${activeRoute === '/add' ? '#22A2F2' : '#C4C4C4'}`}
+            d='M13.727 10.92h-4.78M16.237 14.21h-5.29M18.597 18.44c3.67-3.67 3.23-9.89-1.31-12.95-2.83-1.91-6.65-1.85-9.43.12a8.407 8.407 0 0 0-2.28 11.4l-1.08 2.68c-.25.61.36 1.22.98.98l2.68-1.08a8.39 8.39 0 0 0 10.44-1.15Z'
+            stroke='#C4C4C4'
+            strokeWidth={1.2}
+            strokeMiterlimit={10}
+            strokeLinecap='round'
+            strokeLinejoin='round'
           />
         </svg>
       </button>

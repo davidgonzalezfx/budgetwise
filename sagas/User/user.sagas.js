@@ -22,7 +22,7 @@ export function* registerUser({ payload }) {
     yield put(UserActions.userLoginSuccess(user))
     yield put(TransactionsActions.transactionsRequest())
   } catch (error) {
-    yield put(UserActions.userLoginFailure(error))
+    yield put(UserActions.userRegisterFailure(error))
   }
 }
 

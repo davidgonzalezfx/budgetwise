@@ -1,7 +1,5 @@
 .layout {
   color: var(--white);
-  height: 100%;
-  overflow: auto;
-  padding: 34px 8px 120px;
-  width: 100%;
+  min-height: calc(100vh - 65px);
 }
+

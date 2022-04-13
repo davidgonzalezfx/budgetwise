@@ -11,12 +11,20 @@ import UserActions from 'redux/User'
 import styles from './Layout.module.scss'
 import { onAuthChanged } from 'services/firebase'
 
-const Layout = ({ children, className, transactionsRequest, userLogout }) => {
+const Layout = ({
+  children,
+  className,
+  transactionsRequest,
+  userLogout,
+  setUser,
+  hideMenu = false
+}) => {
   const router = useRouter()
 
   useEffect(() => {
     onAuthChanged((user) => {
       if (user) {
+        setUser(user)
         transactionsRequest()
       } else {
         userLogout()
@@ -28,14 +36,15 @@ const Layout = ({ children, className, transactionsRequest, userLogout }) => {
   return (
     <>
       <div className={`${styles.layout} ${className || ''}`}>{children}</div>
-      <Menu />
+      {!hideMenu && <Menu />}
     </>
   )
 }
 
 const mapDispatchToProps = (dispatch) => ({
   transactionsRequest: () => dispatch(TransactionsActions.transactionsRequest()),
-  userLogout: () => dispatch(UserActions.userLogoutRequest())
+  userLogout: () => dispatch(UserActions.userLogoutRequest()),
+  setUser: (user) => dispatch(UserActions.userLoginSuccess(user))
 })
 
 export default connect(null, mapDispatchToProps)(Layout)

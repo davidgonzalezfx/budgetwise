@@ -28,9 +28,13 @@ const db = getFirestore()
 export const createUserWithEmail = async ({ name, email, password }) => {
   return createUserWithEmailAndPassword(auth, email, password)
     .then(({ user }) => {
+      return user
+    })
+    .then((user) => {
       updateProfile(user, {
         displayName: name
-      }).then((data) => data)
+      })
+      return auth.currentUser
     })
     .catch((error) => {
       throw error
@@ -80,7 +84,7 @@ export const addTransaction = async (data) => {
 export const fetchTransactionList = async () => {
   try {
     const querySnapshot = await getDocs(
-      collection(db, `users/${auth.currentUser.uid}/transactions`)
+      collection(db, `users/${auth.currentUser.email}/transactions`)
     )
     const data = []
     querySnapshot.forEach((doc) => {
