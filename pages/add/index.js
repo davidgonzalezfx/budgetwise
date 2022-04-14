@@ -34,8 +34,10 @@ const Add = ({ addTransaction }) => {
       amount: type === '-' ? -amount : amount,
       createdAt: new Date(date)
     }
-    await addTransaction(data)
-    router.push('/')
+    if (data.name && data.amount) {
+      await addTransaction(data)
+      router.back()
+    }
   }
 
   return (
@@ -108,7 +110,7 @@ const Add = ({ addTransaction }) => {
           ✓
         </button>
       </form>
-      <footer>
+      {/* <footer>
         <button type='button' onClick={(e) => toggleType(e, '-')} style={{ color: 'var(--red)' }}>
           Expense
         </button>
@@ -122,7 +124,7 @@ const Add = ({ addTransaction }) => {
         >
           Transfer
         </button>
-      </footer>
+      </footer> */}
     </Layout>
   )
 }

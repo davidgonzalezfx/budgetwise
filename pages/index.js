@@ -8,10 +8,11 @@ import styles from './index.module.scss'
 
 const Home = ({ user, totalBalance, expenses, income, transactionList }) => {
   const router = useRouter()
+
   return (
     <Layout className={styles.home}>
-      <p className={styles.user}>Hi {user?.displayName}</p>
       <h4 className={styles.home__label}>Dashboard</h4>
+      <p className={styles.user}>Hi {user?.displayName}</p>
 
       <div className={styles.card}>
         <p className={styles.card__label}>Total Balance</p>

@@ -1,11 +1,7 @@
 .container {
-  // align-items: center;
   color: var(--white);
-  // display: flex;
-  // flex-direction: column;
-  height: 100%;
+  height: -webkit-fill-available;
   padding: 100px 32px 0;
-  // position: relative;
   width: 100%;
 
   h3,
@@ -53,6 +49,7 @@
     padding: 16px 48px;
     transition: all 0.2s ease-in-out;
     width: 100%;
+    // position: absolute;
   }
 }
 

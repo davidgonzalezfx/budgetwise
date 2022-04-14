@@ -30,11 +30,10 @@ a {
 .app {
   background-color: var(--black);
   box-sizing: border-box;
-  display: flex;
-  flex-direction: column;
-  max-height: 100vh;
+
+  min-height: 100vh;
   height: -webkit-fill-available;
-  justify-content: space-between;
+  position: relative;
   overflow: hidden;
   width: 100vw;
 }
@@ -109,6 +108,8 @@ a {
   height: 65px;
   justify-content: space-between;
 
+  position: fixed;
+  bottom: 0;
   padding: 32px 34px;
   width: 100%;
 

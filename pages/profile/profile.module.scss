@@ -1,6 +1,7 @@
 .container {
   padding: unset;
-  scrollbar-width: 1px; /* Firefox */
+  overflow: auto;
+  scrollbar-width: 0; /* Firefox */
 
   &::-webkit-scrollbar {
     display: none;

@@ -1,6 +1,6 @@
 .home {
   overflow: auto;
-  padding: 34px 24px;
+  padding: 0 24px 34px;
   scrollbar-width: none; /* Firefox */
 
   &::-webkit-scrollbar {
@@ -10,7 +10,7 @@
   .home {
     &__label {
       font-size: 26px;
-      margin: 21px 0 0;
+      margin: 34px 0 0;
     }
   }
 

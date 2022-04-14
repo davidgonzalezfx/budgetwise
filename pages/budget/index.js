@@ -16,11 +16,13 @@ const Add = ({ spending, income, expectedIncome, expectedSpending, updateBudget 
   const [isSettingsOpen, setIsSettingsOpen] = useState(false)
 
   const setExpectedIncome = (value) => {
-    updateBudget({ expectedIncome: +value })
+    if (/^[0-9]+$/.test(value)) updateBudget({ expectedIncome: +value })
+    else updateBudget({ expectedIncome: '' })
   }
 
   const setExpectedSpending = (value) => {
-    updateBudget({ expectedSpending: +value })
+    if (/^[0-9]+$/.test(value)) updateBudget({ expectedSpending: +value })
+    else updateBudget({ expectedSpending: '' })
   }
 
   const incomePercentage = useMemo(
@@ -32,21 +34,23 @@ const Add = ({ spending, income, expectedIncome, expectedSpending, updateBudget 
     [spending, expectedSpending]
   )
 
+  const toggleSettings = () => setIsSettingsOpen(!isSettingsOpen)
+
   const handleBack = () => {
     router.back()
   }
 
   return (
-    <Layout className={styles.container}>
+    <Layout className={styles.container} hideMenu={isSettingsOpen}>
       <div className={styles.container__buttons}>
         <button type='button' onClick={handleBack}>
           <svg width={24} height={24} fill='none' xmlns='http://www.w3.org/2000/svg'>
             <path d='m16 6-8 6.5 8 6.5' stroke='#fff' strokeWidth={2} strokeLinecap='round' />
           </svg>
         </button>
-        <p className={styles['add__buttons-text']}>Budget resume</p>
-        <button type='button' onClick={() => setIsSettingsOpen(!isSettingsOpen)}>
-          <svg width={24} height={24} fill='none' xmlns='http://www.w3.org/2000/svg'>
+        <p className={styles['container__buttons-text']}>Budget resume</p>
+        <button type='button' onClick={toggleSettings}>
+        <svg width={24} height={24} fill='none' xmlns='http://www.w3.org/2000/svg'>
             <path
               fillRule='evenodd'
               clipRule='evenodd'
@@ -58,23 +62,25 @@ const Add = ({ spending, income, expectedIncome, expectedSpending, updateBudget 
       </div>
 
       <div className={styles.container__summary}>
-        {isSettingsOpen
-          ? (
-            <>
-              <TextField
-                id='income'
-                label='Expected income'
-                value={expectedIncome}
-                onChange={(value) => setExpectedIncome(value)}
-              />
-              <TextField
-                id='spending'
-                label='Expected spending'
-                value={expectedSpending}
-                onChange={(value) => setExpectedSpending(value)}
-              />
-            </>)
-          : (
+        {isSettingsOpen ? (
+          <>
+            <TextField
+              id='income'
+              type='tel'
+              label='Expected income'
+              pattern='[0-9]+'
+              value={expectedIncome}
+              onChange={(value) => setExpectedIncome(value)}
+            />
+            <TextField
+              id='spending'
+              label='Expected spending'
+              type='tel'
+              value={expectedSpending}
+              onChange={(value) => setExpectedSpending(value)}
+            />
+          </>
+        ) : (
           <>
             <div className={styles['container__summary-card']}>
               <div className={styles['container__summary-progress-bar']}>
@@ -183,12 +189,12 @@ const Add = ({ spending, income, expectedIncome, expectedSpending, updateBudget 
                 >{`${spending} of ${expectedSpending}`}</p>
               </div>
             </div>
-          </>)}
+            <button type='button' onClick={() => router.push('/add')} className='app-button'>
+              +
+            </button>
+          </>
+        )}
       </div>
-
-      <button type='button' onClick={() => router.push('/add')} className='app-button'>
-        +
-      </button>
     </Layout>
   )
 }
