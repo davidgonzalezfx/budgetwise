@@ -24,7 +24,7 @@ export function configureStore({ isServer }) {
   let customCompose = compose
 
   if (typeof window !== 'undefined') {
-    customCompose = window.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__
+    customCompose = window.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__ || compose
   }
 
   const persistedReducer = persistReducer(persistConfig, rootReducer)

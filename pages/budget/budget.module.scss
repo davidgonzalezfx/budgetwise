@@ -95,6 +95,7 @@
     font-size: inherit;
     font-weight: inherit;
     width: 100%;
+    padding: 0;
   }
 }
 
@@ -114,6 +115,68 @@
       padding: 0 16px;
       border-radius: 8px;
       font-size: 12px;
+    }
+  }
+
+  &__categories {
+    width: 100%;
+    margin-top: 16px;
+
+    &__header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+
+      button {
+        background: none;
+        border: none;
+        color: var(--primary);
+        font-size: 10px;
+        font-weight: bold;
+        width: auto;
+      }
+    }
+  }
+
+  &__suggestions {
+    width: 100%;
+    display: flex;
+    flex-wrap: nowrap;
+    overflow: auto;
+
+    @media screen and (min-width: 481px) {
+      overflow: scroll;
+      scrollbar-width: none; /* Firefox */
+
+      &::-webkit-scrollbar {
+        display: none;
+      }
+    }
+  }
+
+  &__suggestion {
+    border: #4c4c4c44 solid 1px;
+    border-radius: 8px;
+    flex: 0 0 90%;
+    padding: 8px;
+    margin-right: 5%;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+
+    > div > div {
+      font-size: 12px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    button {
+      font-size: 12px;
+      background-color: var(--primary);
+      border-radius: 8px;
+      padding: 8px;
+      margin-top: 16px;
     }
   }
 

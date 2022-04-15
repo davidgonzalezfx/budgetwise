@@ -12,6 +12,8 @@ const updateBudgetRequest = createAction('budget/update/request')
 const updateBudgetSuccess = createAction('budget/update/success')
 const updateBudgetFailure = createAction('budget/update/failure')
 
+const updateSuggestionsRequest = createAction('suggestions/update/request')
+
 export default {
   transactionsRequest,
   transactionsSuccess,
@@ -21,5 +23,6 @@ export default {
   transactionsAddFailure,
   updateBudgetRequest,
   updateBudgetSuccess,
-  updateBudgetFailure
+  updateBudgetFailure,
+  updateSuggestionsRequest
 }

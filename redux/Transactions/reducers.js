@@ -90,6 +90,64 @@ const updateBudgetFailure = (state, { payload }) => ({
   error: payload
 })
 
+const updateSuggestions = (state) => {
+  const suggestions = []
+  const prefered = {
+    name: 'prefered',
+    items: [
+      {
+        name: 'Lifestyle',
+        amount: state.expectedIncome * 0.5
+      },
+      {
+        name: 'Charity',
+        amount: state.expectedIncome * 0.1
+      },
+      {
+        name: 'Savings',
+        amount: state.expectedIncome * 0.1
+      },
+      {
+        name: 'Tithe',
+        amount: state.expectedIncome * 0.1
+      },
+      {
+        name: 'Investments',
+        amount: state.expectedIncome * 0.2
+      }
+    ]
+  }
+
+  const hard = {
+    name: 'hard',
+    items: [
+      {
+        name: 'Lifestyle',
+        amount: state.expectedIncome * 0.3
+      },
+      {
+        name: 'Debt',
+        amount: state.expectedIncome * 0.5
+      },
+      {
+        name: 'Savings',
+        amount: state.expectedIncome * 0.1
+      },
+      {
+        name: 'Investments',
+        amount: state.expectedIncome * 0.2
+      }
+    ]
+  }
+
+  suggestions.push(prefered, hard)
+
+  return {
+    ...state,
+    suggestions
+  }
+}
+
 const resetTransactionList = (state) => ({
   ...state,
   data: [],
@@ -118,5 +176,7 @@ export const TransactionsReducer = createReducer(TRANSACTIONS_INITIAL_STATE, {
 
   [UserActionTypes.userLoginRequest]: resetTransactionList,
   [UserActionTypes.userRegisterRequest]: resetTransactionList,
-  [UserActionTypes.userLogoutRequest]: resetTransactionList
+  [UserActionTypes.userLogoutRequest]: resetTransactionList,
+
+  [TransactionsTypes.updateSuggestionsRequest]: updateSuggestions
 })

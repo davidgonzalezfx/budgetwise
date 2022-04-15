@@ -14,12 +14,14 @@ import currencyFormat from 'utils/currencyFormat'
 import styles from './budget.module.scss'
 import 'react-circular-progressbar/dist/styles.css'
 
-const Add = ({ spending, income, expectedIncome, expectedSpending, updateBudget }) => {
+const Add = ({ spending, income, expectedIncome, expectedSpending, updateBudget, suggestions }) => {
   const router = useRouter()
   const [isSettingsOpen, setIsSettingsOpen] = useState(false)
   const [incomeValue, setIncomeValue] = useState(expectedIncome)
   const [spendingValue, setSpendingValue] = useState(expectedSpending)
   const [budgetOpen, setBudgetOpen] = useState(false)
+  const [suggestionsOpen, setSuggestions] = useState(true)
+  const [categoriesOpen, setCategoriesOpen] = useState(false)
 
   useEffect(() => {
     setIncomeValue(expectedIncome)
@@ -48,15 +50,16 @@ const Add = ({ spending, income, expectedIncome, expectedSpending, updateBudget 
 
   const handleSubmit = (e) => {
     e.preventDefault()
-    const element = e.target[0]
-    const value = element.value
+    const element = e.target[0] || e.target
+    const value = +element.value.replace(/[\.,']/g, '')
     document.getElementById(element.id).blur()
     if (element.id === 'income-btn') {
-      if (/^[0-9]+$/.test(value)) updateBudget({ expectedIncome: +value.replace(/[\.,']/g, '') })
-      else updateBudget({ expectedIncome: 0 })
+      if (value && /^[0-9.,']+$/.test(value)) updateBudget({ expectedIncome: value })
+      else updateBudget({ expectedIncome: income })
     } else if (element.id === 'spending-btn') {
-      if (/^[0-9]+$/.test(value)) updateBudget({ expectedSpending: +value.replace(/[\.,']/g, '') })
-      else updateBudget({ expectedSpending: 0 })
+      if (value && /^[0-9.,']+$/.test(value)) {
+        updateBudget({ expectedSpending: value })
+      } else updateBudget({ expectedSpending: spending })
     }
   }
 
@@ -64,14 +67,6 @@ const Add = ({ spending, income, expectedIncome, expectedSpending, updateBudget 
 
   const handleBack = () => {
     if (isSettingsOpen) {
-      const income = document.getElementById('income-btn').value
-      const spending = document.getElementById('spending-btn').value
-      if (income !== expectedIncome && /^[0-9\.,']+$/.test(income)) {
-        updateBudget({ expectedIncome: +income.replace(/[\.,']/g, '') })
-      }
-      if (spending !== expectedSpending && /^[0-9\.,']+$/.test(spending)) {
-        updateBudget({ expectedSpending: +spending.replace(/[\.,']/g, '') })
-      }
       setIsSettingsOpen(false)
     } else router.back()
   }
@@ -127,6 +122,7 @@ const Add = ({ spending, income, expectedIncome, expectedSpending, updateBudget 
                         type='tel'
                         placeholder='$'
                         value={currencyFormat(spendingValue) || ''}
+                        onBlur={handleSubmit}
                         onChange={(e) => {
                           const value = +e.target.value.replace(/[\.,']/g, '')
                           setExpectedSpending(value)
@@ -142,6 +138,7 @@ const Add = ({ spending, income, expectedIncome, expectedSpending, updateBudget 
                         type='tel'
                         placeholder='$'
                         value={currencyFormat(incomeValue) || ''}
+                        onBlur={handleSubmit}
                         onChange={(e) => {
                           const value = +e.target.value.replace(/[\.,']/g, '')
                           setExpectedIncome(value)
@@ -153,7 +150,7 @@ const Add = ({ spending, income, expectedIncome, expectedSpending, updateBudget 
               )}
             </div>
             <div className={styles.card}>
-              <button>
+              <button onClick={() => setCategoriesOpen(!categoriesOpen)}>
                 <div className={styles.card__header}>
                   Categories
                   <svg width={24} height={24} fill='none' xmlns='http://www.w3.org/2000/svg'>
@@ -161,16 +158,46 @@ const Add = ({ spending, income, expectedIncome, expectedSpending, updateBudget 
                   </svg>
                 </div>
               </button>
-            </div>
-            <div className={styles.card}>
-              <button>
-                <div className={styles.card__header}>
-                  Accounts
-                  <svg width={24} height={24} fill='none' xmlns='http://www.w3.org/2000/svg'>
-                    <path d='M7.41 8.59 12 13.17l4.59-4.58L18 10l-6 6-6-6 1.41-1.41Z' fill='#fff' />
-                  </svg>
-                </div>
-              </button>
+              {categoriesOpen && (
+                <>
+                  <div className={styles.settings__categories}>
+                    <div className={styles.settings__categories__header}>
+                      <p style={{ fontSize: '12px', flex: '1' }}>Explore our suggestions:</p>
+                      <button onClick={() => setSuggestions(!suggestionsOpen)}>
+                        {suggestionsOpen ? 'Hide' : 'Show'}
+                      </button>
+                    </div>
+                    {suggestionsOpen && (
+                      <div className={styles.settings__suggestions}>
+                        {suggestions.map((suggestion) => (
+                          <div key={suggestion.name} className={styles.settings__suggestion}>
+                            <div>
+                              {suggestion.items.map((item) => (
+                                <div key={item.name}>
+                                  <p>{item.name}</p>
+                                  <input
+                                    id='spending-btn'
+                                    type='tel'
+                                    placeholder='$'
+                                    disabled
+                                    value={currencyFormat(item.amount)}
+                                  />
+                                </div>
+                              ))}
+                            </div>
+                            <div>
+                              <p style={{ fontSize: '8px' }}>
+                                *Lifestyle: housing, utilities, transportation, food, etc.
+                              </p>
+                              <button>Choose</button>
+                            </div>
+                          </div>
+                        ))}
+                      </div>
+                    )}
+                  </div>
+                </>
+              )}
             </div>
           </>
         ) : (
@@ -223,9 +250,9 @@ const Add = ({ spending, income, expectedIncome, expectedSpending, updateBudget 
               </div>
               <div className={styles['container__summary-card-info']}>
                 <p className={styles['container__summary-title']}>Your spending</p>
-                <p
-                  className={styles['container__summary-description']}
-                >{`${currencyFormat(spending)} of ${currencyFormat(expectedSpending)}`}</p>
+                <p className={styles['container__summary-description']}>{`${currencyFormat(
+                  spending
+                )} of ${currencyFormat(expectedSpending)}`}</p>
               </div>
             </div>
             <div className={styles['container__summary-card']}>
@@ -276,9 +303,9 @@ const Add = ({ spending, income, expectedIncome, expectedSpending, updateBudget 
               </div>
               <div className={styles['container__summary-card-info']}>
                 <p className={styles['container__summary-title']}>Your income</p>
-                <p
-                  className={styles['container__summary-description']}
-                >{`${currencyFormat(income)} of ${currencyFormat(expectedIncome)}`}</p>
+                <p className={styles['container__summary-description']}>{`${currencyFormat(
+                  income
+                )} of ${currencyFormat(expectedIncome)}`}</p>
               </div>
             </div>
 
@@ -296,7 +323,8 @@ const mapStateToProps = ({ transactions }) => ({
   spending: Math.abs(transactions.expenses),
   income: transactions.income,
   expectedIncome: transactions.expectedIncome,
-  expectedSpending: transactions.expectedSpending
+  expectedSpending: transactions.expectedSpending,
+  suggestions: transactions.suggestions
 })
 
 const mapDispathToProps = (dispatch) => ({

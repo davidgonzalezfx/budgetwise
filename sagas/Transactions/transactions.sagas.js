@@ -25,6 +25,8 @@ export function* addNewTransaction({ payload }) {
 export function* updateBudget({ payload }) {
   try {
     yield put(TransactionsActions.updateBudgetSuccess(payload))
+    yield put(TransactionsActions.updateSuggestionsRequest())
+    yield
   } catch (error) {
     yield put(TransactionsActions.updateBudgetFailure(error))
   }
