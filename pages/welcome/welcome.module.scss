@@ -2,7 +2,7 @@
   color: var(--white);
   height: 100%;
   padding: 0 52px;
-  width: 100%;
+  overflow: hidden;
 
   h3,
   p {
@@ -23,15 +23,14 @@
     background-color: var(--primary);
     border: none;
     border-radius: 4px;
-    bottom: 24px;
     color: var(--white);
     cursor: pointer;
     font-size: 14px;
     font-weight: 600;
+    margin-top: calc(65vh - 16px);
     outline: none;
     padding: 16px 48px;
-    position: absolute;
     transition: all 0.2s ease-in-out;
-    width: 271px;
+    width: 100%;
   }
 }

@@ -1,12 +1,15 @@
-import { useMemo, useState } from 'react'
+/* eslint-disable no-useless-escape */
+/* eslint-disable multiline-ternary */
+import { useEffect, useMemo, useState } from 'react'
 import { connect } from 'react-redux'
 import { useRouter } from 'next/router'
 
 import TransactionsActions from 'redux/Transactions'
 
 import Layout from 'components/Layout/Layout'
-import TextField from 'components/TextField'
 import { CircularProgressbar } from 'react-circular-progressbar'
+
+import currencyFormat from 'utils/currencyFormat'
 
 import styles from './budget.module.scss'
 import 'react-circular-progressbar/dist/styles.css'
@@ -14,30 +17,63 @@ import 'react-circular-progressbar/dist/styles.css'
 const Add = ({ spending, income, expectedIncome, expectedSpending, updateBudget }) => {
   const router = useRouter()
   const [isSettingsOpen, setIsSettingsOpen] = useState(false)
+  const [incomeValue, setIncomeValue] = useState(expectedIncome)
+  const [spendingValue, setSpendingValue] = useState(expectedSpending)
+  const [budgetOpen, setBudgetOpen] = useState(false)
+
+  useEffect(() => {
+    setIncomeValue(expectedIncome)
+  }, [expectedIncome])
+
+  useEffect(() => {
+    setSpendingValue(expectedSpending)
+  }, [expectedSpending])
 
   const setExpectedIncome = (value) => {
-    if (/^[0-9]+$/.test(value)) updateBudget({ expectedIncome: +value })
-    else updateBudget({ expectedIncome: '' })
+    setIncomeValue(value)
   }
 
   const setExpectedSpending = (value) => {
-    if (/^[0-9]+$/.test(value)) updateBudget({ expectedSpending: +value })
-    else updateBudget({ expectedSpending: '' })
+    setSpendingValue(value)
   }
 
   const incomePercentage = useMemo(
-    () => Math.round((income / expectedIncome) * 100),
+    () => Math.round((income / expectedIncome) * 100) || 0,
     [income, expectedIncome]
   )
   const spendingPercentage = useMemo(
-    () => Math.round((spending / expectedSpending) * 100),
+    () => Math.round((spending / expectedSpending) * 100) || 0,
     [spending, expectedSpending]
   )
+
+  const handleSubmit = (e) => {
+    e.preventDefault()
+    const element = e.target[0]
+    const value = element.value
+    document.getElementById(element.id).blur()
+    if (element.id === 'income-btn') {
+      if (/^[0-9]+$/.test(value)) updateBudget({ expectedIncome: +value.replace(/[\.,']/g, '') })
+      else updateBudget({ expectedIncome: 0 })
+    } else if (element.id === 'spending-btn') {
+      if (/^[0-9]+$/.test(value)) updateBudget({ expectedSpending: +value.replace(/[\.,']/g, '') })
+      else updateBudget({ expectedSpending: 0 })
+    }
+  }
 
   const toggleSettings = () => setIsSettingsOpen(!isSettingsOpen)
 
   const handleBack = () => {
-    router.back()
+    if (isSettingsOpen) {
+      const income = document.getElementById('income-btn').value
+      const spending = document.getElementById('spending-btn').value
+      if (income !== expectedIncome && /^[0-9\.,']+$/.test(income)) {
+        updateBudget({ expectedIncome: +income.replace(/[\.,']/g, '') })
+      }
+      if (spending !== expectedSpending && /^[0-9\.,']+$/.test(spending)) {
+        updateBudget({ expectedSpending: +spending.replace(/[\.,']/g, '') })
+      }
+      setIsSettingsOpen(false)
+    } else router.back()
   }
 
   return (
@@ -48,9 +84,11 @@ const Add = ({ spending, income, expectedIncome, expectedSpending, updateBudget 
             <path d='m16 6-8 6.5 8 6.5' stroke='#fff' strokeWidth={2} strokeLinecap='round' />
           </svg>
         </button>
-        <p className={styles['container__buttons-text']}>Budget resume</p>
+        <p className={styles['container__buttons-text']}>{`Budget ${
+          isSettingsOpen ? 'settings' : 'resume'
+        }`}</p>
         <button type='button' onClick={toggleSettings}>
-        <svg width={24} height={24} fill='none' xmlns='http://www.w3.org/2000/svg'>
+          <svg width={24} height={24} fill='none' xmlns='http://www.w3.org/2000/svg'>
             <path
               fillRule='evenodd'
               clipRule='evenodd'
@@ -64,78 +102,79 @@ const Add = ({ spending, income, expectedIncome, expectedSpending, updateBudget 
       <div className={styles.container__summary}>
         {isSettingsOpen ? (
           <>
-            <TextField
-              id='income'
-              type='tel'
-              label='Expected income'
-              pattern='[0-9]+'
-              value={expectedIncome}
-              onChange={(value) => setExpectedIncome(value)}
-            />
-            <TextField
-              id='spending'
-              label='Expected spending'
-              type='tel'
-              value={expectedSpending}
-              onChange={(value) => setExpectedSpending(value)}
-            />
+            <div className={styles.card}>
+              <button onClick={() => setBudgetOpen(!budgetOpen)}>
+                <div className={styles.card__header}>
+                  Budget
+                  <svg
+                    style={{ transform: budgetOpen ? 'rotate(180deg)' : '' }}
+                    width={24}
+                    height={24}
+                    fill='none'
+                    xmlns='http://www.w3.org/2000/svg'
+                  >
+                    <path d='M7.41 8.59 12 13.17l4.59-4.58L18 10l-6 6-6-6 1.41-1.41Z' fill='#fff' />
+                  </svg>
+                </div>
+              </button>
+              {budgetOpen && (
+                <div className={styles.settings__budget}>
+                  <div>
+                    <p>Spending</p>
+                    <form onSubmit={handleSubmit}>
+                      <input
+                        id='spending-btn'
+                        type='tel'
+                        placeholder='$'
+                        value={currencyFormat(spendingValue) || ''}
+                        onChange={(e) => {
+                          const value = +e.target.value.replace(/[\.,']/g, '')
+                          setExpectedSpending(value)
+                        }}
+                      />
+                    </form>
+                  </div>
+                  <div>
+                    <p>Income</p>
+                    <form onSubmit={handleSubmit}>
+                      <input
+                        id='income-btn'
+                        type='tel'
+                        placeholder='$'
+                        value={currencyFormat(incomeValue) || ''}
+                        onChange={(e) => {
+                          const value = +e.target.value.replace(/[\.,']/g, '')
+                          setExpectedIncome(value)
+                        }}
+                      />
+                    </form>
+                  </div>
+                </div>
+              )}
+            </div>
+            <div className={styles.card}>
+              <button>
+                <div className={styles.card__header}>
+                  Categories
+                  <svg width={24} height={24} fill='none' xmlns='http://www.w3.org/2000/svg'>
+                    <path d='M7.41 8.59 12 13.17l4.59-4.58L18 10l-6 6-6-6 1.41-1.41Z' fill='#fff' />
+                  </svg>
+                </div>
+              </button>
+            </div>
+            <div className={styles.card}>
+              <button>
+                <div className={styles.card__header}>
+                  Accounts
+                  <svg width={24} height={24} fill='none' xmlns='http://www.w3.org/2000/svg'>
+                    <path d='M7.41 8.59 12 13.17l4.59-4.58L18 10l-6 6-6-6 1.41-1.41Z' fill='#fff' />
+                  </svg>
+                </div>
+              </button>
+            </div>
           </>
         ) : (
           <>
-            <div className={styles['container__summary-card']}>
-              <div className={styles['container__summary-progress-bar']}>
-                <CircularProgressbar
-                  strokeWidth={12}
-                  value={incomePercentage}
-                  text={`${incomePercentage}%`}
-                  styles={{
-                    // Customize the root svg element
-                    root: {},
-                    // Customize the path, i.e. the "completed progress"
-                    path: {
-                      // Path color
-                      stroke: 'var(--green)',
-                      // Whether to use rounded or flat corners on the ends - can use 'butt' or 'round'
-                      // strokeLinecap: 'butt',
-                      // Customize transition animation
-                      transition: 'stroke-dashoffset 0.5s ease 0s'
-                      // Rotate the path
-                      // transform: 'rotate(0.25turn)',
-                      // transformOrigin: 'center center',
-                    },
-                    // Customize the circle behind the path, i.e. the "total progress"
-                    trail: {
-                      // Trail color
-                      stroke: '#C4C4C4',
-                      // Whether to use rounded or flat corners on the ends - can use 'butt' or 'round'
-                      strokeLinecap: 'butt'
-                      // Rotate the trail
-                      // transform: 'rotate(0.25turn)',
-                      // transformOrigin: 'center center',
-                    },
-                    // Customize the text
-                    text: {
-                      // Text color
-                      fill: 'var(--white)',
-                      // Text size
-                      fontSize: '12px',
-                      fontWeight: 'bold'
-                    },
-                    // Customize background - only used when the `background` prop is true
-                    background: {
-                      fill: '#3e98c7'
-                    }
-                  }}
-                />
-              </div>
-              <div className={styles['container__summary-card-info']}>
-                <p className={styles['container__summary-title']}>Your income</p>
-                <p
-                  className={styles['container__summary-description']}
-                >{`${income} of ${expectedIncome}`}</p>
-              </div>
-            </div>
-
             <div className={styles['container__summary-card']}>
               <div className={styles['container__summary-progress-bar']}>
                 <CircularProgressbar
@@ -186,9 +225,63 @@ const Add = ({ spending, income, expectedIncome, expectedSpending, updateBudget 
                 <p className={styles['container__summary-title']}>Your spending</p>
                 <p
                   className={styles['container__summary-description']}
-                >{`${spending} of ${expectedSpending}`}</p>
+                >{`${currencyFormat(spending)} of ${currencyFormat(expectedSpending)}`}</p>
               </div>
             </div>
+            <div className={styles['container__summary-card']}>
+              <div className={styles['container__summary-progress-bar']}>
+                <CircularProgressbar
+                  strokeWidth={12}
+                  value={incomePercentage}
+                  text={`${incomePercentage}%`}
+                  styles={{
+                    // Customize the root svg element
+                    root: {},
+                    // Customize the path, i.e. the "completed progress"
+                    path: {
+                      // Path color
+                      stroke: 'var(--green)',
+                      // Whether to use rounded or flat corners on the ends - can use 'butt' or 'round'
+                      // strokeLinecap: 'butt',
+                      // Customize transition animation
+                      transition: 'stroke-dashoffset 0.5s ease 0s'
+                      // Rotate the path
+                      // transform: 'rotate(0.25turn)',
+                      // transformOrigin: 'center center',
+                    },
+                    // Customize the circle behind the path, i.e. the "total progress"
+                    trail: {
+                      // Trail color
+                      stroke: '#C4C4C4',
+                      // Whether to use rounded or flat corners on the ends - can use 'butt' or 'round'
+                      strokeLinecap: 'butt'
+                      // Rotate the trail
+                      // transform: 'rotate(0.25turn)',
+                      // transformOrigin: 'center center',
+                    },
+                    // Customize the text
+                    text: {
+                      // Text color
+                      fill: 'var(--white)',
+                      // Text size
+                      fontSize: '12px',
+                      fontWeight: 'bold'
+                    },
+                    // Customize background - only used when the `background` prop is true
+                    background: {
+                      fill: '#3e98c7'
+                    }
+                  }}
+                />
+              </div>
+              <div className={styles['container__summary-card-info']}>
+                <p className={styles['container__summary-title']}>Your income</p>
+                <p
+                  className={styles['container__summary-description']}
+                >{`${currencyFormat(income)} of ${currencyFormat(expectedIncome)}`}</p>
+              </div>
+            </div>
+
             <button type='button' onClick={() => router.push('/add')} className='app-button'>
               +
             </button>

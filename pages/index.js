@@ -1,6 +1,7 @@
 /* eslint-disable multiline-ternary */
 import { useRouter } from 'next/router'
 import { connect } from 'react-redux'
+import currencyFormat from 'utils/currencyFormat'
 
 import Layout from '../components/Layout/Layout'
 
@@ -16,7 +17,7 @@ const Home = ({ user, totalBalance, expenses, income, transactionList }) => {
 
       <div className={styles.card}>
         <p className={styles.card__label}>Total Balance</p>
-        <h3 className={styles.card__balance}>{totalBalance.toFixed(2)}</h3>
+        <h3 className={styles.card__balance}>{currencyFormat(totalBalance.toFixed(2))}</h3>
 
         <div className={styles.resume}>
           <div className={styles.resume__expenses}>
@@ -28,7 +29,7 @@ const Home = ({ user, totalBalance, expenses, income, transactionList }) => {
               />
             </svg>
             <div>
-              <p className={styles.resume__amount}>{expenses}</p>
+              <p className={styles.resume__amount}>{currencyFormat(expenses)}</p>
             </div>
           </div>
           <div className={styles.resume__income}>
@@ -40,7 +41,7 @@ const Home = ({ user, totalBalance, expenses, income, transactionList }) => {
               />
             </svg>
             <div>
-              <p className={styles.resume__amount}>{income}</p>
+              <p className={styles.resume__amount}>{currencyFormat(income)}</p>
             </div>
           </div>
         </div>
@@ -52,7 +53,7 @@ const Home = ({ user, totalBalance, expenses, income, transactionList }) => {
           {/* <p className={styles['transactions__view-all']}>View all</p> */}
         </div>
 
-        {!transactionList.length && <p>Start adding transactions</p>}
+        {!transactionList.length && <p>Go to your budget and setup you income and outcome, then add a transaction</p>}
 
         {transactionList.map((transaction, index) => {
           return (
@@ -83,7 +84,7 @@ const Home = ({ user, totalBalance, expenses, income, transactionList }) => {
                 className={styles.transaction__amount}
                 style={{ color: transaction.amount > 0 ? 'var(--green)' : 'var(--red)' }}
               >
-                {transaction.amount}
+                {currencyFormat(transaction.amount)}
               </p>
             </div>
           )

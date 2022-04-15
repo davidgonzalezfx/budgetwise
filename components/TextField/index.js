@@ -1,4 +1,4 @@
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
 
 import classNames from 'classnames'
 import styles from './TextField.module.scss'
@@ -9,6 +9,10 @@ const TextField = (
 ) => {
   const [errorState, setErrorState] = useState(error)
   const [focussed, setFocussed] = useState(isLocked && isFocussed)
+
+  useEffect(() => {
+    setErrorState(error)
+  }, [error])
 
   const handleChange = (event) => {
     const value = event.target.value
@@ -37,7 +41,7 @@ const TextField = (
         onBlur={() => !isLocked && setFocussed(false)}
       />
       <label htmlFor={id} className={errorState && styles.error}>
-        {error || label}
+        {errorState || label}
       </label>
     </div>
   )

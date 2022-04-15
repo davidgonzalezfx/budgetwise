@@ -1,7 +1,7 @@
 .container {
   padding: unset;
   overflow: auto;
-  scrollbar-width: 0; /* Firefox */
+  scrollbar-width: none; /* Firefox */
 
   &::-webkit-scrollbar {
     display: none;
@@ -36,7 +36,7 @@
     flex-direction: column;
     margin-top: 100px;
     min-height: 75vh;
-    padding: 24px 24px 120px;
+    padding: 24px 24px 92px;
 
     &-image {
       margin-bottom: 24px;

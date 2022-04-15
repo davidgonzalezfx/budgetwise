@@ -1,3 +1,4 @@
+/* eslint-disable no-useless-escape */
 import { useState } from 'react'
 import { useRouter } from 'next/router'
 import { connect } from 'react-redux'
@@ -8,12 +9,13 @@ import TextField from 'components/TextField'
 import TransactionsActions from 'redux/Transactions'
 
 import styles from './add.module.scss'
+import currencyFormat from 'utils/currencyFormat'
 
 const Add = ({ addTransaction }) => {
   const router = useRouter()
   const [type, setType] = useState('-')
   const [title, setTitle] = useState('')
-  const [amount, setAmount] = useState('')
+  const [amount, setAmount] = useState(0)
   const [date, setDate] = useState(new Date(Date.now() - 18000000).toISOString().slice(0, 16))
 
   const toggleType = (e, value) => {
@@ -82,11 +84,11 @@ const Add = ({ addTransaction }) => {
           />
         </div>
         <TextField
-          value={amount}
+          value={currencyFormat(amount) || ''}
           id='amount'
           label='Amount'
           type='tel'
-          onChange={(value) => setAmount(value.replace(/-/g, ''))}
+          onChange={(value) => setAmount(+value.replace(/[\.,']/g, ''))}
         />
         <TextField
           value={date}

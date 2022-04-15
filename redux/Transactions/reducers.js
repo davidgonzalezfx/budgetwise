@@ -1,5 +1,6 @@
 import { createReducer } from '@reduxjs/toolkit'
 import TransactionsTypes from './actionTypes'
+import UserActionTypes from '../User/actionTypes'
 
 /* ----------- Initial State ----------- */
 export const TRANSACTIONS_INITIAL_STATE = {
@@ -7,8 +8,8 @@ export const TRANSACTIONS_INITIAL_STATE = {
   loading: false,
   error: null,
   totalBalance: 0,
-  expectedIncome: 10,
-  expectedSpending: 10,
+  expectedIncome: 1000,
+  expectedSpending: 1000,
   expenses: 0,
   income: 0
 }
@@ -75,16 +76,30 @@ const updateBudgetRequest = (state) => ({
   ...state,
   loading: true
 })
-const updateBudgetSuccess = (state, { payload }) => ({
-  ...state,
-  loading: false,
-  error: null,
-  ...payload
-})
+const updateBudgetSuccess = (state, { payload }) => {
+  return {
+    ...state,
+    loading: false,
+    error: null,
+    ...payload
+  }
+}
 const updateBudgetFailure = (state, { payload }) => ({
   ...state,
   loading: false,
   error: payload
+})
+
+const resetTransactionList = (state) => ({
+  ...state,
+  data: [],
+  loading: false,
+  error: null,
+  totalBalance: 0,
+  expectedIncome: 1000,
+  expectedSpending: 1000,
+  expenses: 0,
+  income: 0
 })
 
 /* ----------- Hookup Reducer to Types ----------- */
@@ -99,5 +114,9 @@ export const TransactionsReducer = createReducer(TRANSACTIONS_INITIAL_STATE, {
 
   [TransactionsTypes.updateBudgetRequest]: updateBudgetRequest,
   [TransactionsTypes.updateBudgetSuccess]: updateBudgetSuccess,
-  [TransactionsTypes.updateBudgetFailure]: updateBudgetFailure
+  [TransactionsTypes.updateBudgetFailure]: updateBudgetFailure,
+
+  [UserActionTypes.userLoginRequest]: resetTransactionList,
+  [UserActionTypes.userRegisterRequest]: resetTransactionList,
+  [UserActionTypes.userLogoutRequest]: resetTransactionList
 })

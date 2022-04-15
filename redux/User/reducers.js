@@ -38,6 +38,20 @@ const userLoginFailure = (state, { payload }) => {
   }
 }
 
+const userRegisterFailure = (state, { payload }) => {
+  let msg = 'Something went wrong'
+
+  if (payload.code === 'auth/email-already-in-use') {
+    msg = 'Email already in use'
+  }
+
+  return {
+    ...state,
+    error: msg,
+    loading: false
+  }
+}
+
 const userLogoutRequest = (state) => ({
   ...state,
   loading: true
@@ -46,7 +60,8 @@ const userLogoutSuccess = (state) => ({
   ...state,
   data: {},
   isLoggedIn: false,
-  loading: false
+  loading: false,
+  error: null
 })
 const userLogoutFailure = (state) => ({
   ...state,
@@ -59,6 +74,9 @@ export const UserReducer = createReducer(USER_INITIAL_STATE, {
   [UserTypes.userLoginRequest]: userLoginRequest,
   [UserTypes.userLoginSuccess]: userLoginSuccess,
   [UserTypes.userLoginFailure]: userLoginFailure,
+
+  [UserTypes.userRegisterFailure]: userRegisterFailure,
+
   [UserTypes.userLogoutRequest]: userLogoutRequest,
   [UserTypes.userLogoutSuccess]: userLogoutSuccess,
   [UserTypes.userLogoutFailure]: userLogoutFailure
