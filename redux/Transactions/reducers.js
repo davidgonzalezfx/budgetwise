@@ -9,7 +9,7 @@ export const TRANSACTIONS_INITIAL_STATE = {
   error: null,
   totalBalance: 0,
   expectedIncome: 1000,
-  expectedSpending: 1000,
+  expectedExpense: 1000,
   expenses: 0,
   income: 0
 }
@@ -155,7 +155,7 @@ const resetTransactionList = (state) => ({
   error: null,
   totalBalance: 0,
   expectedIncome: 1000,
-  expectedSpending: 1000,
+  expectedExpense: 1000,
   expenses: 0,
   income: 0
 })

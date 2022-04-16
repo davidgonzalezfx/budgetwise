@@ -14,11 +14,18 @@ import currencyFormat from 'utils/currencyFormat'
 import styles from './budget.module.scss'
 import 'react-circular-progressbar/dist/styles.css'
 
-const Add = ({ spending, income, expectedIncome, expectedSpending, updateBudget, suggestions }) => {
+const Budget = ({
+  expenses,
+  income,
+  expectedIncome,
+  expectedExpense,
+  updateBudget,
+  suggestions
+}) => {
   const router = useRouter()
   const [isSettingsOpen, setIsSettingsOpen] = useState(false)
   const [incomeValue, setIncomeValue] = useState(expectedIncome)
-  const [spendingValue, setSpendingValue] = useState(expectedSpending)
+  const [expenseValue, setExpenseValue] = useState(expectedExpense)
   const [budgetOpen, setBudgetOpen] = useState(false)
   const [suggestionsOpen, setSuggestions] = useState(true)
   const [categoriesOpen, setCategoriesOpen] = useState(false)
@@ -28,24 +35,24 @@ const Add = ({ spending, income, expectedIncome, expectedSpending, updateBudget,
   }, [expectedIncome])
 
   useEffect(() => {
-    setSpendingValue(expectedSpending)
-  }, [expectedSpending])
+    setExpenseValue(expectedExpense)
+  }, [expectedExpense])
 
   const setExpectedIncome = (value) => {
     setIncomeValue(value)
   }
 
-  const setExpectedSpending = (value) => {
-    setSpendingValue(value)
+  const setExpectedExpense = (value) => {
+    setExpenseValue(value)
   }
 
   const incomePercentage = useMemo(
     () => Math.round((income / expectedIncome) * 100) || 0,
     [income, expectedIncome]
   )
-  const spendingPercentage = useMemo(
-    () => Math.round((spending / expectedSpending) * 100) || 0,
-    [spending, expectedSpending]
+  const expensePercentage = useMemo(
+    () => Math.round((expenses / expectedExpense) * 100) || 0,
+    [expenses, expectedExpense]
   )
 
   const handleSubmit = (e) => {
@@ -56,10 +63,10 @@ const Add = ({ spending, income, expectedIncome, expectedSpending, updateBudget,
     if (element.id === 'income-btn') {
       if (value && /^[0-9.,']+$/.test(value)) updateBudget({ expectedIncome: value })
       else updateBudget({ expectedIncome: income })
-    } else if (element.id === 'spending-btn') {
+    } else if (element.id === 'expense-btn') {
       if (value && /^[0-9.,']+$/.test(value)) {
-        updateBudget({ expectedSpending: value })
-      } else updateBudget({ expectedSpending: spending })
+        updateBudget({ expectedExpense: value })
+      } else updateBudget({ expectedExpense: expenses })
     }
   }
 
@@ -115,17 +122,17 @@ const Add = ({ spending, income, expectedIncome, expectedSpending, updateBudget,
               {budgetOpen && (
                 <div className={styles.settings__budget}>
                   <div>
-                    <p>Spending</p>
+                    <p>Expense</p>
                     <form onSubmit={handleSubmit}>
                       <input
-                        id='spending-btn'
+                        id='expense-btn'
                         type='tel'
                         placeholder='$'
-                        value={currencyFormat(spendingValue) || ''}
+                        value={currencyFormat(expenseValue) || ''}
                         onBlur={handleSubmit}
                         onChange={(e) => {
                           const value = +e.target.value.replace(/[\.,']/g, '')
-                          setExpectedSpending(value)
+                          setExpectedExpense(value)
                         }}
                       />
                     </form>
@@ -176,7 +183,7 @@ const Add = ({ spending, income, expectedIncome, expectedSpending, updateBudget,
                                 <div key={item.name}>
                                   <p>{item.name}</p>
                                   <input
-                                    id='spending-btn'
+                                    id={`${item.name}-btn`}
                                     type='tel'
                                     placeholder='$'
                                     disabled
@@ -206,8 +213,8 @@ const Add = ({ spending, income, expectedIncome, expectedSpending, updateBudget,
               <div className={styles['container__summary-progress-bar']}>
                 <CircularProgressbar
                   strokeWidth={12}
-                  value={spendingPercentage}
-                  text={`${spendingPercentage}%`}
+                  value={expensePercentage}
+                  text={`${expensePercentage}%`}
                   styles={{
                     // Customize the root svg element
                     root: {},
@@ -249,10 +256,10 @@ const Add = ({ spending, income, expectedIncome, expectedSpending, updateBudget,
                 />
               </div>
               <div className={styles['container__summary-card-info']}>
-                <p className={styles['container__summary-title']}>Your spending</p>
+                <p className={styles['container__summary-title']}>Your expenses</p>
                 <p className={styles['container__summary-description']}>{`${currencyFormat(
-                  spending
-                )} of ${currencyFormat(expectedSpending)}`}</p>
+                  expenses
+                )} of ${currencyFormat(expectedExpense)}`}</p>
               </div>
             </div>
             <div className={styles['container__summary-card']}>
@@ -320,10 +327,10 @@ const Add = ({ spending, income, expectedIncome, expectedSpending, updateBudget,
 }
 
 const mapStateToProps = ({ transactions }) => ({
-  spending: Math.abs(transactions.expenses),
+  expenses: Math.abs(transactions.expenses),
   income: transactions.income,
   expectedIncome: transactions.expectedIncome,
-  expectedSpending: transactions.expectedSpending,
+  expectedExpense: transactions.expectedExpense,
   suggestions: transactions.suggestions
 })
 
@@ -331,4 +338,4 @@ const mapDispathToProps = (dispatch) => ({
   updateBudget: (data) => dispatch(TransactionsActions.updateBudgetRequest(data))
 })
 
-export default connect(mapStateToProps, mapDispathToProps)(Add)
+export default connect(mapStateToProps, mapDispathToProps)(Budget)

@@ -148,7 +148,7 @@ const Calendar = () => {
             />
           </div>
           <div className={styles[`container__summary-card-info`]}>
-            <p className={styles[`container__summary-title`]}>Your spending</p>
+            <p className={styles[`container__summary-title`]}>Your expenses</p>
             <p className={styles[`container__summary-description`]}>$269.280 of $330.000</p>
           </div>
         </div>
