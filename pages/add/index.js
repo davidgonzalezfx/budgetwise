@@ -11,7 +11,7 @@ import TransactionsActions from 'redux/Transactions'
 import styles from './add.module.scss'
 import currencyFormat from 'utils/currencyFormat'
 
-const Add = ({ addTransaction }) => {
+const Add = ({ addTransaction, categories }) => {
   const router = useRouter()
   const [type, setType] = useState('-')
   const [title, setTitle] = useState('')
@@ -33,6 +33,7 @@ const Add = ({ addTransaction }) => {
     e.preventDefault()
     const data = {
       name: title,
+      category: type === '-' ? document.getElementsByTagName('select')[0].value : 'Income',
       amount: type === '-' ? -amount : amount,
       createdAt: new Date(date)
     }
@@ -57,7 +58,7 @@ const Add = ({ addTransaction }) => {
               fillRule='evenodd'
               clipRule='evenodd'
               d='M12.335 1c-.658 0-1.23.422-2.373 1.265L8.24 3.533c-.18.133-.27.2-.367.255-.097.056-.2.101-.405.19l-1.959.857c-1.302.569-1.953.853-2.282 1.423-.328.57-.25 1.275-.091 2.687l.238 2.125c.025.223.037.334.037.445 0 .112-.012.223-.037.446l-.238 2.124c-.158 1.413-.237 2.119.091 2.688.329.57.98.854 2.282 1.423l1.96.856c.204.09.307.135.404.19.096.056.187.123.367.256l1.72 1.268c1.144.843 1.716 1.265 2.374 1.265.657 0 1.23-.422 2.373-1.265l1.721-1.268c.18-.133.27-.2.367-.256.097-.055.2-.1.405-.19l1.959-.856c1.302-.569 1.953-.854 2.282-1.423.328-.57.25-1.275.09-2.688l-.237-2.124c-.025-.223-.038-.334-.038-.446 0-.111.013-.223.038-.445l.238-2.125c.158-1.412.237-2.118-.091-2.687-.33-.57-.98-.854-2.282-1.423l-1.96-.856c-.204-.09-.307-.135-.404-.19-.096-.057-.187-.123-.367-.256l-1.72-1.268C13.563 1.422 12.991 1 12.334 1Zm0 14.515a4 4 0 1 0 0-8 4 4 0 0 0 0 8Z'
-              fill='#fff'
+              fill='#0d0f12'
             />
           </svg>
         </button>
@@ -103,6 +104,13 @@ const Add = ({ addTransaction }) => {
           label='Category'
           onChange={(value) => setCategory(value)}
         /> */}
+        <select id='category' className={styles.form__category}>
+          {categories.map((category) => (
+            <option key={category.id} value={category.name}>
+              {category.name}
+            </option>
+          ))}
+        </select>
         <select id='account' name='account'>
           <option value='Wallet'>Wallet</option>
           <option value='BankAccount'>Bank Account</option>
@@ -131,8 +139,12 @@ const Add = ({ addTransaction }) => {
   )
 }
 
+const mapStateToProps = ({ transactions }) => ({
+  categories: transactions.categories
+})
+
 const mapDispatchToProps = (dispatch) => ({
   addTransaction: (data) => dispatch(TransactionsActions.transactionsAddRequest(data))
 })
 
-export default connect(null, mapDispatchToProps)(Add)
+export default connect(mapStateToProps, mapDispatchToProps)(Add)

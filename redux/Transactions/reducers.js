@@ -11,7 +11,73 @@ export const TRANSACTIONS_INITIAL_STATE = {
   expectedIncome: 1000,
   expectedExpense: 1000,
   expenses: 0,
-  income: 0
+  income: 0,
+  suggestions: [
+    {
+      name: 'prefered',
+      items: [
+        {
+          name: 'Lifestyle',
+          amount: 1000 * 0.5
+        },
+        {
+          name: 'Charity',
+          amount: 1000 * 0.1
+        },
+        {
+          name: 'Savings',
+          amount: 1000 * 0.1
+        },
+        {
+          name: 'Tithe',
+          amount: 1000 * 0.1
+        },
+        {
+          name: 'Investments',
+          amount: 1000 * 0.2
+        }
+      ]
+    },
+    {
+      name: 'hard',
+      items: [
+        {
+          name: 'Lifestyle',
+          amount: 1000 * 0.3
+        },
+        {
+          name: 'Debt',
+          amount: 1000 * 0.5
+        },
+        {
+          name: 'Savings',
+          amount: 1000 * 0.1
+        },
+        {
+          name: 'Investments',
+          amount: 1000 * 0.2
+        }
+      ]
+    }
+  ],
+  categories: [
+    {
+      name: 'Housing',
+      // icon: 'house',
+      id: 'housing',
+      amount: 0
+    },
+    {
+      name: 'Food',
+      id: 'food',
+      amount: 0
+    },
+    {
+      name: 'Other',
+      id: 'other',
+      amount: 0
+    }
+  ]
 }
 
 /* ----------- Reducers ----------- */
@@ -157,7 +223,9 @@ const resetTransactionList = (state) => ({
   expectedIncome: 1000,
   expectedExpense: 1000,
   expenses: 0,
-  income: 0
+  income: 0,
+  categories: TRANSACTIONS_INITIAL_STATE.categories,
+  suggestions: TRANSACTIONS_INITIAL_STATE.suggestions
 })
 
 /* ----------- Hookup Reducer to Types ----------- */
@@ -176,6 +244,7 @@ export const TransactionsReducer = createReducer(TRANSACTIONS_INITIAL_STATE, {
 
   [UserActionTypes.userLoginRequest]: resetTransactionList,
   [UserActionTypes.userRegisterRequest]: resetTransactionList,
+  [UserActionTypes.userLoginRequest]: resetTransactionList,
   [UserActionTypes.userLogoutRequest]: resetTransactionList,
 
   [TransactionsTypes.updateSuggestionsRequest]: updateSuggestions

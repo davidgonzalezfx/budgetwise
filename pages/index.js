@@ -79,6 +79,7 @@ const Home = ({ user, totalBalance, expenses, income, transactionList }) => {
               <div className={styles.transaction__info}>
                 <p className={styles.transaction__title}>{transaction.name}</p>
                 <p className={styles.transaction__date}>{transaction.createdAt}</p>
+                <p className={styles.transaction__date}>{transaction?.category}</p>
               </div>
               <p
                 className={styles.transaction__amount}

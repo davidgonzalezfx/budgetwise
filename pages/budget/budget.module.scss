@@ -1,9 +1,12 @@
 .container {
   color: var(--white);
-  // height: 100%;
-  overflow: auto;
-  // overflow: hidden;
   width: 100%;
+  overflow: scroll;
+  scrollbar-width: none; /* Firefox */
+
+  &::-webkit-scrollbar {
+    display: none;
+  }
 
   &__buttons {
     align-items: center;
@@ -29,29 +32,38 @@
     padding: 16px 24px 120px;
 
     &-card {
-      background-color: var(--dark);
       border-radius: 24px;
-      display: flex;
-      height: 108px;
-      margin: 16px 0;
-      padding: 16px;
+      margin: 16px 0 24px;
 
       &-info {
         display: flex;
-        flex-direction: column;
-        justify-content: center;
-      }
-    }
+        justify-content: space-between;
+        align-items: center;
 
-    &-progress-bar {
-      margin-right: 16px;
-      max-height: 70px;
-      max-width: 70px;
+        &--green {
+          display: flex;
+          justify-content: space-between;
+          align-items: center;
+          p {
+            color: var(--green) !important;
+            font-size: 10px !important;
+          }
+        }
+        &--red {
+          display: flex;
+          justify-content: space-between;
+          align-items: center;
+          p {
+            color: var(--red) !important;
+            font-size: 10px !important;
+          }
+        }
+      }
     }
 
     &-title {
       color: #8e8383;
-      font-size: 12px;
+      font-size: 16px;
       font-weight: bold;
       justify-self: flex-start;
       margin: 0 0 8px;
@@ -66,6 +78,27 @@
       margin: 0;
     }
   }
+
+  &__category {
+    margin-bottom: 48px;
+    & > div {
+      margin-bottom: 24px;
+    }
+    &__item {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      // margin: 0 auto;
+      width: 100%;
+      font-size: 12px;
+      // width: 95%;
+
+      p {
+        margin: 0 0 8px;
+      }
+    }
+  }
+  margin-bottom: 16px;
 }
 
 .card {
@@ -135,6 +168,19 @@
         font-weight: bold;
         width: auto;
       }
+    }
+
+    &__body {
+      display: flex;
+      flex-direction: column;
+      margin-top: 16px;
+    }
+
+    &__item {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      font-size: 12px;
     }
   }
 

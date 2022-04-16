@@ -4,10 +4,10 @@ import { useEffect, useMemo, useState } from 'react'
 import { connect } from 'react-redux'
 import { useRouter } from 'next/router'
 
+import ProgressBar from '@ramonak/react-progress-bar'
 import TransactionsActions from 'redux/Transactions'
 
 import Layout from 'components/Layout/Layout'
-import { CircularProgressbar } from 'react-circular-progressbar'
 
 import currencyFormat from 'utils/currencyFormat'
 
@@ -20,7 +20,9 @@ const Budget = ({
   expectedIncome,
   expectedExpense,
   updateBudget,
-  suggestions
+  suggestions,
+  categories,
+  list
 }) => {
   const router = useRouter()
   const [isSettingsOpen, setIsSettingsOpen] = useState(false)
@@ -68,6 +70,16 @@ const Budget = ({
         updateBudget({ expectedExpense: value })
       } else updateBudget({ expectedExpense: expenses })
     }
+  }
+
+  const setCategoryAmount = (category, amount) => {
+    const newCategories = categories.map((c) => {
+      if (c.name === category) {
+        return { ...c, amount }
+      }
+      return c
+    })
+    updateBudget({ categories: newCategories })
   }
 
   const toggleSettings = () => setIsSettingsOpen(!isSettingsOpen)
@@ -202,6 +214,23 @@ const Budget = ({
                         ))}
                       </div>
                     )}
+                    <div className={styles.settings__categories__body}>
+                      {categories?.map((category) => (
+                        <div key={category.name} className={styles.settings__categories__item}>
+                          <p>{category.name}</p>
+                          <input
+                            id={`${category.name}-input`}
+                            type='tel'
+                            placeholder='$'
+                            value={currencyFormat(category.amount)}
+                            onChange={(e) => {
+                              const value = +e.target.value.replace(/[\.,']/g, '')
+                              setCategoryAmount(category.name, value)
+                            }}
+                          />
+                        </div>
+                      ))}
+                    </div>
                   </div>
                 </>
               )}
@@ -210,109 +239,97 @@ const Budget = ({
         ) : (
           <>
             <div className={styles['container__summary-card']}>
-              <div className={styles['container__summary-progress-bar']}>
-                <CircularProgressbar
-                  strokeWidth={12}
-                  value={expensePercentage}
-                  text={`${expensePercentage}%`}
-                  styles={{
-                    // Customize the root svg element
-                    root: {},
-                    // Customize the path, i.e. the "completed progress"
-                    path: {
-                      // Path color
-                      stroke: 'var(--red)',
-                      // Whether to use rounded or flat corners on the ends - can use 'butt' or 'round'
-                      // strokeLinecap: 'butt',
-                      // Customize transition animation
-                      transition: 'stroke-dashoffset 0.5s ease 0s'
-                      // Rotate the path
-                      // transform: 'rotate(0.25turn)',
-                      // transformOrigin: 'center center',
-                    },
-                    // Customize the circle behind the path, i.e. the "total progress"
-                    trail: {
-                      // Trail color
-                      stroke: '#C4C4C4',
-                      // Whether to use rounded or flat corners on the ends - can use 'butt' or 'round'
-                      strokeLinecap: 'butt'
-                      // Rotate the trail
-                      // transform: 'rotate(0.25turn)',
-                      // transformOrigin: 'center center',
-                    },
-                    // Customize the text
-                    text: {
-                      // Text color
-                      fill: 'var(--white)',
-                      // Text size
-                      fontSize: '12px',
-                      fontWeight: 'bold'
-                    },
-                    // Customize background - only used when the `background` prop is true
-                    background: {
-                      fill: '#3e98c7'
-                    }
-                  }}
-                />
-              </div>
               <div className={styles['container__summary-card-info']}>
                 <p className={styles['container__summary-title']}>Your expenses</p>
                 <p className={styles['container__summary-description']}>{`${currencyFormat(
                   expenses
-                )} of ${currencyFormat(expectedExpense)}`}</p>
+                )}`}</p>
               </div>
-            </div>
-            <div className={styles['container__summary-card']}>
+              <div className={styles['container__summary-card-info--red']}>
+                <p className={styles['container__summary-title']}>{`${expensePercentage}%`}</p>
+                {/* <p className={styles['container__summary-description']}>
+                  {`${currencyFormat(100000)} left from ${currencyFormat(expectedExpense)}`}
+                </p> */}
+                <p className={styles['container__summary-description']}>
+                  {`${currencyFormat(expectedExpense)}`}
+                </p>
+              </div>
               <div className={styles['container__summary-progress-bar']}>
-                <CircularProgressbar
-                  strokeWidth={12}
-                  value={incomePercentage}
-                  text={`${incomePercentage}%`}
-                  styles={{
-                    // Customize the root svg element
-                    root: {},
-                    // Customize the path, i.e. the "completed progress"
-                    path: {
-                      // Path color
-                      stroke: 'var(--green)',
-                      // Whether to use rounded or flat corners on the ends - can use 'butt' or 'round'
-                      // strokeLinecap: 'butt',
-                      // Customize transition animation
-                      transition: 'stroke-dashoffset 0.5s ease 0s'
-                      // Rotate the path
-                      // transform: 'rotate(0.25turn)',
-                      // transformOrigin: 'center center',
-                    },
-                    // Customize the circle behind the path, i.e. the "total progress"
-                    trail: {
-                      // Trail color
-                      stroke: '#C4C4C4',
-                      // Whether to use rounded or flat corners on the ends - can use 'butt' or 'round'
-                      strokeLinecap: 'butt'
-                      // Rotate the trail
-                      // transform: 'rotate(0.25turn)',
-                      // transformOrigin: 'center center',
-                    },
-                    // Customize the text
-                    text: {
-                      // Text color
-                      fill: 'var(--white)',
-                      // Text size
-                      fontSize: '12px',
-                      fontWeight: 'bold'
-                    },
-                    // Customize background - only used when the `background` prop is true
-                    background: {
-                      fill: '#3e98c7'
-                    }
-                  }}
+                <ProgressBar
+                  completed={expensePercentage}
+                  height='4px'
+                  isLabelVisible={false}
+                  bgColor='var(--red)'
+                  width='100%'
                 />
               </div>
+            </div>
+            <div className={styles.container__category}>
+              {categories.map((category) => (
+                <div key={category.name}>
+                  <div className={styles.container__category__item}>
+                    <p>{category.name}</p>
+                    <p>{currencyFormat(category.amount)}</p>
+                  </div>
+                  <div
+                    className={`${styles.container__category__item} ${styles['container__summary-card-info--red']}`}
+                  >
+                    <p>{`${
+                      (
+                        list.reduce((acc, cnt) => {
+                          if (cnt.category === category.name) return acc + Math.abs(cnt.amount)
+                          else return acc
+                        }, 0) / category.amount
+                      ).toFixed(2) * 100 || 0
+                    }%`}</p>
+                    <p>
+                      {currencyFormat(
+                        list.reduce((acc, cnt) => {
+                          if (cnt.category === category.name) return acc + Math.abs(cnt.amount)
+                          else return acc
+                        }, 0)
+                      )}
+                    </p>
+                  </div>
+                  <ProgressBar
+                    completed={
+                      list.reduce((acc, cnt) => {
+                        if (cnt.category === category.name) return acc + Math.abs(cnt.amount)
+                        else return acc
+                      }, 0) / category.amount || 0
+                    }
+                    maxCompleted={1}
+                    height='4px'
+                    isLabelVisible={false}
+                    bgColor='var(--red)'
+                  />
+                </div>
+              ))}
+            </div>
+            <div className={styles['container__summary-card']}>
               <div className={styles['container__summary-card-info']}>
                 <p className={styles['container__summary-title']}>Your income</p>
                 <p className={styles['container__summary-description']}>{`${currencyFormat(
                   income
-                )} of ${currencyFormat(expectedIncome)}`}</p>
+                )}`}</p>
+              </div>
+              <div className={styles['container__summary-card-info--green']}>
+                <p className={styles['container__summary-title']}>{`${incomePercentage}%`}</p>
+                {/* <p className={styles['container__summary-description']}>
+                  {`${currencyFormat(100000)} over ${currencyFormat(expectedIncome)}`}
+                </p> */}
+                <p className={styles['container__summary-description']}>
+                  {`${currencyFormat(expectedIncome)}`}
+                </p>
+              </div>
+              <div className={styles['container__summary-progress-bar']}>
+                <ProgressBar
+                  completed={incomePercentage}
+                  height='4px'
+                  isLabelVisible={false}
+                  bgColor='var(--green)'
+                  width='100%'
+                />
               </div>
             </div>
 
@@ -331,7 +348,9 @@ const mapStateToProps = ({ transactions }) => ({
   income: transactions.income,
   expectedIncome: transactions.expectedIncome,
   expectedExpense: transactions.expectedExpense,
-  suggestions: transactions.suggestions
+  suggestions: transactions.suggestions,
+  categories: transactions.categories,
+  list: transactions.data
 })
 
 const mapDispathToProps = (dispatch) => ({
