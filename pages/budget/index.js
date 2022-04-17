@@ -12,7 +12,7 @@ import Layout from 'components/Layout/Layout'
 import currencyFormat from 'utils/currencyFormat'
 
 import styles from './budget.module.scss'
-import 'react-circular-progressbar/dist/styles.css'
+import 'node_modules/react-circular-progressbar/dist/styles.css'
 
 const Budget = ({
   expenses,
