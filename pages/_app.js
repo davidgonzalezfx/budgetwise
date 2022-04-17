@@ -3,6 +3,7 @@ import { useRouter } from 'next/router'
 import { useStore } from 'react-redux'
 import { PersistGate } from 'redux-persist/integration/react'
 import { wrapper } from '../redux'
+
 import '../styles/globals.scss'
 
 function MyApp({ Component, pageProps }) {
