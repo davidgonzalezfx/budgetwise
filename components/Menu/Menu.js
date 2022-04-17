@@ -1,10 +1,9 @@
-import React, { useEffect } from 'react'
+import React from 'react'
 import { useRouter } from 'next/router'
 
 const Menu = () => {
   const router = useRouter()
   const activeRoute = router.pathname
-
 
   const hanldeHome = () => router.push('/')
   const handleProfile = () => router.push('/profile')
