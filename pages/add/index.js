@@ -98,12 +98,6 @@ const Add = ({ addTransaction, categories }) => {
           type='datetime-local'
           onChange={(value) => setDate(value)}
         />
-        {/* <TextField
-          value={category}
-          id='categort'
-          label='Category'
-          onChange={(value) => setCategory(value)}
-        /> */}
         <select id='category' className={styles.form__category}>
           {categories.map((category) => (
             <option key={category.id} value={category.name}>
@@ -140,7 +134,7 @@ const Add = ({ addTransaction, categories }) => {
 }
 
 const mapStateToProps = ({ transactions }) => ({
-  categories: transactions.categories
+  categories: transactions.expense.categories
 })
 
 const mapDispatchToProps = (dispatch) => ({

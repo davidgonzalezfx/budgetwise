@@ -5,79 +5,81 @@ import UserActionTypes from '../User/actionTypes'
 /* ----------- Initial State ----------- */
 export const TRANSACTIONS_INITIAL_STATE = {
   data: [],
+  expense: {
+    actual: 0,
+    expected: 1000,
+    percentage: 0,
+    suggestions: [
+      {
+        name: 'prefered',
+        items: [
+          {
+            name: 'Lifestyle',
+            amount: 500
+          },
+          {
+            name: 'Charity',
+            amount: 100
+          },
+          {
+            name: 'Savings',
+            amount: 100
+          },
+          {
+            name: 'Tithe',
+            amount: 100
+          },
+          {
+            name: 'Investments',
+            amount: 100
+          }
+        ]
+      },
+      {
+        name: 'hard',
+        items: [
+          {
+            name: 'Lifestyle',
+            amount: 300
+          },
+          {
+            name: 'Debt',
+            amount: 500
+          },
+          {
+            name: 'Savings',
+            amount: 100
+          },
+          {
+            name: 'Investments',
+            amount: 100
+          }
+        ]
+      }
+    ],
+    categories: [
+      {
+        name: 'Housing',
+        id: 'housing',
+        amount: 500
+      },
+      {
+        name: 'Food',
+        id: 'food',
+        amount: 300
+      },
+      {
+        name: 'Other',
+        id: 'other',
+        amount: 200
+      }
+    ]
+  },
   loading: false,
   error: null,
   totalBalance: 0,
   expectedIncome: 1000,
-  expectedExpense: 1000,
-  expenses: 0,
-  income: 0,
-  suggestions: [
-    {
-      name: 'prefered',
-      items: [
-        {
-          name: 'Lifestyle',
-          amount: 1000 * 0.5
-        },
-        {
-          name: 'Charity',
-          amount: 1000 * 0.1
-        },
-        {
-          name: 'Savings',
-          amount: 1000 * 0.1
-        },
-        {
-          name: 'Tithe',
-          amount: 1000 * 0.1
-        },
-        {
-          name: 'Investments',
-          amount: 1000 * 0.2
-        }
-      ]
-    },
-    {
-      name: 'hard',
-      items: [
-        {
-          name: 'Lifestyle',
-          amount: 1000 * 0.3
-        },
-        {
-          name: 'Debt',
-          amount: 1000 * 0.5
-        },
-        {
-          name: 'Savings',
-          amount: 1000 * 0.1
-        },
-        {
-          name: 'Investments',
-          amount: 1000 * 0.2
-        }
-      ]
-    }
-  ],
-  categories: [
-    {
-      name: 'Housing',
-      // icon: 'house',
-      id: 'housing',
-      amount: 0
-    },
-    {
-      name: 'Food',
-      id: 'food',
-      amount: 0
-    },
-    {
-      name: 'Other',
-      id: 'other',
-      amount: 0
-    }
-  ]
+  income: 0
 }
 
 /* ----------- Reducers ----------- */
@@ -111,7 +113,10 @@ const transactionsSuccess = (state, { payload }) => {
     ...state,
     data: payload,
     totalBalance: totalBalance,
-    expenses,
+    expense: {
+      ...state.expense,
+      actual: expenses
+    },
     income,
     loading: false
   }
@@ -147,7 +152,11 @@ const updateBudgetSuccess = (state, { payload }) => {
     ...state,
     loading: false,
     error: null,
-    ...payload
+    expense: {
+      ...state.expense,
+      expected: payload.reduce((acc, category) => acc + category.amount, 0),
+      categories: payload
+    }
   }
 }
 const updateBudgetFailure = (state, { payload }) => ({
@@ -158,50 +167,53 @@ const updateBudgetFailure = (state, { payload }) => ({
 
 const updateSuggestions = (state) => {
   const suggestions = []
+  const expected = state.expense.expected
   const prefered = {
-    name: 'prefered',
+    name: 'Our favorite',
+    id: 1,
     items: [
       {
         name: 'Lifestyle',
-        amount: state.expectedIncome * 0.5
+        amount: expected * 0.5
       },
       {
         name: 'Charity',
-        amount: state.expectedIncome * 0.1
+        amount: expected * 0.1
       },
       {
         name: 'Savings',
-        amount: state.expectedIncome * 0.1
+        amount: expected * 0.1
       },
       {
         name: 'Tithe',
-        amount: state.expectedIncome * 0.1
+        amount: expected * 0.1
       },
       {
         name: 'Investments',
-        amount: state.expectedIncome * 0.2
+        amount: expected * 0.2
       }
     ]
   }
 
   const hard = {
-    name: 'hard',
+    name: 'Out of debt',
+    id: 2,
     items: [
       {
         name: 'Lifestyle',
-        amount: state.expectedIncome * 0.3
+        amount: expected * 0.3
       },
       {
         name: 'Debt',
-        amount: state.expectedIncome * 0.5
+        amount: expected * 0.5
       },
       {
         name: 'Savings',
-        amount: state.expectedIncome * 0.1
+        amount: expected * 0.1
       },
       {
         name: 'Investments',
-        amount: state.expectedIncome * 0.2
+        amount: expected * 0.2
       }
     ]
   }
@@ -210,23 +222,14 @@ const updateSuggestions = (state) => {
 
   return {
     ...state,
-    suggestions
+    expense: {
+      ...state.expense,
+      suggestions
+    }
   }
 }
 
-const resetTransactionList = (state) => ({
-  ...state,
-  data: [],
-  loading: false,
-  error: null,
-  totalBalance: 0,
-  expectedIncome: 1000,
-  expectedExpense: 1000,
-  expenses: 0,
-  income: 0,
-  categories: TRANSACTIONS_INITIAL_STATE.categories,
-  suggestions: TRANSACTIONS_INITIAL_STATE.suggestions
-})
+const resetTransactionList = () => TRANSACTIONS_INITIAL_STATE
 
 /* ----------- Hookup Reducer to Types ----------- */
 export const TransactionsReducer = createReducer(TRANSACTIONS_INITIAL_STATE, {

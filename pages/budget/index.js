@@ -28,8 +28,7 @@ const Budget = ({
   const [incomeValue, setIncomeValue] = useState(expectedIncome)
   const [expenseValue, setExpenseValue] = useState(expectedExpense)
   const [budgetOpen, setBudgetOpen] = useState(false)
-  const [suggestionsOpen, setSuggestions] = useState(true)
-  const [categoriesOpen, setCategoriesOpen] = useState(false)
+  const [suggestionsOpen, setSuggestionsOpen] = useState(true)
 
   useEffect(() => {
     setIncomeValue(expectedIncome)
@@ -56,19 +55,25 @@ const Budget = ({
     [expenses, expectedExpense]
   )
 
-  const handleSubmit = (e) => {
-    e.preventDefault()
-    const element = e.target[0] || e.target
-    const value = +element.value.replace(/[\.,']/g, '')
-    document.getElementById(element.id).blur()
-    if (element.id === 'income-btn') {
-      if (value && /^[0-9.,']+$/.test(value)) updateBudget({ expectedIncome: value })
-      else updateBudget({ expectedIncome: income })
-    } else if (element.id === 'expense-btn') {
-      if (value && /^[0-9.,']+$/.test(value)) {
-        updateBudget({ expectedExpense: value })
-      } else updateBudget({ expectedExpense: expenses })
-    }
+  // const handleSubmit = (e) => {
+  //   e.preventDefault()
+  //   const element = e.target[0] || e.target
+  //   const value = +element.value.replace(/[\.,']/g, '')
+  //   document.getElementById(element.id).blur()
+  //   if (element.id === 'income-btn') {
+  //     if (value && /^[0-9.,']+$/.test(value)) updateBudget({ expectedIncome: value })
+  //     else updateBudget({ expectedIncome: income })
+  //   } else if (element.id === 'expense-btn') {
+  //     if (value && /^[0-9.,']+$/.test(value)) {
+  //       updateBudget({ expectedExpense: value })
+  //     } else updateBudget({ expectedExpense: expenses })
+  //   }
+  // }
+
+  const handleChoose = (id) => {
+    setSuggestionsOpen(false)
+    const suggestionSelected = suggestions.find((item) => item.id === id)
+    updateBudget(suggestionSelected.items)
   }
 
   const setCategoryAmount = (category, amount) => {
@@ -78,7 +83,7 @@ const Budget = ({
       }
       return c
     })
-    updateBudget({ categories: newCategories })
+    updateBudget(newCategories)
   }
 
   const toggleSettings = () => setIsSettingsOpen(!isSettingsOpen)
@@ -132,87 +137,18 @@ const Budget = ({
               </button>
               {budgetOpen && (
                 <div className={styles.settings__budget}>
-                  <div>
-                    <p>Expense</p>
-                    <form onSubmit={handleSubmit}>
+                  <div className={styles.settings__budget__expense}>
+                    <div className={styles.settings__budget__header}>
+                      <p>Expense</p>
+
                       <input
                         id='expense-btn'
                         type='tel'
                         placeholder='$'
                         value={currencyFormat(expenseValue) || ''}
-                        onBlur={handleSubmit}
-                        onChange={(e) => {
-                          const value = +e.target.value.replace(/[\.,']/g, '')
-                          setExpectedExpense(value)
-                        }}
+                        disabled
                       />
-                    </form>
-                  </div>
-                  <div>
-                    <p>Income</p>
-                    <form onSubmit={handleSubmit}>
-                      <input
-                        id='income-btn'
-                        type='tel'
-                        placeholder='$'
-                        value={currencyFormat(incomeValue) || ''}
-                        onBlur={handleSubmit}
-                        onChange={(e) => {
-                          const value = +e.target.value.replace(/[\.,']/g, '')
-                          setExpectedIncome(value)
-                        }}
-                      />
-                    </form>
-                  </div>
-                </div>
-              )}
-            </div>
-            <div className={styles.card}>
-              <button onClick={() => setCategoriesOpen(!categoriesOpen)}>
-                <div className={styles.card__header}>
-                  Categories
-                  <svg width={24} height={24} fill='none' xmlns='http://www.w3.org/2000/svg'>
-                    <path d='M7.41 8.59 12 13.17l4.59-4.58L18 10l-6 6-6-6 1.41-1.41Z' fill='#fff' />
-                  </svg>
-                </div>
-              </button>
-              {categoriesOpen && (
-                <>
-                  <div className={styles.settings__categories}>
-                    <div className={styles.settings__categories__header}>
-                      <p style={{ fontSize: '12px', flex: '1' }}>Explore our suggestions:</p>
-                      <button onClick={() => setSuggestions(!suggestionsOpen)}>
-                        {suggestionsOpen ? 'Hide' : 'Show'}
-                      </button>
                     </div>
-                    {suggestionsOpen && (
-                      <div className={styles.settings__suggestions}>
-                        {suggestions.map((suggestion) => (
-                          <div key={suggestion.name} className={styles.settings__suggestion}>
-                            <div>
-                              {suggestion.items.map((item) => (
-                                <div key={item.name}>
-                                  <p>{item.name}</p>
-                                  <input
-                                    id={`${item.name}-btn`}
-                                    type='tel'
-                                    placeholder='$'
-                                    disabled
-                                    value={currencyFormat(item.amount)}
-                                  />
-                                </div>
-                              ))}
-                            </div>
-                            <div>
-                              <p style={{ fontSize: '8px' }}>
-                                *Lifestyle: housing, utilities, transportation, food, etc.
-                              </p>
-                              <button>Choose</button>
-                            </div>
-                          </div>
-                        ))}
-                      </div>
-                    )}
                     <div className={styles.settings__categories__body}>
                       {categories?.map((category) => (
                         <div key={category.name} className={styles.settings__categories__item}>
@@ -230,6 +166,83 @@ const Budget = ({
                         </div>
                       ))}
                     </div>
+                  </div>
+                  <div className={styles.settings__budget__income}>
+                    <div className={styles.settings__budget__header}>
+                      <p>Income</p>
+
+                      <input
+                        id='income-btn'
+                        type='tel'
+                        placeholder='$'
+                        value={currencyFormat(incomeValue) || ''}
+                        disabled
+                      />
+                    </div>
+                    <div className={styles.settings__categories__body}>
+                      {categories?.map((category) => (
+                        <div key={category.name} className={styles.settings__categories__item}>
+                          <p>{category.name}</p>
+                          <input
+                            id={`${category.name}-input`}
+                            type='tel'
+                            placeholder='$'
+                            value={currencyFormat(category.amount)}
+                            onChange={(e) => {
+                              const value = +e.target.value.replace(/[\.,']/g, '')
+                              setCategoryAmount(category.name, value)
+                            }}
+                          />
+                        </div>
+                      ))}
+                    </div>
+                  </div>
+                </div>
+              )}
+            </div>
+            <div className={styles.card}>
+              <button onClick={() => setSuggestionsOpen(!suggestionsOpen)}>
+                <div className={styles.card__header}>
+                  Explore our suggestions
+                  <svg width={24} height={24} fill='none' xmlns='http://www.w3.org/2000/svg'>
+                    <path d='M7.41 8.59 12 13.17l4.59-4.58L18 10l-6 6-6-6 1.41-1.41Z' fill='#fff' />
+                  </svg>
+                </div>
+              </button>
+              {suggestionsOpen && (
+                <>
+                  <div className={styles.settings__categories}>
+                    {suggestionsOpen && (
+                      <div className={styles.settings__suggestions}>
+                        {suggestions.map((suggestion) => (
+                          <div key={suggestion.name} className={styles.settings__suggestion}>
+                            <div>
+                              <p style={{ fontSize: '12px' }}>{suggestion.name}</p>
+                              {suggestion.items.map((item) => (
+                                <div key={item.name}>
+                                  <p>{item.name}</p>
+                                  <input
+                                    id={`${item.name}-btn`}
+                                    type='tel'
+                                    placeholder='$'
+                                    disabled
+                                    value={currencyFormat(item.amount)}
+                                  />
+                                </div>
+                              ))}
+                            </div>
+                            <div>
+                              <p style={{ fontSize: '8px' }}>
+                                *Lifestyle: housing, utilities, transportation, food, etc.
+                              </p>
+                              <button type='button' onClick={() => handleChoose(suggestion.id)}>
+                                Choose
+                              </button>
+                            </div>
+                          </div>
+                        ))}
+                      </div>
+                    )}
                   </div>
                 </>
               )}
@@ -343,12 +356,12 @@ const Budget = ({
 }
 
 const mapStateToProps = ({ transactions }) => ({
-  expenses: Math.abs(transactions.expenses),
+  expenses: Math.abs(transactions.expense.actual),
   income: transactions.income,
   expectedIncome: transactions.expectedIncome,
-  expectedExpense: transactions.expectedExpense,
-  suggestions: transactions.suggestions,
-  categories: transactions.categories,
+  expectedExpense: transactions.expense.expected,
+  suggestions: transactions.expense.suggestions,
+  categories: transactions.expense.categories,
   list: transactions.data
 })
 

@@ -53,7 +53,9 @@ const Home = ({ user, totalBalance, expenses, income, transactionList }) => {
           {/* <p className={styles['transactions__view-all']}>View all</p> */}
         </div>
 
-        {!transactionList.length && <p>Go to your budget and setup you income and outcome, then add a transaction</p>}
+        {!transactionList.length && (
+          <p>Go to your budget and setup you income and outcome, then add a transaction</p>
+        )}
 
         {transactionList.map((transaction, index) => {
           return (
@@ -102,7 +104,7 @@ const mapStateToProps = ({ transactions, user }) => {
   return {
     transactionList: transactions.data,
     totalBalance: transactions.totalBalance,
-    expenses: transactions.expenses,
+    expenses: transactions.expense.actual,
     income: transactions.income,
     user: user.data
   }
