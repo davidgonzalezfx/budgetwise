@@ -50,11 +50,9 @@ const Budget = ({
   )
 
   const handleChoose = (id) => {
-    setIsSettingsOpen(false)
-    setSuggestionsOpen(false)
-
     const suggestionSelected = expensesSuggestions.find((category) => category.id === id)
     updateBudget({ expenseCategories: suggestionSelected.items })
+    setIsSettingsOpen(false)
   }
 
   const setCategoryAmount = (type, category, amount) => {
