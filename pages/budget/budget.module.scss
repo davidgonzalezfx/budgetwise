@@ -226,6 +226,11 @@
     flex-direction: column;
     justify-content: space-between;
 
+    &__chart {
+      // max-width: 200px;
+      // max-height: 200px;
+    }
+
     > div > div {
       font-size: 12px;
       display: flex;

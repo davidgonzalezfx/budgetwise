@@ -4,6 +4,8 @@ import { useEffect, useMemo, useState } from 'react'
 import { connect } from 'react-redux'
 import { useRouter } from 'next/router'
 
+import { Chart as ChartJS, ArcElement, Tooltip, Legend } from 'chart.js'
+import { Pie } from 'react-chartjs-2'
 import ProgressBar from '@ramonak/react-progress-bar'
 import TransactionsActions from 'redux/Transactions'
 
@@ -12,6 +14,8 @@ import Layout from 'components/Layout/Layout'
 import currencyFormat from 'utils/currencyFormat'
 
 import styles from './budget.module.scss'
+
+ChartJS.register(ArcElement, Tooltip, Legend)
 
 const Budget = ({
   expenses,
@@ -52,7 +56,8 @@ const Budget = ({
   const handleChoose = (id) => {
     const suggestionSelected = expensesSuggestions.find((category) => category.id === id)
     updateBudget({ expenseCategories: suggestionSelected.items })
-    setIsSettingsOpen(false)
+    setSuggestionsOpen(false)
+    setBudgetOpen(true)
   }
 
   const setCategoryAmount = (type, category, amount) => {
@@ -208,18 +213,36 @@ const Budget = ({
                             <div key={suggestion.name} className={styles.settings__suggestion}>
                               <div>
                                 <p style={{ fontSize: '12px' }}>{suggestion.name}</p>
-                                {suggestion.items.map((item) => (
-                                  <div key={item.name}>
-                                    <p>{item.name}</p>
-                                    <input
-                                      id={`${item.name}-btn`}
-                                      type='tel'
-                                      placeholder='$'
-                                      disabled
-                                      value={currencyFormat(item.amount)}
-                                    />
-                                  </div>
-                                ))}
+                                <div className={styles.settings__suggestion__chart}>
+                                  <Pie
+                                    data={{
+                                      labels: suggestion.items.map((item) => item.name),
+                                      datasets: [
+                                        {
+                                          data: suggestion.items.map((item) => item.amount),
+                                          backgroundColor: [
+                                            'rgba(255, 194, 68, 0.8)',
+                                            'rgba(36, 99, 246, 0.8)',
+                                            'rgba(0, 192, 175, 0.8)',
+                                            'rgba(154, 206, 255, 0.8)',
+                                            'rgba(255, 149, 91, 0.8)',
+                                            'rgba(61, 209, 186, 0.8)'
+                                          ],
+                                          hoverBackgroundColor: [
+                                            'rgba(255, 194, 68, 0.9)',
+                                            'rgba(36, 99, 246, 0.9)',
+                                            'rgba(0, 192, 175, 0.9)',
+                                            'rgba(154, 206, 255, 0.9)',
+                                            'rgba(255, 149, 91, 0.9)',
+                                            'rgba(61, 209, 186, 0.9)'
+                                          ],
+                                          label: 'Expenses',
+                                          borderWidth: 0
+                                        }
+                                      ]
+                                    }}
+                                  />
+                                </div>
                               </div>
                               <div>
                                 <p style={{ fontSize: '8px' }}>

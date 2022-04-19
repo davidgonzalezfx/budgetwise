@@ -22,7 +22,7 @@ const Login = ({ isLoggedIn, loginError, userLoginRequest, userRegisterRequest }
 
   useEffect(() => {
     if (isLoggedIn) {
-      router.push('/')
+      router.push('/budget')
     }
   }, [isLoggedIn, router])
 
