@@ -11,7 +11,7 @@ import TransactionsActions from 'redux/Transactions'
 import styles from './add.module.scss'
 import currencyFormat from 'utils/currencyFormat'
 
-const Add = ({ addTransaction, categories }) => {
+const Add = ({ addTransaction, expenseCategories, incomeCategories }) => {
   const router = useRouter()
   const [type, setType] = useState('-')
   const [title, setTitle] = useState('')
@@ -33,7 +33,7 @@ const Add = ({ addTransaction, categories }) => {
     e.preventDefault()
     const data = {
       name: title,
-      category: type === '-' ? document.getElementsByTagName('select')[0].value : 'Income',
+      category: document.getElementsByTagName('select')[0].value,
       amount: type === '-' ? -amount : amount,
       createdAt: new Date(date)
     }
@@ -99,11 +99,17 @@ const Add = ({ addTransaction, categories }) => {
           onChange={(value) => setDate(value)}
         />
         <select id='category' className={styles.form__category}>
-          {categories.map((category) => (
-            <option key={category.id} value={category.name}>
-              {category.name}
-            </option>
-          ))}
+          {type === '-'
+            ? expenseCategories.map((category) => (
+                <option key={category.id} value={category.name}>
+                  {category.name}
+                </option>
+            ))
+            : incomeCategories.map((category) => (
+                <option key={category.id} value={category.name}>
+                  {category.name}
+                </option>
+            ))}
         </select>
         <select id='account' name='account'>
           <option value='Wallet'>Wallet</option>
@@ -134,7 +140,8 @@ const Add = ({ addTransaction, categories }) => {
 }
 
 const mapStateToProps = ({ transactions }) => ({
-  categories: transactions.expense.categories
+  expenseCategories: transactions.expense.categories,
+  incomeCategories: transactions.income.categories
 })
 
 const mapDispatchToProps = (dispatch) => ({

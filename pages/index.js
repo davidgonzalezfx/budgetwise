@@ -105,7 +105,7 @@ const mapStateToProps = ({ transactions, user }) => {
     transactionList: transactions.data,
     totalBalance: transactions.totalBalance,
     expenses: transactions.expense.actual,
-    income: transactions.income,
+    income: transactions.income.actual,
     user: user.data
   }
 }

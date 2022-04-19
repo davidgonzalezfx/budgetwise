@@ -11,7 +11,7 @@ export const TRANSACTIONS_INITIAL_STATE = {
     percentage: 0,
     suggestions: [
       {
-        name: 'prefered',
+        name: 'Our favorite',
         items: [
           {
             name: 'Lifestyle',
@@ -36,7 +36,7 @@ export const TRANSACTIONS_INITIAL_STATE = {
         ]
       },
       {
-        name: 'hard',
+        name: 'Out of debt',
         items: [
           {
             name: 'Lifestyle',
@@ -79,42 +79,6 @@ export const TRANSACTIONS_INITIAL_STATE = {
     actual: 0,
     expected: 1000,
     percentage: 0,
-    suggestions: [
-      {
-        name: 'Young',
-        items: [
-          {
-            name: 'Job',
-            amount: 1000
-          },
-          {
-            name: 'Online Business',
-            amount: 300
-          }
-        ]
-      },
-      {
-        name: 'Investor',
-        items: [
-          {
-            name: 'Job',
-            amount: 2000
-          },
-          {
-            name: 'Real State',
-            amount: 1500
-          },
-          {
-            name: 'Stocks',
-            amount: 300
-          },
-          {
-            name: 'Online Business',
-            amount: 200
-          }
-        ]
-      }
-    ],
     categories: [
       {
         name: 'Job',
@@ -232,30 +196,30 @@ const updateBudgetFailure = (state, { payload }) => ({
 
 const updateSuggestions = (state) => {
   const suggestions = []
-  const expected = state.expense.expected
+  const income = state.income.expected
   const prefered = {
     name: 'Our favorite',
     id: 1,
     items: [
       {
         name: 'Lifestyle',
-        amount: expected * 0.5
+        amount: income * 0.5
       },
       {
         name: 'Charity',
-        amount: expected * 0.1
+        amount: income * 0.1
       },
       {
         name: 'Savings',
-        amount: expected * 0.1
+        amount: income * 0.1
       },
       {
         name: 'Tithe',
-        amount: expected * 0.1
+        amount: income * 0.1
       },
       {
         name: 'Investments',
-        amount: expected * 0.2
+        amount: income * 0.2
       }
     ]
   }
@@ -266,19 +230,19 @@ const updateSuggestions = (state) => {
     items: [
       {
         name: 'Lifestyle',
-        amount: expected * 0.3
+        amount: income * 0.3
       },
       {
         name: 'Debt',
-        amount: expected * 0.5
+        amount: income * 0.5
       },
       {
         name: 'Savings',
-        amount: expected * 0.1
+        amount: income * 0.1
       },
       {
         name: 'Investments',
-        amount: expected * 0.2
+        amount: income * 0.2
       }
     ]
   }

@@ -16,6 +16,7 @@ const Profile = ({ user, userLogoutRequest }) => {
   }
 
   const handleLogout = () => {
+    router.push('/login')
     userLogoutRequest()
   }
 

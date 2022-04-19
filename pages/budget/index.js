@@ -20,7 +20,7 @@ const Budget = ({
   expectedExpense,
   updateBudget,
   expensesSuggestions,
-  incomeSuggestions,
+
   expenseCategories,
   incomeCategories,
   list
@@ -40,47 +40,21 @@ const Budget = ({
     setExpenseValue(expectedExpense)
   }, [expectedExpense])
 
-  const setExpectedIncome = (value) => {
-    setIncomeValue(value)
-  }
-
-  const setExpectedExpense = (value) => {
-    setExpenseValue(value)
-  }
-
   const incomePercentage = useMemo(
-    () => Math.round((income / expectedIncome) * 100) || 0,
+    () => Math.round((income / expectedIncome) * 100).toFixed(0) || 0,
     [income, expectedIncome]
   )
   const expensePercentage = useMemo(
-    () => Math.round((expenses / expectedExpense) * 100) || 0,
+    () => Math.round((expenses / expectedExpense) * 100).toFixed(0) || 0,
     [expenses, expectedExpense]
   )
 
-  // const handleSubmit = (e) => {
-  //   e.preventDefault()
-  //   const element = e.target[0] || e.target
-  //   const value = +element.value.replace(/[\.,']/g, '')
-  //   document.getElementById(element.id).blur()
-  //   if (element.id === 'income-btn') {
-  //     if (value && /^[0-9.,']+$/.test(value)) updateBudget({ expectedIncome: value })
-  //     else updateBudget({ expectedIncome: income })
-  //   } else if (element.id === 'expense-btn') {
-  //     if (value && /^[0-9.,']+$/.test(value)) {
-  //       updateBudget({ expectedExpense: value })
-  //     } else updateBudget({ expectedExpense: expenses })
-  //   }
-  // }
-
-  const handleChoose = (type, id) => {
+  const handleChoose = (id) => {
+    setIsSettingsOpen(false)
     setSuggestionsOpen(false)
-    if (type === 'expenses') {
-      const suggestionSelected = expensesSuggestions.find((category) => category.id === id)
-      updateBudget({ expenseCategories: suggestionSelected.items })
-    } else if (type === 'income') {
-      const suggestionSelected = incomeSuggestions.find((category) => category.id === id)
-      updateBudget({ incomeCategories: suggestionSelected.items })
-    }
+
+    const suggestionSelected = expensesSuggestions.find((category) => category.id === id)
+    updateBudget({ expenseCategories: suggestionSelected.items })
   }
 
   const setCategoryAmount = (type, category, amount) => {
@@ -120,7 +94,7 @@ const Budget = ({
           </svg>
         </button>
         <p className={styles['container__buttons-text']}>{`Budget ${
-          isSettingsOpen ? 'settings' : 'resume'
+          isSettingsOpen ? 'settings' : 'summary'
         }`}</p>
         <button type='button' onClick={toggleSettings}>
           <svg width={24} height={24} fill='none' xmlns='http://www.w3.org/2000/svg'>
@@ -231,7 +205,6 @@ const Budget = ({
                   <div className={styles.settings__categories}>
                     {suggestionsOpen && (
                       <>
-                        <p>For your expenses</p>
                         <div className={styles.settings__suggestions}>
                           {expensesSuggestions.map((suggestion) => (
                             <div key={suggestion.name} className={styles.settings__suggestion}>
@@ -254,43 +227,7 @@ const Budget = ({
                                 <p style={{ fontSize: '8px' }}>
                                   *Lifestyle: housing, utilities, transportation, food, etc.
                                 </p>
-                                <button
-                                  type='button'
-                                  onClick={() => handleChoose('expenses', suggestion.id)}
-                                >
-                                  Choose
-                                </button>
-                              </div>
-                            </div>
-                          ))}
-                        </div>
-                        <p>For your income</p>
-                        <div className={styles.settings__suggestions}>
-                          {incomeSuggestions.map((suggestion) => (
-                            <div key={suggestion.name} className={styles.settings__suggestion}>
-                              <div>
-                                <p style={{ fontSize: '12px' }}>{suggestion.name}</p>
-                                {suggestion.items.map((item) => (
-                                  <div key={item.name}>
-                                    <p>{item.name}</p>
-                                    <input
-                                      id={`${item.name}-btn`}
-                                      type='tel'
-                                      placeholder='$'
-                                      disabled
-                                      value={currencyFormat(item.amount)}
-                                    />
-                                  </div>
-                                ))}
-                              </div>
-                              <div>
-                                <p style={{ fontSize: '8px' }}>
-                                  *Lifestyle: housing, utilities, transportation, food, etc.
-                                </p>
-                                <button
-                                  type='button'
-                                  onClick={() => handleChoose('income', suggestion.id)}
-                                >
+                                <button type='button' onClick={() => handleChoose(suggestion.id)}>
                                   Choose
                                 </button>
                               </div>
@@ -337,19 +274,6 @@ const Budget = ({
                 <div key={category.name}>
                   <div className={styles.container__category__item}>
                     <p>{category.name}</p>
-                    <p>{currencyFormat(category.amount)}</p>
-                  </div>
-                  <div
-                    className={`${styles.container__category__item} ${styles['container__summary-card-info--red']}`}
-                  >
-                    <p>{`${
-                      (
-                        list.reduce((acc, cnt) => {
-                          if (cnt.category === category.name) return acc + Math.abs(cnt.amount)
-                          else return acc
-                        }, 0) / category.amount
-                      ).toFixed(2) * 100 || 0
-                    }%`}</p>
                     <p>
                       {currencyFormat(
                         list.reduce((acc, cnt) => {
@@ -358,6 +282,21 @@ const Budget = ({
                         }, 0)
                       )}
                     </p>
+                  </div>
+                  <div
+                    className={`${styles.container__category__item} ${styles['container__summary-card-info--red']}`}
+                  >
+                    <p>{`${
+                      Math.round(
+                        (list.reduce((acc, cnt) => {
+                          if (cnt.category === category.name) return acc + Math.abs(cnt.amount)
+                          else return acc
+                        }, 0) /
+                          category.amount) *
+                          100
+                      ) || 0
+                    }%`}</p>
+                    <p>{currencyFormat(category.amount)}</p>
                   </div>
                   <ProgressBar
                     completed={
@@ -374,7 +313,7 @@ const Budget = ({
                 </div>
               ))}
             </div>
-            <div className={styles['container__summary-card']}>
+            <div className={styles['container__summary-card']} style={{ marginBottom: '48px' }}>
               <div className={styles['container__summary-card-info']}>
                 <p className={styles['container__summary-title']}>Your income</p>
                 <p className={styles['container__summary-description']}>{`${currencyFormat(
@@ -401,6 +340,51 @@ const Budget = ({
               </div>
             </div>
 
+            <div className={styles['container__summary-card']}>
+              <div className={styles['container__summary-card-info']}>
+                <p className={styles['container__summary-title']}>Net Earnings</p>
+                <p className={styles['container__summary-description']}>{`${currencyFormat(
+                  income - expenses
+                )}`}</p>
+              </div>
+              <div
+                className={
+                  (income - expenses) / (expectedIncome - expectedExpense || 1) > 0
+                    ? styles['container__summary-card-info--green']
+                    : styles['container__summary-card-info--red']
+                }
+              >
+                <p className={styles['container__summary-title']}>{`${
+                  Math.round(
+                    ((income - expenses) / (expectedIncome - expectedExpense || 1)) * 100
+                  ) || 0
+                }%`}</p>
+                <p className={styles['container__summary-description']}>
+                  {`${currencyFormat(expectedIncome - expectedExpense)}`}
+                </p>
+              </div>
+              <div className={styles['container__summary-progress-bar']}>
+                <ProgressBar
+                  completed={(income - expenses) / (expectedIncome - expectedExpense || 1)}
+                  height='4px'
+                  maxCompleted={1}
+                  isLabelVisible={false}
+                  // labelAlignment='right'
+                  bgColor={`${
+                    (income - expenses) / (expectedIncome - expectedExpense) > 0
+                      ? 'var(--green)'
+                      : 'var(--red)'
+                  }`}
+                  baseBgColor={`${
+                    (income - expenses) / (expectedIncome - expectedExpense) < 0
+                      ? 'var(--green)'
+                      : '#e0e0ed'
+                  }`}
+                  width='100%'
+                />
+              </div>
+            </div>
+
             <button type='button' onClick={() => router.push('/add')} className='app-button'>
               +
             </button>
@@ -417,7 +401,6 @@ const mapStateToProps = ({ transactions }) => ({
   expectedIncome: transactions.income.expected,
   expectedExpense: transactions.expense.expected,
   expensesSuggestions: transactions.expense.suggestions,
-  incomeSuggestions: transactions.income.suggestions,
   expenseCategories: transactions.expense.categories,
   incomeCategories: transactions.income.categories,
   list: transactions.data
