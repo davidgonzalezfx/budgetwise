@@ -75,11 +75,57 @@ export const TRANSACTIONS_INITIAL_STATE = {
       }
     ]
   },
+  income: {
+    actual: 0,
+    expected: 1000,
+    percentage: 0,
+    suggestions: [
+      {
+        name: 'Young',
+        items: [
+          {
+            name: 'Job',
+            amount: 1000
+          },
+          {
+            name: 'Online Business',
+            amount: 300
+          }
+        ]
+      },
+      {
+        name: 'Investor',
+        items: [
+          {
+            name: 'Job',
+            amount: 2000
+          },
+          {
+            name: 'Real State',
+            amount: 1500
+          },
+          {
+            name: 'Stocks',
+            amount: 300
+          },
+          {
+            name: 'Online Business',
+            amount: 200
+          }
+        ]
+      }
+    ],
+    categories: [
+      {
+        name: 'Job',
+        id: 'job',
+        amount: 1000
+      }
+    ]
+  },
   loading: false,
   error: null,
-  totalBalance: 0,
-  expectedIncome: 1000,
-  income: 0
+  totalBalance: 0
 }
 
 /* ----------- Reducers ----------- */
@@ -117,7 +163,10 @@ const transactionsSuccess = (state, { payload }) => {
       ...state.expense,
       actual: expenses
     },
-    income,
+    income: {
+      ...state.income,
+      actual: income
+    },
     loading: false
   }
 }
@@ -148,14 +197,30 @@ const updateBudgetRequest = (state) => ({
   loading: true
 })
 const updateBudgetSuccess = (state, { payload }) => {
-  return {
-    ...state,
-    loading: false,
-    error: null,
-    expense: {
-      ...state.expense,
-      expected: payload.reduce((acc, category) => acc + category.amount, 0),
-      categories: payload
+  if (payload.expenseCategories) {
+    const { expenseCategories } = payload
+    return {
+      ...state,
+      loading: false,
+      error: null,
+      expense: {
+        ...state.expense,
+        expected: expenseCategories.reduce((acc, category) => acc + category.amount, 0),
+        categories: expenseCategories
+      }
+    }
+  }
+  if (payload.incomeCategories) {
+    const { incomeCategories } = payload
+    return {
+      ...state,
+      loading: false,
+      error: null,
+      income: {
+        ...state.income,
+        expected: incomeCategories.reduce((acc, category) => acc + category.amount, 0),
+        categories: incomeCategories
+      }
     }
   }
 }
