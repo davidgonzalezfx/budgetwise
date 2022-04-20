@@ -4,7 +4,7 @@ import { useEffect, useMemo, useState } from 'react'
 import { connect } from 'react-redux'
 import { useRouter } from 'next/router'
 
-import { Chart as ChartJS, ArcElement, Tooltip, Legend } from 'chart.js'
+import { Chart as ChartJS, ArcElement, Tooltip } from 'chart.js'
 import { Pie } from 'react-chartjs-2'
 import ProgressBar from '@ramonak/react-progress-bar'
 import TransactionsActions from 'redux/Transactions'
@@ -15,7 +15,7 @@ import currencyFormat from 'utils/currencyFormat'
 
 import styles from './budget.module.scss'
 
-ChartJS.register(ArcElement, Tooltip, Legend)
+ChartJS.register(ArcElement, Tooltip)
 
 const Budget = ({
   expenses,
@@ -134,7 +134,6 @@ const Budget = ({
                   <div className={styles.settings__budget__expense}>
                     <div className={styles.settings__budget__header}>
                       <p>Total Expenses</p>
-
                       <input
                         id='expense-btn'
                         type='tel'
@@ -147,16 +146,33 @@ const Budget = ({
                       {expenseCategories?.map((category) => (
                         <div key={category.name} className={styles.settings__categories__item}>
                           <p>{category.name}</p>
-                          <input
-                            id={`${category.name}-input`}
-                            type='tel'
-                            placeholder='$'
-                            value={currencyFormat(category.amount)}
-                            onChange={(e) => {
-                              const value = +e.target.value.replace(/[\.,']/g, '')
+                          <form
+                            onSubmit={(e) => {
+                              e.preventDefault()
+                              const element = e.target[0]
+                              document.getElementById(element.id).blur()
+                              const value = +element.value.replace(/[\.,']/g, '')
                               setCategoryAmount('expense', category.name, value)
                             }}
-                          />
+                          >
+                            <input
+                              id={`${category.name}-input`}
+                              type='tel'
+                              placeholder='$'
+                              value={currencyFormat(category.amount)}
+                              onBlur={(e) => {
+                                e.preventDefault()
+                                const element = e.target
+                                document.getElementById(element.id).blur()
+                                const value = +element.value.replace(/[\.,']/g, '')
+                                setCategoryAmount('expense', category.name, value)
+                              }}
+                              onChange={(e) => {
+                                const value = +e.target.value.replace(/[\.,']/g, '')
+                                setCategoryAmount('expense', category.name, value)
+                              }}
+                            />
+                          </form>
                         </div>
                       ))}
                     </div>
@@ -177,16 +193,33 @@ const Budget = ({
                       {incomeCategories?.map((category) => (
                         <div key={category.name} className={styles.settings__categories__item}>
                           <p>{category.name}</p>
-                          <input
-                            id={`${category.name}-input`}
-                            type='tel'
-                            placeholder='$'
-                            value={currencyFormat(category.amount)}
-                            onChange={(e) => {
-                              const value = +e.target.value.replace(/[\.,']/g, '')
+                          <form
+                            onSubmit={(e) => {
+                              e.preventDefault()
+                              const element = e.target[0]
+                              document.getElementById(element.id).blur()
+                              const value = +element.value.replace(/[\.,']/g, '')
                               setCategoryAmount('income', category.name, value)
                             }}
-                          />
+                          >
+                            <input
+                              id={`${category.name}-input`}
+                              type='tel'
+                              placeholder='$'
+                              value={currencyFormat(category.amount)}
+                              onBlur={(e) => {
+                                e.preventDefault()
+                                const element = e.target
+                                document.getElementById(element.id).blur()
+                                const value = +element.value.replace(/[\.,']/g, '')
+                                setCategoryAmount('income', category.name, value)
+                              }}
+                              onChange={(e) => {
+                                const value = +e.target.value.replace(/[\.,']/g, '')
+                                setCategoryAmount('income', category.name, value)
+                              }}
+                            />
+                          </form>
                         </div>
                       ))}
                     </div>
@@ -216,7 +249,12 @@ const Budget = ({
                                 <div className={styles.settings__suggestion__chart}>
                                   <Pie
                                     data={{
-                                      labels: suggestion.items.map((item) => item.name),
+                                      labels: suggestion.items.map(
+                                        (item) =>
+                                          `${item.name} - ${
+                                            (item.amount / expectedIncome) * 100 || 0
+                                          }%`
+                                      ),
                                       datasets: [
                                         {
                                           data: suggestion.items.map((item) => item.amount),

@@ -59,7 +59,7 @@ const Home = ({ user, totalBalance, expenses, income, transactionList }) => {
 
         {transactionList.map((transaction, index) => {
           return (
-            <div key={index} className={styles.transaction__card}>
+            <div key={index} className={styles.transaction__card} onClick={() => router.push(`/transaction/${transaction.id}`)}>
               {transaction.amount > 0 ? (
                 <svg width={32} height={32} fill='none' xmlns='http://www.w3.org/2000/svg'>
                   <circle cx={16} cy={16} r={16} fill='#22E458' />

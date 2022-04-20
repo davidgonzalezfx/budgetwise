@@ -6,7 +6,13 @@ import { TransactionsTypes } from 'redux/Transactions'
 import { UserTypes } from 'redux/User'
 
 /* ----------- Sagas ----------- */
-import { getAllTransactions, addNewTransaction, updateBudget } from 'sagas/Transactions'
+import {
+  getAllTransactions,
+  addNewTransaction,
+  editTransactions,
+  transactionDetails,
+  updateBudget
+} from 'sagas/Transactions'
 import { loginUser, logoutUser, registerUser } from 'sagas/User'
 
 export default function* root() {
@@ -14,6 +20,8 @@ export default function* root() {
     // Transactions
     takeLatest(TransactionsTypes.transactionsRequest, getAllTransactions),
     takeLatest(TransactionsTypes.transactionsAddRequest, addNewTransaction),
+    takeLatest(TransactionsTypes.transactionDetailsRequest, transactionDetails),
+    takeLatest(TransactionsTypes.transactionsEditRequest, editTransactions),
     takeLatest(TransactionsTypes.updateBudgetRequest, updateBudget),
     // User
     takeLatest(UserTypes.userLoginRequest, loginUser),

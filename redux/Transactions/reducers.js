@@ -5,6 +5,7 @@ import UserActionTypes from '../User/actionTypes'
 /* ----------- Initial State ----------- */
 export const TRANSACTIONS_INITIAL_STATE = {
   data: [],
+  transactionDetails: {},
   expense: {
     actual: 0,
     expected: 1000,
@@ -156,6 +157,23 @@ const transactionsAddFailure = (state, { payload }) => ({
   error: payload
 })
 
+const transactionsEditRequest = (state) => ({
+  ...state,
+  loading: true
+})
+
+const transactionsEditSuccess = (state) => ({
+  ...state,
+  loading: false,
+  error: null
+})
+
+const transactionsEditFailure = (state, { payload }) => ({
+  ...state,
+  loading: false,
+  error: payload
+})
+
 const updateBudgetRequest = (state) => ({
   ...state,
   loading: true
@@ -258,6 +276,24 @@ const updateSuggestions = (state) => {
   }
 }
 
+const transactionDetailsRequest = (state) => ({
+  ...state,
+  loading: true
+})
+
+const transactionDetailsSuccess = (state, { payload }) => ({
+  ...state,
+  loading: false,
+  error: null,
+  transactionDetails: payload
+})
+
+const transactionDetailsFailure = (state, { payload }) => ({
+  ...state,
+  loading: false,
+  error: payload
+})
+
 const resetTransactionList = () => TRANSACTIONS_INITIAL_STATE
 
 /* ----------- Hookup Reducer to Types ----------- */
@@ -269,6 +305,14 @@ export const TransactionsReducer = createReducer(TRANSACTIONS_INITIAL_STATE, {
   [TransactionsTypes.transactionsAddRequest]: transactionsAddRequest,
   [TransactionsTypes.transactionsAddSuccess]: transactionsAddSuccess,
   [TransactionsTypes.transactionsAddFailure]: transactionsAddFailure,
+
+  [TransactionsTypes.transactionsEditRequest]: transactionsEditRequest,
+  [TransactionsTypes.transactionsEditSuccess]: transactionsEditSuccess,
+  [TransactionsTypes.transactionsEditFailure]: transactionsEditFailure,
+
+  [TransactionsTypes.transactionDetailsRequest]: transactionDetailsRequest,
+  [TransactionsTypes.transactionDetailsSuccess]: transactionDetailsSuccess,
+  [TransactionsTypes.transactionDetailsFailure]: transactionDetailsFailure,
 
   [TransactionsTypes.updateBudgetRequest]: updateBudgetRequest,
   [TransactionsTypes.updateBudgetSuccess]: updateBudgetSuccess,

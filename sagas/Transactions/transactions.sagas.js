@@ -1,5 +1,5 @@
 import { put } from 'redux-saga/effects'
-import { fetchTransactionList, addTransaction } from 'services/firebase'
+import { fetchTransactionList, addTransaction, fetchById, editTransaction } from 'services/firebase'
 import TransactionsActions from 'redux/Transactions'
 
 export function* getAllTransactions() {
@@ -19,6 +19,26 @@ export function* addNewTransaction({ payload }) {
     yield put(TransactionsActions.transactionsRequest())
   } catch (error) {
     yield put(TransactionsActions.transactionsFailure(error))
+  }
+}
+
+export function* transactionDetails({ payload }) {
+  try {
+    const response = yield fetchById(payload)
+    yield put(TransactionsActions.transactionDetailsSuccess(response))
+  } catch (error) {
+    yield put(TransactionsActions.transactionDetailsFailure(error))
+  }
+}
+
+export function* editTransactions({ payload }) {
+  try {
+    yield editTransaction(payload)
+    yield put(TransactionsActions.transactionsRequest())
+    yield put(TransactionsActions.transactionsEditSuccess())
+  } catch (error) {
+    console.log({ error })
+    yield put(TransactionsActions.transactionsEditFailure(error))
   }
 }
 

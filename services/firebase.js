@@ -7,7 +7,7 @@ import {
   onAuthStateChanged,
   updateProfile
 } from 'firebase/auth'
-import { getFirestore, addDoc, collection, getDocs } from 'firebase/firestore'
+import { getFirestore, addDoc, collection, getDocs, getDoc, doc } from 'firebase/firestore'
 import findTimeAgo from '../utils/date'
 
 const firebaseConfig = {
@@ -79,6 +79,40 @@ export const addTransaction = async (data) => {
     console.error('Error adding document: ', e)
   }
   return []
+}
+
+export const editTransaction = async ({ id, data }) => {
+  const user = auth.currentUser
+  if (!user) return []
+
+  try {
+    const docRef = await db.collection(`users/${user.email}/transactions`).doc(id).update(data)
+    console.log('Document written: ', docRef)
+  } catch (e) {
+    console.error('Error adding document: ', e)
+  }
+  return []
+}
+
+export const fetchById = async (id) => {
+  try {
+    let data = {}
+    const docRef = doc(db, `users/${auth.currentUser.email}/transactions`, id)
+    const querySnapshot = await getDoc(docRef)
+    const document = querySnapshot.data()
+
+    const { createdAt } = document
+    const date = +createdAt.toDate()
+    data = {
+      ...document,
+      id: document.id,
+      timestamp: date,
+      createdAt: findTimeAgo(date)
+    }
+    return data
+  } catch (e) {
+    console.error('Error fetching document: ', e)
+  }
 }
 
 export const fetchTransactionList = async () => {
