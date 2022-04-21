@@ -1,5 +1,7 @@
+import { useState } from 'react'
 import { useRouter } from 'next/router'
 import { connect } from 'react-redux'
+import classNames from 'classnames'
 
 import Avatar from 'react-avatar'
 import Layout from '../../components/Layout/Layout'
@@ -9,6 +11,7 @@ import UserActions from 'redux/User'
 import styles from './profile.module.scss'
 
 const Profile = ({ user, userLogoutRequest }) => {
+  const [activeItem, setActiveItem] = useState('Goals')
   const router = useRouter()
 
   const handleGoBack = () => {
@@ -20,7 +23,7 @@ const Profile = ({ user, userLogoutRequest }) => {
     userLogoutRequest()
   }
 
-  // if (!user) return <span className='loader center'></span>
+  console.log('\n activeItem :', activeItem, '\n')
 
   return (
     <Layout className={styles.container}>
@@ -50,20 +53,47 @@ const Profile = ({ user, userLogoutRequest }) => {
         </div>
 
         <div className={styles['container__profile-tabs']}>
-          <p
-            className={`
-              ${styles['container__profile-tabs-item']}
-              ${styles['container__profile-tabs-item-active']}`}
+          <button
+            className={classNames(styles['container__profile-tabs-item'], {
+              [styles['container__profile-tabs-item-active']]: activeItem === 'Goals'
+            })}
+            onClick={() => setActiveItem('Goals')}
           >
-            Goals
-          </p>
-          <p className={styles['container__profile-tabs-item']}>Insights</p>
-          <p className={styles['container__profile-tabs-item']}>Settings</p>
+            <span>Goals</span>
+          </button>
+          <button
+            className={classNames(styles['container__profile-tabs-item'], {
+              [styles['container__profile-tabs-item-active']]: activeItem === 'Insights'
+            })}
+            onClick={() => setActiveItem('Insights')}
+          >
+            <span>Insights</span>
+          </button>
+          <button
+            className={classNames(styles['container__profile-tabs-item'], {
+              [styles['container__profile-tabs-item-active']]: activeItem === 'Settings'
+            })}
+            onClick={() => setActiveItem('Settings')}
+          >
+            <span>Settings</span>
+          </button>
         </div>
 
-        <div className={styles['container__profile-details']}>
-          <p className={styles['container__profile-details-label']}>My goals</p>
-        </div>
+        {activeItem === 'Goals' && (
+          <div className={styles['container__profile-details']}>
+            <p className={styles['container__profile-details-label']}>My goals</p>
+          </div>
+        )}
+        {activeItem === 'Insights' && (
+          <div className={styles['container__profile-details']}>
+            <p className={styles['container__profile-details-label']}>Insights</p>
+          </div>
+        )}
+        {activeItem === 'Settings' && (
+          <div className={styles['container__profile-details']}>
+            <p className={styles['container__profile-details-label']}>Settings</p>
+          </div>
+        )}
       </div>
     </Layout>
   )

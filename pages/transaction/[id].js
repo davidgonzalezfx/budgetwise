@@ -80,7 +80,7 @@ const TransactionID = ({
             <path d='m16 6-8 6.5 8 6.5' stroke='#fff' strokeWidth={2} strokeLinecap='round' />
           </svg>
         </button>
-        <p className={styles['add__buttons-text']}>Add a new transaction</p>
+        <p className={styles['add__buttons-text']}>Transaction details</p>
         <button type='button'>
           <svg width={24} height={24} fill='none' xmlns='http://www.w3.org/2000/svg'>
             <path

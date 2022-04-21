@@ -78,13 +78,20 @@
         cursor: pointer;
         font-size: 12px;
         font-weight: 600;
+        border-radius: 16px;
         padding: 12px 24px;
+        outline: none;
+        background-color: transparent;
+        border: none;
+        transition: background-color .3s ease-in;
       }
 
       &-item-active {
         background: #22a2f2;
         border-radius: 16px;
         color: var(--white);
+        outline: none;
+        transition: background-color .3s ease-in;
       }
     }
 
@@ -100,9 +107,11 @@
       }
 
       &-card {
-        background: linear-gradient(45deg,
-        rgb(223 235 242 / 43.4%) 0%,
-        rgb(34 162 242 / 45.1%) 100%);
+        background: linear-gradient(
+          45deg,
+          rgb(223 235 242 / 43.4%) 0%,
+          rgb(34 162 242 / 45.1%) 100%
+        );
         border: 2px solid #4b4f50;
         border-radius: 16px;
         display: flex;
