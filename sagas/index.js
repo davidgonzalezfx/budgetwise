@@ -9,7 +9,8 @@ import { UserTypes } from 'redux/User'
 import {
   getAllTransactions,
   addNewTransaction,
-  editTransactions,
+  editTransactionsByID,
+  deleteTransactionByID,
   transactionDetails,
   updateBudget
 } from 'sagas/Transactions'
@@ -20,8 +21,9 @@ export default function* root() {
     // Transactions
     takeLatest(TransactionsTypes.transactionsRequest, getAllTransactions),
     takeLatest(TransactionsTypes.transactionsAddRequest, addNewTransaction),
+    takeLatest(TransactionsTypes.transactionsDeleteRequest, deleteTransactionByID),
     takeLatest(TransactionsTypes.transactionDetailsRequest, transactionDetails),
-    takeLatest(TransactionsTypes.transactionsEditRequest, editTransactions),
+    takeLatest(TransactionsTypes.transactionsEditRequest, editTransactionsByID),
     takeLatest(TransactionsTypes.updateBudgetRequest, updateBudget),
     // User
     takeLatest(UserTypes.userLoginRequest, loginUser),

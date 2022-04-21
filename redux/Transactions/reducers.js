@@ -165,10 +165,26 @@ const transactionsEditRequest = (state) => ({
 const transactionsEditSuccess = (state) => ({
   ...state,
   loading: false,
-  error: null
+  error: null,
+  transactionDetails: {}
 })
 
 const transactionsEditFailure = (state, { payload }) => ({
+  ...state,
+  loading: false,
+  error: payload
+})
+
+const transactionsDeleteRequest = (state) => ({
+  ...state,
+  loading: true
+})
+const transactionsDeleteSuccess = (state) => ({
+  ...state,
+  loading: false,
+  error: null
+})
+const transactionsDeleteFailure = (state, { payload }) => ({
   ...state,
   loading: false,
   error: payload
@@ -305,6 +321,10 @@ export const TransactionsReducer = createReducer(TRANSACTIONS_INITIAL_STATE, {
   [TransactionsTypes.transactionsAddRequest]: transactionsAddRequest,
   [TransactionsTypes.transactionsAddSuccess]: transactionsAddSuccess,
   [TransactionsTypes.transactionsAddFailure]: transactionsAddFailure,
+
+  [TransactionsTypes.transactionsDeleteRequest]: transactionsDeleteRequest,
+  [TransactionsTypes.transactionsDeleteSuccess]: transactionsDeleteSuccess,
+  [TransactionsTypes.transactionsDeleteFailure]: transactionsDeleteFailure,
 
   [TransactionsTypes.transactionsEditRequest]: transactionsEditRequest,
   [TransactionsTypes.transactionsEditSuccess]: transactionsEditSuccess,

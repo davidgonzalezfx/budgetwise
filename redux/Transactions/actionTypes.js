@@ -12,6 +12,10 @@ const transactionsEditRequest = createAction('transactions/edit/request')
 const transactionsEditSuccess = createAction('transactions/edit/success')
 const transactionsEditFailure = createAction('transactions/edit/failure')
 
+const transactionsDeleteRequest = createAction('transactions/delete/request')
+const transactionsDeleteSuccess = createAction('transactions/delete/success')
+const transactionsDeleteFailure = createAction('transactions/delete/failure')
+
 const updateBudgetRequest = createAction('budget/update/request')
 const updateBudgetSuccess = createAction('budget/update/success')
 const updateBudgetFailure = createAction('budget/update/failure')
@@ -32,6 +36,9 @@ export default {
   transactionsEditRequest,
   transactionsEditSuccess,
   transactionsEditFailure,
+  transactionsDeleteRequest,
+  transactionsDeleteSuccess,
+  transactionsDeleteFailure,
   updateBudgetRequest,
   updateBudgetSuccess,
   updateBudgetFailure,

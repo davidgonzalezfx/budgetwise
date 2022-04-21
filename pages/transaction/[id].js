@@ -14,6 +14,7 @@ import currencyFormat from 'utils/currencyFormat'
 const TransactionID = ({
   id,
   updateTransaction,
+  deleteTransaction,
   expenseCategories,
   incomeCategories,
   transactionDetails,
@@ -33,7 +34,7 @@ const TransactionID = ({
     if (transactionDetails) {
       setTitle(transactionDetails.name)
       setAmount(transactionDetails.amount)
-      setDate(new Date(transactionDetails.timestamp - 18000000).toISOString().slice(0, 16))
+      setDate(new Date(transactionDetails?.timestamp || Date.now() - 18000000).toISOString().slice(0, 16))
       setType(transactionDetails.amount < 0 ? '-' : '+')
     }
   }, [transactionDetails])
@@ -49,18 +50,23 @@ const TransactionID = ({
     router.push('/')
   }
 
+  const handleDelete = (e) => {
+    e.preventDefault()
+    deleteTransaction(id)
+    router.push('/')
+  }
+
   const handleSubmit = async (e) => {
     e.preventDefault()
     const data = {
       name: title,
       category: document.getElementsByTagName('select')[0].value,
-      amount: type === '-' ? -amount : amount,
+      amount: type === '-' && amount > 0 ? -amount : amount,
       createdAt: new Date(date)
     }
     if (data.name && data.amount) {
-      // console.log('clicked')
       await updateTransaction(id, data)
-      // router.back()
+      router.push('/')
     }
   }
 
@@ -108,11 +114,11 @@ const TransactionID = ({
           />
         </div>
         <TextField
-          value={currencyFormat(amount) || ''}
+          value={currencyFormat(amount).replace('-', '')}
           id='amount'
           label='Amount'
           type='tel'
-          onChange={(value) => setAmount(+value.replace(/[\.,']/g, ''))}
+          onChange={(value) => setAmount(+value.replace(/[\.,']/g, '') || 0)}
         />
         <TextField
           value={date}
@@ -139,6 +145,9 @@ const TransactionID = ({
           <option value='BankAccount'>Bank Account</option>
           <option value='CreditCard'>Credit Card</option>
         </select>
+        <button type='button' onClick={handleDelete} className='app-button app-button--trash'>
+          ✗
+        </button>
         <button type='submit' className='app-button'>
           ✓
         </button>
@@ -172,6 +181,7 @@ const mapStateToProps = ({ transactions }) => ({
 
 const mapDispatchToProps = (dispatch) => ({
   updateTransaction: (id, data) => dispatch(TransactionsActions.transactionsEditRequest({ id, data })),
+  deleteTransaction: (id) => dispatch(TransactionsActions.transactionsDeleteRequest(id)),
   fetchById: (id) => dispatch(TransactionsActions.transactionDetailsRequest(id))
 })
 

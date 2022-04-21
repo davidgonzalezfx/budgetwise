@@ -134,4 +134,9 @@ a {
   position: absolute;
   right: 24px;
   width: 56px;
+
+  &--trash {
+    right: 90px;
+    background-color: var(--red);
+  }
 }

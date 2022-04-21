@@ -1,5 +1,5 @@
-import { put } from 'redux-saga/effects'
-import { fetchTransactionList, addTransaction, fetchById, editTransaction } from 'services/firebase'
+import { put, putResolve } from 'redux-saga/effects'
+import { fetchTransactionList, addTransaction, fetchById, editTransaction, deleteTransaction } from 'services/firebase'
 import TransactionsActions from 'redux/Transactions'
 
 export function* getAllTransactions() {
@@ -31,14 +31,25 @@ export function* transactionDetails({ payload }) {
   }
 }
 
-export function* editTransactions({ payload }) {
+export function* editTransactionsByID({ payload }) {
   try {
     yield editTransaction(payload)
-    yield put(TransactionsActions.transactionsRequest())
+    yield putResolve(TransactionsActions.transactionsRequest())
     yield put(TransactionsActions.transactionsEditSuccess())
   } catch (error) {
     console.log({ error })
     yield put(TransactionsActions.transactionsEditFailure(error))
+  }
+}
+
+export function* deleteTransactionByID({ payload }) {
+  try {
+    console.log('deleteTransaction sagas')
+    yield deleteTransaction(payload)
+    yield putResolve(TransactionsActions.transactionsRequest())
+    yield put(TransactionsActions.transactionsDeleteSuccess())
+  } catch (error) {
+    yield put(TransactionsActions.transactionsDeleteFailure(error))
   }
 }
 

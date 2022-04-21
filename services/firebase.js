@@ -7,7 +7,16 @@ import {
   onAuthStateChanged,
   updateProfile
 } from 'firebase/auth'
-import { getFirestore, addDoc, collection, getDocs, getDoc, doc } from 'firebase/firestore'
+import {
+  getFirestore,
+  addDoc,
+  collection,
+  getDocs,
+  getDoc,
+  doc,
+  updateDoc,
+  deleteDoc
+} from 'firebase/firestore'
 import findTimeAgo from '../utils/date'
 
 const firebaseConfig = {
@@ -82,14 +91,22 @@ export const addTransaction = async (data) => {
 }
 
 export const editTransaction = async ({ id, data }) => {
-  const user = auth.currentUser
-  if (!user) return []
-
   try {
-    const docRef = await db.collection(`users/${user.email}/transactions`).doc(id).update(data)
-    console.log('Document written: ', docRef)
+    console.log('editTransactions firebase')
+    const docRef = doc(db, `users/${auth.currentUser.email}/transactions`, id)
+    await updateDoc(docRef, data)
   } catch (e) {
-    console.error('Error adding document: ', e)
+    console.error('Error editing document: ', e)
+  }
+  return []
+}
+
+export const deleteTransaction = async (id) => {
+  try {
+    console.log('deleteTransaction firebase')
+    await deleteDoc(doc(db, `users/${auth.currentUser.email}/transactions`, id))
+  } catch (e) {
+    console.error('Error deleting document: ', e)
   }
   return []
 }
