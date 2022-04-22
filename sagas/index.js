@@ -15,6 +15,7 @@ import {
   updateBudget
 } from 'sagas/Transactions'
 import { loginUser, logoutUser, registerUser } from 'sagas/User'
+import { registerCategories } from 'sagas/Categories'
 
 export default function* root() {
   yield all([
@@ -28,6 +29,8 @@ export default function* root() {
     // User
     takeLatest(UserTypes.userLoginRequest, loginUser),
     takeLatest(UserTypes.userLogoutRequest, logoutUser),
-    takeLatest(UserTypes.userRegisterRequest, registerUser)
+    takeLatest(UserTypes.userRegisterRequest, registerUser),
+    // Categories
+    takeLatest(TransactionsTypes.categoriesRegisterRequest, registerCategories)
   ])
 }

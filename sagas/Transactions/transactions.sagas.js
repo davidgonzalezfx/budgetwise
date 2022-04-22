@@ -6,6 +6,7 @@ export function* getAllTransactions() {
   try {
     const response = yield fetchTransactionList()
     yield put(TransactionsActions.transactionsSuccess(response))
+    // yield put(TransactionsActions.categoriesRegisterRequest())
     return { success: true }
   } catch (error) {
     yield put(TransactionsActions.transactionsFailure(error))

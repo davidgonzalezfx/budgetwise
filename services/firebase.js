@@ -156,3 +156,29 @@ export const fetchTransactionList = async () => {
     return []
   }
 }
+
+export const addCategories = async (data) => {
+  try {
+    const docRef = await addDoc(collection(db, `users/${auth.currentUser.email}/categories`), data)
+    console.log('Document written: ', docRef)
+  } catch (e) {
+    console.error('Error adding document: ', e)
+  }
+  return []
+}
+
+export const editCategories = async (data) => {
+  try {
+    const categoriesSnapshot = await getDocs(
+      collection(db, `users/${auth.currentUser.email}/categories`)
+    )
+    const categoriesDocId = categoriesSnapshot.docs[0].id
+
+    const docRef = doc(db, `users/${auth.currentUser.email}/categories`, categoriesDocId)
+    await updateDoc(docRef, data)
+    console.log('Document edited: ', docRef)
+  } catch (e) {
+    console.error('Error editing document: ', e)
+  }
+  return []
+}

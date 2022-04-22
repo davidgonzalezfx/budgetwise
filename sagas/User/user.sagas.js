@@ -20,6 +20,7 @@ export function* registerUser({ payload }) {
   try {
     const user = yield createUserWithEmail(payload)
     yield put(UserActions.userLoginSuccess(user))
+    yield put(TransactionsActions.categoriesRegisterRequest())
     yield put(TransactionsActions.transactionsRequest())
   } catch (error) {
     yield put(UserActions.userRegisterFailure(error))
