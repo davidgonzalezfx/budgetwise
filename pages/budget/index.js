@@ -33,8 +33,8 @@ const Budget = ({
   const [isSettingsOpen, setIsSettingsOpen] = useState(false)
   const [incomeValue, setIncomeValue] = useState(expectedIncome)
   const [expenseValue, setExpenseValue] = useState(expectedExpense)
-  const [budgetOpen, setBudgetOpen] = useState(false)
-  const [suggestionsOpen, setSuggestionsOpen] = useState(true)
+  const [budgetOpen, setBudgetOpen] = useState(true)
+  const [suggestionsOpen, setSuggestionsOpen] = useState(false)
 
   useEffect(() => {
     setIncomeValue(expectedIncome)
@@ -45,11 +45,12 @@ const Budget = ({
   }, [expectedExpense])
 
   const incomePercentage = useMemo(
-    () => Math.round((income / expectedIncome) * 100).toFixed(0) || 0,
+    () => Math.round((income / expectedIncome) * 100 || 0).toFixed(0) || 0,
     [income, expectedIncome]
   )
+
   const expensePercentage = useMemo(
-    () => Math.round((expenses / expectedExpense) * 100).toFixed(0) || 0,
+    () => Math.round((expenses / expectedExpense) * 100 || 0).toFixed(0) || 0,
     [expenses, expectedExpense]
   )
 
@@ -138,7 +139,7 @@ const Budget = ({
                         id='expense-btn'
                         type='tel'
                         placeholder='$'
-                        value={currencyFormat(expenseValue) || ''}
+                        value={currencyFormat(expenseValue || 0) || ''}
                         disabled
                       />
                     </div>
@@ -159,7 +160,7 @@ const Budget = ({
                               id={`${category.name}-input`}
                               type='tel'
                               placeholder='$'
-                              value={currencyFormat(category.amount)}
+                              value={currencyFormat(category.amount || 0)}
                               onBlur={(e) => {
                                 e.preventDefault()
                                 const element = e.target
@@ -185,7 +186,7 @@ const Budget = ({
                         id='income-btn'
                         type='tel'
                         placeholder='$'
-                        value={currencyFormat(incomeValue) || ''}
+                        value={currencyFormat(incomeValue || 0)}
                         disabled
                       />
                     </div>
@@ -206,7 +207,7 @@ const Budget = ({
                               id={`${category.name}-input`}
                               type='tel'
                               placeholder='$'
-                              value={currencyFormat(category.amount)}
+                              value={currencyFormat(category.amount || 0)}
                               onBlur={(e) => {
                                 e.preventDefault()
                                 const element = e.target
@@ -236,68 +237,73 @@ const Budget = ({
                   </svg>
                 </div>
               </button>
-              {suggestionsOpen && (
-                <>
-                  <div className={styles.settings__categories}>
-                    {suggestionsOpen && (
-                      <>
-                        <div className={styles.settings__suggestions}>
-                          {expensesSuggestions.map((suggestion) => (
-                            <div key={suggestion.name} className={styles.settings__suggestion}>
-                              <div>
-                                <p style={{ fontSize: '12px' }}>{suggestion.name}</p>
-                                <div className={styles.settings__suggestion__chart}>
-                                  <Pie
-                                    data={{
-                                      labels: suggestion.items.map(
-                                        (item) =>
-                                          `${item.name} - ${
-                                            (item.amount / expectedIncome) * 100 || 0
-                                          }%`
-                                      ),
-                                      datasets: [
-                                        {
-                                          data: suggestion.items.map((item) => item.amount),
-                                          backgroundColor: [
-                                            'rgba(255, 194, 68, 0.8)',
-                                            'rgba(36, 99, 246, 0.8)',
-                                            'rgba(0, 192, 175, 0.8)',
-                                            'rgba(154, 206, 255, 0.8)',
-                                            'rgba(255, 149, 91, 0.8)',
-                                            'rgba(61, 209, 186, 0.8)'
-                                          ],
-                                          hoverBackgroundColor: [
-                                            'rgba(255, 194, 68, 0.9)',
-                                            'rgba(36, 99, 246, 0.9)',
-                                            'rgba(0, 192, 175, 0.9)',
-                                            'rgba(154, 206, 255, 0.9)',
-                                            'rgba(255, 149, 91, 0.9)',
-                                            'rgba(61, 209, 186, 0.9)'
-                                          ],
-                                          label: 'Expenses',
-                                          borderWidth: 0
-                                        }
-                                      ]
-                                    }}
-                                  />
-                                </div>
-                              </div>
-                              <div>
-                                <p style={{ fontSize: '8px' }}>
-                                  *Lifestyle: housing, utilities, transportation, food, etc.
-                                </p>
-                                <button type='button' onClick={() => handleChoose(suggestion.id)}>
-                                  Choose
-                                </button>
+              <div className={styles.settings__categories}>
+                {suggestionsOpen && (
+                  <>
+                    <div className={styles.settings__suggestions}>
+                      {expectedIncome <= 0 && (
+                        <p style={{ fontSize: '12px' }}>Pls update your income first and then we will provide you awesome suggestions. Just touch the $0 to update</p>
+                      )}
+                      {expectedIncome > 0 &&
+                        expensesSuggestions.map((suggestion) => (
+                          <div key={suggestion.name} className={styles.settings__suggestion}>
+                            <div>
+                              <p style={{ fontSize: '12px' }}>{suggestion.name}</p>
+                              {suggestion.items.map((item, idx) => (
+                                <p style={{ fontSize: '12px' }} key={idx}>{`${
+                                  (item.amount / expectedIncome) * 100 || 0
+                                }% → ${item.name} = ${currencyFormat(item.amount)}`}</p>
+                              ))}
+                              <div className={styles.settings__suggestion__chart}>
+                                <Pie
+                                  data={{
+                                    labels: suggestion.items.map(
+                                      (item) =>
+                                        `${item.name} - ${
+                                          (item.amount / expectedIncome) * 100 || 0
+                                        }%`
+                                    ),
+                                    datasets: [
+                                      {
+                                        data: suggestion.items.map((item) => item.amount),
+                                        backgroundColor: [
+                                          'rgba(255, 194, 68, 0.8)',
+                                          'rgba(36, 99, 246, 0.8)',
+                                          'rgba(0, 192, 175, 0.8)',
+                                          'rgba(154, 206, 255, 0.8)',
+                                          'rgba(255, 149, 91, 0.8)',
+                                          'rgba(61, 209, 186, 0.8)'
+                                        ],
+                                        hoverBackgroundColor: [
+                                          'rgba(255, 194, 68, 0.9)',
+                                          'rgba(36, 99, 246, 0.9)',
+                                          'rgba(0, 192, 175, 0.9)',
+                                          'rgba(154, 206, 255, 0.9)',
+                                          'rgba(255, 149, 91, 0.9)',
+                                          'rgba(61, 209, 186, 0.9)'
+                                        ],
+                                        label: 'Expenses',
+                                        borderWidth: 0
+                                      }
+                                    ]
+                                  }}
+                                />
                               </div>
                             </div>
-                          ))}
-                        </div>
-                      </>
-                    )}
-                  </div>
-                </>
-              )}
+                            <div>
+                              <p style={{ fontSize: '8px' }}>
+                                *Lifestyle: housing, utilities, transportation, food, etc.
+                              </p>
+                              <button type='button' onClick={() => handleChoose(suggestion.id)}>
+                                Choose
+                              </button>
+                            </div>
+                          </div>
+                        ))}
+                    </div>
+                  </>
+                )}
+              </div>
             </div>
           </>
         ) : (
@@ -380,7 +386,7 @@ const Budget = ({
                 )}`}</p>
               </div>
               <div className={styles['container__summary-card-info--green']}>
-                <p className={styles['container__summary-title']}>{`${incomePercentage}%`}</p>
+                <p className={styles['container__summary-title']}>{`${incomePercentage || 0}%`}</p>
                 {/* <p className={styles['container__summary-description']}>
                   {`${currencyFormat(100000)} over ${currencyFormat(expectedIncome)}`}
                 </p> */}
@@ -399,7 +405,7 @@ const Budget = ({
               </div>
             </div>
 
-            <div className={styles['container__summary-card']}>
+            <div className={styles['container__summary-card']} style={{ paddingBottom: '48px' }}>
               <div className={styles['container__summary-card-info']}>
                 <p className={styles['container__summary-title']}>Net Earnings</p>
                 <p className={styles['container__summary-description']}>{`${currencyFormat(
@@ -428,7 +434,6 @@ const Budget = ({
                   height='4px'
                   maxCompleted={1}
                   isLabelVisible={false}
-                  // labelAlignment='right'
                   bgColor={`${
                     (income - expenses) / (expectedIncome - expectedExpense) > 0
                       ? 'var(--green)'

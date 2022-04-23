@@ -8,7 +8,7 @@ export const TRANSACTIONS_INITIAL_STATE = {
   transactionDetails: {},
   expense: {
     actual: 0,
-    expected: 1000,
+
     percentage: 0,
     suggestions: [
       {
@@ -78,7 +78,7 @@ export const TRANSACTIONS_INITIAL_STATE = {
   },
   income: {
     actual: 0,
-    expected: 1000,
+    expected: 0,
     percentage: 0,
     categories: [
       {
@@ -322,7 +322,8 @@ const categoriesSuccess = (state, { payload }) => ({
   error: null,
   expense: {
     ...state.expense,
-    categories: payload
+    categories: payload,
+    expected: payload.reduce((acc, category) => acc + category.amount, 0)
   }
 })
 

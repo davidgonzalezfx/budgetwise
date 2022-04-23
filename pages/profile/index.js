@@ -23,8 +23,6 @@ const Profile = ({ user, userLogoutRequest }) => {
     userLogoutRequest()
   }
 
-  console.log('\n activeItem :', activeItem, '\n')
-
   return (
     <Layout className={styles.container}>
       <div className={styles.container__buttons}>

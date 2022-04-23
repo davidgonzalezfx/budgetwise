@@ -12,7 +12,6 @@ export function* getAllTransactions() {
   try {
     const response = yield fetchTransactionList()
     yield put(TransactionsActions.transactionsSuccess(response))
-    console.log('\nhere \n')
     yield put(TransactionsActions.categoriesRequest())
     return { success: true }
   } catch (error) {
