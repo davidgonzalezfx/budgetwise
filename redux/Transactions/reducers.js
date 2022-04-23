@@ -312,6 +312,41 @@ const transactionDetailsFailure = (state, { payload }) => ({
 
 const resetTransactionList = () => TRANSACTIONS_INITIAL_STATE
 
+const categoriesRequest = (state) => ({
+  ...state,
+  loading: true
+})
+const categoriesSuccess = (state, { payload }) => ({
+  ...state,
+  loading: false,
+  error: null,
+  expense: {
+    ...state.expense,
+    categories: payload
+  }
+})
+
+const categoriesFailure = (state, { payload }) => ({
+  ...state,
+  loading: false,
+  error: payload
+})
+
+const categoriesUpdateRequest = (state) => ({
+  ...state,
+  loading: true
+})
+const categoriesUpdateSuccess = (state) => ({
+  ...state,
+  loading: false,
+  error: null
+})
+const categoriesUpdateFailure = (state, { payload }) => ({
+  ...state,
+  loading: false,
+  error: payload
+})
+
 /* ----------- Hookup Reducer to Types ----------- */
 export const TransactionsReducer = createReducer(TRANSACTIONS_INITIAL_STATE, {
   [TransactionsTypes.transactionsRequest]: transactionsRequest,
@@ -343,5 +378,13 @@ export const TransactionsReducer = createReducer(TRANSACTIONS_INITIAL_STATE, {
   [UserActionTypes.userLoginRequest]: resetTransactionList,
   [UserActionTypes.userLogoutRequest]: resetTransactionList,
 
-  [TransactionsTypes.updateSuggestionsRequest]: updateSuggestions
+  [TransactionsTypes.updateSuggestionsRequest]: updateSuggestions,
+
+  [TransactionsTypes.categoriesRequest]: categoriesRequest,
+  [TransactionsTypes.categoriesSuccess]: categoriesSuccess,
+  [TransactionsTypes.categoriesFailure]: categoriesFailure,
+
+  [TransactionsTypes.categoriesUpdateRequest]: categoriesUpdateRequest,
+  [TransactionsTypes.categoriesUpdateSuccess]: categoriesUpdateSuccess,
+  [TransactionsTypes.categoriesUpdateFailure]: categoriesUpdateFailure
 })

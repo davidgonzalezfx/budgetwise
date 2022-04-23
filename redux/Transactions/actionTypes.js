@@ -28,6 +28,14 @@ const updateSuggestionsRequest = createAction('suggestions/update/request')
 
 const categoriesRegisterRequest = createAction('categories/register/request')
 
+const categoriesRequest = createAction('categories/request')
+const categoriesSuccess = createAction('categories/success')
+const categoriesFailure = createAction('categories/failure')
+
+const categoriesUpdateRequest = createAction('categories/update/request')
+const categoriesUpdateSuccess = createAction('categories/update/success')
+const categoriesUpdateFailure = createAction('categories/update/failure')
+
 export default {
   transactionsRequest,
   transactionsSuccess,
@@ -48,5 +56,11 @@ export default {
   transactionDetailsSuccess,
   transactionDetailsFailure,
   updateSuggestionsRequest,
-  categoriesRegisterRequest
+  categoriesRegisterRequest,
+  categoriesRequest,
+  categoriesSuccess,
+  categoriesFailure,
+  categoriesUpdateRequest,
+  categoriesUpdateSuccess,
+  categoriesUpdateFailure
 }

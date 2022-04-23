@@ -29,9 +29,9 @@ export function configureStore({ isServer }) {
 
   const middlewares = [sagaMiddleware]
 
-  if (process.env.NODE_ENV === 'development') {
-    middlewares.push(logger)
-  }
+  // if (process.env.NODE_ENV === 'development') {
+  //   middlewares.push(logger)
+  // }
 
   const persistedReducer = persistReducer(persistConfig, rootReducer)
   const store = createStore(persistedReducer, customCompose(applyMiddleware(...middlewares)))

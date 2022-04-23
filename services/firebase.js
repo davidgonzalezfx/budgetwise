@@ -157,6 +157,19 @@ export const fetchTransactionList = async () => {
   }
 }
 
+export const fetchCategories = async () => {
+  try {
+    const querySnapshot = await getDocs(
+      collection(db, `users/${auth.currentUser.email}/categories`)
+    )
+    const data = querySnapshot.docs[0].data()
+    return data.categories
+  } catch (e) {
+    console.error('Error fetching categories: ', e)
+    return []
+  }
+}
+
 export const addCategories = async (data) => {
   try {
     const docRef = await addDoc(collection(db, `users/${auth.currentUser.email}/categories`), data)

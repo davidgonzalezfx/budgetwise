@@ -11,6 +11,7 @@ export function* loginUser({ payload }) {
     const user = yield loginUserWithEmail(email, password)
     yield put(UserActions.userLoginSuccess(user))
     yield put(TransactionsActions.transactionsRequest())
+    yield put(TransactionsActions.categoriesRequest())
   } catch (error) {
     yield put(UserActions.userLoginFailure(error))
   }
