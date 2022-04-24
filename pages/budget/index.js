@@ -35,6 +35,7 @@ const Budget = ({
   const [expenseValue, setExpenseValue] = useState(expectedExpense)
   const [budgetOpen, setBudgetOpen] = useState(true)
   const [suggestionsOpen, setSuggestionsOpen] = useState(false)
+  const [isFirstTime, setIsFirstTime] = useState(localStorage.getItem('isFirstTime') || true)
 
   useEffect(() => {
     setIncomeValue(expectedIncome)
@@ -81,7 +82,13 @@ const Budget = ({
     }
   }
 
-  const toggleSettings = () => setIsSettingsOpen(!isSettingsOpen)
+  const toggleSettings = () => {
+    if (isFirstTime) {
+      setIsFirstTime(false)
+      localStorage.setItem('isFirstTime', false)
+    }
+    setIsSettingsOpen(!isSettingsOpen)
+  }
 
   const handleBack = () => {
     if (isSettingsOpen) {
@@ -242,7 +249,10 @@ const Budget = ({
                   <>
                     <div className={styles.settings__suggestions}>
                       {expectedIncome <= 0 && (
-                        <p style={{ fontSize: '12px' }}>Pls update your income first and then we will provide you awesome suggestions. Just touch the $0 to update</p>
+                        <p style={{ fontSize: '12px' }}>
+                          Pls update your income first and then we will provide you awesome
+                          suggestions. Just touch the $0 to update
+                        </p>
                       )}
                       {expectedIncome > 0 &&
                         expensesSuggestions.map((suggestion) => (
@@ -251,7 +261,7 @@ const Budget = ({
                               <p style={{ fontSize: '12px' }}>{suggestion.name}</p>
                               {suggestion.items.map((item, idx) => (
                                 <p style={{ fontSize: '12px' }} key={idx}>{`${
-                                  (item.amount / expectedIncome) * 100 || 0
+                                  (item.amount / expectedIncome).toFixed(2) * 100 || 0
                                 }% → ${item.name} = ${currencyFormat(item.amount)}`}</p>
                               ))}
                               <div className={styles.settings__suggestion__chart}>
@@ -308,6 +318,11 @@ const Budget = ({
           </>
         ) : (
           <>
+            {isFirstTime && (
+              <p style={{ fontSize: '14px' }}>
+                Click the settings icon on the corner to set up your budget and see suggestions{' '}
+              </p>
+            )}
             <div className={styles['container__summary-card']}>
               <div className={styles['container__summary-card-info']}>
                 <p className={styles['container__summary-title']}>Your expenses</p>
@@ -378,7 +393,7 @@ const Budget = ({
                 </div>
               ))}
             </div>
-            <div className={styles['container__summary-card']} style={{ marginBottom: '48px' }}>
+            <div className={styles['container__summary-card']}>
               <div className={styles['container__summary-card-info']}>
                 <p className={styles['container__summary-title']}>Your income</p>
                 <p className={styles['container__summary-description']}>{`${currencyFormat(
@@ -403,6 +418,50 @@ const Budget = ({
                   width='100%'
                 />
               </div>
+            </div>
+            <div className={styles.container__category} style={{ marginBottom: '48px' }}>
+              {incomeCategories.map((category) => (
+                <div key={category.name}>
+                  <div className={styles.container__category__item}>
+                    <p>{category.name}</p>
+                    <p>
+                      {currencyFormat(
+                        list.reduce((acc, cnt) => {
+                          if (cnt.category === category.name) return acc + Math.abs(cnt.amount)
+                          else return acc
+                        }, 0)
+                      )}
+                    </p>
+                  </div>
+                  <div
+                    className={`${styles.container__category__item} ${styles['container__summary-card-info--green']}`}
+                  >
+                    <p>{`${
+                      Math.round(
+                        (list.reduce((acc, cnt) => {
+                          if (cnt.category === category.name) return acc + Math.abs(cnt.amount)
+                          else return acc
+                        }, 0) /
+                          category.amount) *
+                          100
+                      ) || 0
+                    }%`}</p>
+                    <p>{currencyFormat(category.amount)}</p>
+                  </div>
+                  <ProgressBar
+                    completed={
+                      list.reduce((acc, cnt) => {
+                        if (cnt.category === category.name) return acc + Math.abs(cnt.amount)
+                        else return acc
+                      }, 0) / category.amount || 0
+                    }
+                    maxCompleted={1}
+                    height='4px'
+                    isLabelVisible={false}
+                    bgColor='var(--green)'
+                  />
+                </div>
+              ))}
             </div>
 
             <div className={styles['container__summary-card']} style={{ paddingBottom: '48px' }}>

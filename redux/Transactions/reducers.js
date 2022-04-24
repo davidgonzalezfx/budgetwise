@@ -8,7 +8,6 @@ export const TRANSACTIONS_INITIAL_STATE = {
   transactionDetails: {},
   expense: {
     actual: 0,
-
     percentage: 0,
     suggestions: [
       {
@@ -292,6 +291,102 @@ const updateSuggestions = (state) => {
   }
 }
 
+const updateExpectedIncomeRequest = (state, { payload }) => {
+  return {
+    ...state,
+    expense: {
+      ...state.expense,
+      expected: payload,
+      categories: [
+        {
+          name: 'Housing',
+          id: 'housing',
+          amount: payload * 0.3
+        },
+        {
+          name: 'Food',
+          id: 'food',
+          amount: payload * 0.3
+        },
+        {
+          name: 'Savings',
+          id: 'savings',
+          amount: payload * 0.1
+        },
+        {
+          name: 'Investments',
+          id: 'investments',
+          amount: payload * 0.2
+        },
+        {
+          name: 'Other',
+          id: 'other',
+          amount: payload * 0.1
+        }
+      ],
+      suggestions: [
+        {
+          name: 'Our favorite',
+          items: [
+            {
+              name: 'Lifestyle',
+              amount: payload * 0.5
+            },
+            {
+              name: 'Charity',
+              amount: payload * 0.1
+            },
+            {
+              name: 'Savings',
+              amount: payload * 0.1
+            },
+            {
+              name: 'Tithe',
+              amount: payload * 0.1
+            },
+            {
+              name: 'Investments',
+              amount: payload * 0.2
+            }
+          ]
+        },
+        {
+          name: 'Out of debt',
+          items: [
+            {
+              name: 'Debt',
+              amount: payload * 0.5
+            },
+            {
+              name: 'Lifestyle',
+              amount: payload * 0.3
+            },
+            {
+              name: 'Savings',
+              amount: payload * 0.1
+            },
+            {
+              name: 'Investments',
+              amount: payload * 0.1
+            }
+          ]
+        }
+      ]
+    },
+    income: {
+      ...state.income,
+      expected: payload,
+      categories: [
+        {
+          name: 'Job',
+          id: 'job',
+          amount: payload
+        }
+      ]
+    }
+  }
+}
+
 const transactionDetailsRequest = (state) => ({
   ...state,
   loading: true
@@ -380,6 +475,7 @@ export const TransactionsReducer = createReducer(TRANSACTIONS_INITIAL_STATE, {
   [UserActionTypes.userLogoutRequest]: resetTransactionList,
 
   [TransactionsTypes.updateSuggestionsRequest]: updateSuggestions,
+  [TransactionsTypes.updateExpectedIncomeRequest]: updateExpectedIncomeRequest,
 
   [TransactionsTypes.categoriesRequest]: categoriesRequest,
   [TransactionsTypes.categoriesSuccess]: categoriesSuccess,

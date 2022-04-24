@@ -32,6 +32,7 @@ export default function* root() {
     takeLatest(UserTypes.userRegisterRequest, registerUser),
     // Categories
     takeLatest(TransactionsTypes.categoriesRegisterRequest, uploadCategories),
+    takeLatest(TransactionsTypes.updateExpectedIncomeRequest, uploadCategories),
     takeLatest(TransactionsTypes.categoriesRequest, getCategories),
     takeLatest(TransactionsTypes.categoriesUpdateRequest, updateCategories)
   ])

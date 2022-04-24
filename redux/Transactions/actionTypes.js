@@ -25,6 +25,7 @@ const transactionDetailsSuccess = createAction('transaction/details/success')
 const transactionDetailsFailure = createAction('transaction/details/failure')
 
 const updateSuggestionsRequest = createAction('suggestions/update/request')
+const updateExpectedIncomeRequest = createAction('expectedIncome/update/request')
 
 const categoriesRegisterRequest = createAction('categories/register/request')
 
@@ -56,6 +57,7 @@ export default {
   transactionDetailsSuccess,
   transactionDetailsFailure,
   updateSuggestionsRequest,
+  updateExpectedIncomeRequest,
   categoriesRegisterRequest,
   categoriesRequest,
   categoriesSuccess,

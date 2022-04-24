@@ -93,6 +93,22 @@
       margin: 0;
     }
 
+    &__empty {
+      button {
+        background-color: var(--primary);
+        border: none;
+        border-radius: 4px;
+        color: var(--white);
+        cursor: pointer;
+        font-size: 14px;
+        font-weight: 600;
+        margin-bottom: 16px;
+        outline: none;
+        padding: 16px 48px;
+        width: 100%;
+      }
+    }
+
     .transaction {
       &__card {
         align-items: center;

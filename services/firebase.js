@@ -53,11 +53,9 @@ export const createUserWithEmail = async ({ name, email, password }) => {
 export const loginUserWithEmail = (email, password) => {
   return signInWithEmailAndPassword(auth, email, password)
     .then((user) => {
-      console.log('user logged', user)
       return user.user
     })
     .catch((error) => {
-      console.log('user not logged', error)
       throw error
     })
 }
@@ -82,32 +80,23 @@ export const addTransaction = async (data) => {
   if (!user) return []
 
   try {
-    const docRef = await addDoc(collection(db, `users/${user.email}/transactions`), data)
-    console.log('Document written: ', docRef)
-  } catch (e) {
-    console.error('Error adding document: ', e)
-  }
+    await addDoc(collection(db, `users/${user.email}/transactions`), data)
+  } catch (e) {}
   return []
 }
 
 export const editTransaction = async ({ id, data }) => {
   try {
-    console.log('editTransactions firebase')
     const docRef = doc(db, `users/${auth.currentUser.email}/transactions`, id)
     await updateDoc(docRef, data)
-  } catch (e) {
-    console.error('Error editing document: ', e)
-  }
+  } catch (e) {}
   return []
 }
 
 export const deleteTransaction = async (id) => {
   try {
-    console.log('deleteTransaction firebase')
     await deleteDoc(doc(db, `users/${auth.currentUser.email}/transactions`, id))
-  } catch (e) {
-    console.error('Error deleting document: ', e)
-  }
+  } catch (e) {}
   return []
 }
 
@@ -127,9 +116,7 @@ export const fetchById = async (id) => {
       createdAt: findTimeAgo(date)
     }
     return data
-  } catch (e) {
-    console.error('Error fetching document: ', e)
-  }
+  } catch (e) {}
 }
 
 export const fetchTransactionList = async () => {
@@ -152,7 +139,6 @@ export const fetchTransactionList = async () => {
 
     return data.sort((a, b) => b.timestamp - a.timestamp)
   } catch (e) {
-    console.error('Error fetchin document: ', e)
     return []
   }
 }
@@ -165,18 +151,23 @@ export const fetchCategories = async () => {
     const data = querySnapshot.docs[0].data()
     return data.categories
   } catch (e) {
-    console.error('Error fetching categories: ', e)
     return []
   }
 }
 
 export const addCategories = async (data) => {
   try {
-    const docRef = await addDoc(collection(db, `users/${auth.currentUser.email}/categories`), data)
-    console.log('Document written: ', docRef)
-  } catch (e) {
-    console.error('Error adding document: ', e)
-  }
+    const categoriesSnapshot = await getDocs(
+      collection(db, `users/${auth.currentUser.email}/categories`)
+    )
+    if (categoriesSnapshot.docs.length) {
+      const categoriesDocId = categoriesSnapshot.docs[0].id
+      const docRef = doc(db, `users/${auth.currentUser.email}/categories`, categoriesDocId)
+      await updateDoc(docRef, data)
+    } else {
+      await addDoc(collection(db, `users/${auth.currentUser.email}/categories`), data)
+    }
+  } catch (e) {}
   return []
 }
 
@@ -189,9 +180,6 @@ export const editCategories = async (data) => {
 
     const docRef = doc(db, `users/${auth.currentUser.email}/categories`, categoriesDocId)
     await updateDoc(docRef, data)
-    console.log('Document edited: ', docRef)
-  } catch (e) {
-    console.error('Error editing document: ', e)
-  }
+  } catch (e) {}
   return []
 }

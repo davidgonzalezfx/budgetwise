@@ -5,6 +5,7 @@ import { addCategories, editCategories, fetchCategories } from 'services/firebas
 export function* uploadCategories() {
   try {
     const categories = yield select((state) => state.transactions.expense.categories)
+    console.log('uploadCategories', categories)
     yield addCategories({ categories })
   } catch (error) {
     console.log('error', error)

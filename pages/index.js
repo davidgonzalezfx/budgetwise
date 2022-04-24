@@ -1,14 +1,40 @@
+/* eslint-disable no-useless-escape */
 /* eslint-disable multiline-ternary */
+import TextField from 'components/TextField'
 import { useRouter } from 'next/router'
+import { useState } from 'react'
 import { connect } from 'react-redux'
+
+import TransactionsActions from 'redux/Transactions'
+
 import currencyFormat from 'utils/currencyFormat'
 
 import Layout from '../components/Layout/Layout'
 
 import styles from './index.module.scss'
 
-const Home = ({ user, totalBalance, expenses, income, transactionList }) => {
+const Home = ({
+  user,
+  totalBalance,
+  expenses,
+  income,
+  expectedIncome,
+  transactionList,
+  updateIncome
+}) => {
   const router = useRouter()
+  const [hasFillIncome, setHasFillIncome] = useState(localStorage.getItem('hasIncome') || false)
+
+  const handleChange = (value) => {
+    const expectedIncome = +value.replace(/[\.,']/g, '')
+    updateIncome(expectedIncome)
+  }
+
+  const handleContinue = () => {
+    localStorage.setItem('hasIncome', true)
+    setHasFillIncome(true)
+    router.push('/budget')
+  }
 
   return (
     <Layout className={styles.home}>
@@ -54,12 +80,46 @@ const Home = ({ user, totalBalance, expenses, income, transactionList }) => {
         </div>
 
         {!transactionList.length && (
-          <p>Go to your budget and setup you income and outcome, then add a transaction</p>
+          <div className={styles.transactions__empty}>
+            {hasFillIncome ? (
+              <p>Start adding transactions</p>
+            ) : (
+              <>
+                <p>First input your estimated monthly income</p>
+                <div>
+                  <form
+                    onSubmit={(e) => {
+                      e.preventDefault()
+                      const element = document.getElementById('initial-income')
+                      element.blur()
+                      const value = +element.value.replace(/[\.,']/g, '')
+                      updateIncome(value)
+                      router.push('/budget')
+                    }}
+                  >
+                    <TextField
+                      id='initial-income'
+                      placeholder='$0.00'
+                      type='tel'
+                      isFocussed
+                      value={currencyFormat(expectedIncome) || ''}
+                      onChange={handleChange}
+                    />
+                  </form>
+                  <button onClick={handleContinue}>Continue</button>
+                </div>
+              </>
+            )}
+          </div>
         )}
 
         {transactionList.map((transaction, index) => {
           return (
-            <div key={index} className={styles.transaction__card} onClick={() => router.push(`/transaction/${transaction.id}`)}>
+            <div
+              key={index}
+              className={styles.transaction__card}
+              onClick={() => router.push(`/transaction/${transaction.id}`)}
+            >
               {transaction.amount > 0 ? (
                 <svg width={32} height={32} fill='none' xmlns='http://www.w3.org/2000/svg'>
                   <circle cx={16} cy={16} r={16} fill='#22E458' />
@@ -106,8 +166,15 @@ const mapStateToProps = ({ transactions, user }) => {
     totalBalance: transactions.totalBalance,
     expenses: transactions.expense.actual,
     income: transactions.income.actual,
+    expectedIncome: transactions.income.expected,
     user: user.data
   }
 }
 
-export default connect(mapStateToProps, null)(Home)
+const mapDispatchToProps = (dispatch) => {
+  return {
+    updateIncome: (amount) => dispatch(TransactionsActions.updateExpectedIncomeRequest(amount))
+  }
+}
+
+export default connect(mapStateToProps, mapDispatchToProps)(Home)
