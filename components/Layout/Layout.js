@@ -35,8 +35,8 @@ const Layout = ({
 
   return (
     <>
+      <header className={styles.header}>{!hideMenu && <Menu />}</header>
       <div className={`${styles.layout} ${className || ''}`}>{children}</div>
-      {!hideMenu && <Menu />}
     </>
   )
 }

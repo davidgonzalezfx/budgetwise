@@ -1,8 +1,8 @@
 /* eslint-disable no-useless-escape */
 /* eslint-disable multiline-ternary */
+import { useState } from 'react'
 import TextField from 'components/TextField'
 import { useRouter } from 'next/router'
-import { useState } from 'react'
 import { connect } from 'react-redux'
 
 import TransactionsActions from 'redux/Transactions'
@@ -153,9 +153,6 @@ const Home = ({
           )
         })}
       </div>
-      <button type='button' onClick={() => router.push('/add')} className='app-button'>
-        +
-      </button>
     </Layout>
   )
 }

@@ -507,10 +507,6 @@ const Budget = ({
                 />
               </div>
             </div>
-
-            <button type='button' onClick={() => router.push('/add')} className='app-button'>
-              +
-            </button>
           </>
         )}
       </div>

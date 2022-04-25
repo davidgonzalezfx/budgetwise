@@ -50,26 +50,6 @@ a {
   }
 }
 
-@media screen and (min-width: 481px) {
-  body {
-    align-items: center;
-    background-image: radial-gradient(#2e2e2e 1px, #0d0f12 1px),
-      radial-gradient(#2e2e2e 1px, #0d0f12 1px);
-    background-position: 0 0, 25px 25px;
-    background-size: 140px 140px;
-    display: flex;
-    height: 100vh;
-    justify-content: center;
-  }
-
-  .app {
-    border-radius: 16px;
-    box-shadow: 0 0 10px rgb(150 150 150 / 20%);
-    height: 95vh;
-    width: 480px;
-  }
-}
-
 // loader
 .loader {
   animation: rotation 1.5s linear infinite;
@@ -120,12 +100,28 @@ a {
   height: 65px;
   justify-content: space-between;
 
-  position: absolute;
-  bottom: 0;
   padding: 32px 34px;
+  position: fixed;
+  bottom: 0;
+  left: 0;
   width: 100%;
+  border-radius: 1.25rem 1.25rem 0 0;
 
-  button {
+  &--hidden {
+    display: none;
+  }
+
+  @media screen and (min-width: 481px) {
+    position: absolute;
+    top: 88vh;
+    left: 0;
+  }
+
+  @media screen and (min-width: 1281px) {
+    top: 89vh;
+  }
+
+  button:not(.app-button) {
     background: none;
     border: none;
     cursor: pointer;
@@ -138,13 +134,33 @@ a {
   border-radius: 50%;
   bottom: 72px;
   color: var(--white);
-  height: 56px;
+  height: 52px;
   position: absolute;
   right: 24px;
-  width: 56px;
+  width: 52px;
 
   &--trash {
     right: 90px;
     background-color: var(--red);
+  }
+}
+
+@media screen and (min-width: 481px) {
+  body {
+    align-items: center;
+    background-image: radial-gradient(#2e2e2e 1px, #0d0f12 1px),
+      radial-gradient(#2e2e2e 1px, #0d0f12 1px);
+    background-position: 0 0, 25px 25px;
+    background-size: 140px 140px;
+    display: flex;
+    height: 100vh;
+    justify-content: center;
+  }
+
+  .app {
+    border-radius: 16px;
+    box-shadow: 0 0 10px rgb(150 150 150 / 20%);
+    height: 95vh;
+    width: 480px;
   }
 }

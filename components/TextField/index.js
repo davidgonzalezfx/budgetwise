@@ -20,6 +20,14 @@ const TextField = (
     onChange(value)
   }
 
+  const toggleMenu = () => {
+    if (typeof window !== 'undefined') {
+      const isMobile = window.innerWidth < 481
+      const menu = document.getElementsByClassName('footer-menu')[0]
+      if (menu && isMobile) menu.classList.toggle('footer-menu--hidden')
+    }
+  }
+
   return (
     <div
       className={classNames(
@@ -36,9 +44,15 @@ const TextField = (
         placeholder={label}
         onChange={handleChange}
         {...props}
-        autoComplete="off"
-        onFocus={() => !isLocked && setFocussed(true)}
-        onBlur={() => !isLocked && setFocussed(false)}
+        autoComplete='off'
+        onFocus={() => {
+          !isLocked && setFocussed(true)
+          toggleMenu()
+        }}
+        onBlur={() => {
+          !isLocked && setFocussed(false)
+          toggleMenu()
+        }}
       />
       <label htmlFor={id} className={errorState && styles.error}>
         {errorState || label}

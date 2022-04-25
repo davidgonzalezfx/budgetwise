@@ -60,6 +60,9 @@ const Menu = () => {
           ></path>
         </svg>
       </button>
+      <button type='button' onClick={() => router.push('/add')} className='app-button'>
+        +
+      </button>
     </footer>
   )
 }
