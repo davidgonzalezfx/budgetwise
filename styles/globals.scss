@@ -113,13 +113,13 @@ a {
 
   @media screen and (min-width: 481px) {
     position: absolute;
-    top: 88vh;
+    top: 87.5vh;
     left: 0;
   }
 
-  @media screen and (min-width: 1281px) {
-    top: 89vh;
-  }
+  // @media screen and (min-width: 1440px) {
+  //   top: 88vh;
+  // }
 
   button:not(.app-button) {
     background: none;

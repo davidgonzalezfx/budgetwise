@@ -9,6 +9,7 @@ import Layout from '../../components/Layout/Layout'
 import UserActions from 'redux/User'
 
 import styles from './profile.module.scss'
+import ProgressBar from '@ramonak/react-progress-bar'
 
 const Profile = ({ user, userLogoutRequest }) => {
   const [activeItem, setActiveItem] = useState('Goals')
@@ -80,6 +81,30 @@ const Profile = ({ user, userLogoutRequest }) => {
         {activeItem === 'Goals' && (
           <div className={styles['container__profile-details']}>
             <p className={styles['container__profile-details-label']}>My goals</p>
+            <p>New car</p>
+            <ProgressBar
+              completed={50}
+              height='4px'
+              isLabelVisible={false}
+              bgColor='var(--green)'
+              width='100%'
+            />
+            <p>New house</p>
+            <ProgressBar
+              completed={30}
+              height='4px'
+              isLabelVisible={false}
+              bgColor='var(--green)'
+              width='100%'
+            />
+            <p>Portfolio</p>
+            <ProgressBar
+              completed={30}
+              height='4px'
+              isLabelVisible={false}
+              bgColor='var(--green)'
+              width='100%'
+            />
           </div>
         )}
         {activeItem === 'Insights' && (

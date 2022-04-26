@@ -35,7 +35,9 @@ const Budget = ({
   const [expenseValue, setExpenseValue] = useState(expectedExpense)
   const [budgetOpen, setBudgetOpen] = useState(true)
   const [suggestionsOpen, setSuggestionsOpen] = useState(false)
-  const [isFirstTime, setIsFirstTime] = useState(localStorage.getItem('isFirstTime') || true)
+  const [isFirstTime, setIsFirstTime] = useState(localStorage.getItem('isFirstTime') !== 'false')
+
+  console.log('\n localStorage.getItem(isFirstTime) :', localStorage.getItem('isFirstTime'), '\n')
 
   useEffect(() => {
     setIncomeValue(expectedIncome)
@@ -244,8 +246,8 @@ const Budget = ({
                   </svg>
                 </div>
               </button>
-              <div className={styles.settings__categories}>
-                {suggestionsOpen && (
+              {suggestionsOpen && (
+                <div className={styles.settings__categories}>
                   <>
                     <div className={styles.settings__suggestions}>
                       {expectedIncome <= 0 && (
@@ -312,8 +314,8 @@ const Budget = ({
                         ))}
                     </div>
                   </>
-                )}
-              </div>
+                </div>
+              )}
             </div>
           </>
         ) : (
