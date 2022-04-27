@@ -37,8 +37,6 @@ const Budget = ({
   const [suggestionsOpen, setSuggestionsOpen] = useState(false)
   const [isFirstTime, setIsFirstTime] = useState(localStorage.getItem('isFirstTime') !== 'false')
 
-  console.log('\n localStorage.getItem(isFirstTime) :', localStorage.getItem('isFirstTime'), '\n')
-
   useEffect(() => {
     setIncomeValue(expectedIncome)
   }, [expectedIncome])

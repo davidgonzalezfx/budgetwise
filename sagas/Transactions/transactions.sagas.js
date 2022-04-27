@@ -4,14 +4,18 @@ import {
   addTransaction,
   fetchById,
   editTransaction,
-  deleteTransaction
+  deleteTransaction,
+  fetchIncome
 } from 'services/firebase'
 import TransactionsActions from 'redux/Transactions'
 
 export function* getAllTransactions() {
   try {
     const response = yield fetchTransactionList()
+    const income = yield fetchIncome()
+
     yield put(TransactionsActions.transactionsSuccess(response))
+    yield put(TransactionsActions.updateExpectedIncomeRequest(income.expected))
     yield put(TransactionsActions.categoriesRequest())
     return { success: true }
   } catch (error) {
@@ -51,7 +55,6 @@ export function* editTransactionsByID({ payload }) {
 
 export function* deleteTransactionByID({ payload }) {
   try {
-    console.log('deleteTransaction sagas')
     yield deleteTransaction(payload)
     yield putResolve(TransactionsActions.transactionsRequest())
     yield put(TransactionsActions.transactionsDeleteSuccess())

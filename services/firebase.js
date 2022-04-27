@@ -183,3 +183,53 @@ export const editCategories = async (data) => {
   } catch (e) {}
   return []
 }
+
+export const updateIncome = async (data) => {
+  try {
+    const incomeSnapshot = await getDocs(collection(db, `users/${auth.currentUser.email}/income`))
+    if (incomeSnapshot.docs.length) {
+      const categoriesDocId = incomeSnapshot.docs[0].id
+      const docRef = doc(db, `users/${auth.currentUser.email}/income`, categoriesDocId)
+      await updateDoc(docRef, data)
+    } else {
+      await addDoc(collection(db, `users/${auth.currentUser.email}/income`), data)
+    }
+  } catch (e) {}
+  return []
+}
+
+export const fetchIncome = async () => {
+  try {
+    const querySnapshot = await getDocs(collection(db, `users/${auth.currentUser.email}/income`))
+    const data = querySnapshot.docs[0].data()
+    return data
+  } catch (e) {
+    return []
+  }
+}
+
+export const updateExpenses = async (data) => {
+  try {
+    const expensesSnapshot = await getDocs(
+      collection(db, `users/${auth.currentUser.email}/expenses`)
+    )
+    if (expensesSnapshot.docs.length) {
+      const expenseDocId = expensesSnapshot.docs[0].id
+      const docRef = doc(db, `users/${auth.currentUser.email}/expenses`, expenseDocId)
+      await updateDoc(docRef, data)
+    } else {
+      await addDoc(collection(db, `users/${auth.currentUser.email}/expenses`), data)
+    }
+  } catch (e) {}
+  return []
+}
+
+export const fetchExpenses = async () => {
+  try {
+    const querySnapshot = await getDocs(collection(db, `users/${auth.currentUser.email}/expenses`))
+    const data = querySnapshot.docs[0].data()
+    return data
+  } catch (e) {
+    return []
+  }
+}

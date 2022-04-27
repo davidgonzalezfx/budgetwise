@@ -79,6 +79,7 @@ export const TRANSACTIONS_INITIAL_STATE = {
     actual: 0,
     expected: 0,
     percentage: 0,
+    isFilled: false,
     categories: [
       {
         name: 'Job',
@@ -215,6 +216,7 @@ const updateBudgetSuccess = (state, { payload }) => {
       error: null,
       income: {
         ...state.income,
+        isFilled: true,
         expected: incomeCategories.reduce((acc, category) => acc + category.amount, 0),
         categories: incomeCategories
       }
@@ -376,6 +378,7 @@ const updateExpectedIncomeRequest = (state, { payload }) => {
     income: {
       ...state.income,
       expected: payload,
+      isFilled: !!payload,
       categories: [
         {
           name: 'Job',
