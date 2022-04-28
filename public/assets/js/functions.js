@@ -107,41 +107,7 @@
 
     /* ------------------  AJAX MAILCHIMP ------------------ */
 
-    $('.mailchimp').ajaxChimp({
-        url: "http://wplly.us5.list-manage.com/subscribe/post?u=91b69df995c1c90e1de2f6497&id=aa0f2ab5fa", //Replace with your own mailchimp Campaigns URL.
-        callback: chimpCallback
-
-    });
-
-    function chimpCallback(resp) {
-        if (resp.result === 'success') {
-            $('.subscribe-alert').html('<h5 class="alert alert-success">' + resp.msg + '</h5>').fadeIn(1000);
-            //$('.subscribe-alert').delay(6000).fadeOut();
-
-        } else if (resp.result === 'error') {
-            $('.subscribe-alert').html('<h5 class="alert alert-danger">' + resp.msg + '</h5>').fadeIn(1000);
-        }
-    }
-
-    $('.subscribe-alert').on('click', function() {
-        $(this).fadeOut();
-    });
-
-    /* ------------------  AJAX CAMPAIGN MONITOR  ------------------ */
-
-    $('#campaignmonitor').submit(function(e) {
-        e.preventDefault();
-        $.getJSON(
-            this.action + "?callback=?",
-            $(this).serialize(),
-            function(data) {
-                if (data.Status === 400) {
-                    alert("Error: " + data.Message);
-                } else { // 200
-                    alert("Success: " + data.Message);
-                }
-            });
-    });
+    
 
     /* ------------------  COUNTER UP ------------------ */
 
