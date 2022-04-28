@@ -1,7 +1,7 @@
 {
     "theme_color": "#0d0f12",
     "background_color": "#0d0f12",
-    "display": "minimal-ui",
+    "display": "fullscreen",
     "scope": "/",
     "start_url": "/",
     "name": "BudgetWise",
