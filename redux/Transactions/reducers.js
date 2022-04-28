@@ -282,7 +282,53 @@ const updateSuggestions = (state) => {
     ]
   }
 
-  suggestions.push(prefered, hard)
+  const soft = {
+    name: 'Entertainment',
+    id: 2,
+    items: [
+      {
+        name: 'Lifestyle',
+        amount: income * 0.5
+      },
+      {
+        name: 'Entertainment',
+        amount: income * 0.3
+      },
+      {
+        name: 'Savings',
+        amount: income * 0.1
+      },
+      {
+        name: 'Debt',
+        amount: income * 0.1
+      }
+    ]
+  }
+
+  const passion = {
+    name: 'Go for your dreams',
+    id: 2,
+    items: [
+      {
+        name: 'Lifestyle',
+        amount: income * 0.6
+      },
+      {
+        name: 'Dreams',
+        amount: income * 0.2
+      },
+      {
+        name: 'Savings',
+        amount: income * 0.1
+      },
+      {
+        name: 'Investments',
+        amount: income * 0.1
+      }
+    ]
+  }
+
+  suggestions.push(prefered, hard, soft, passion)
 
   return {
     ...state,
