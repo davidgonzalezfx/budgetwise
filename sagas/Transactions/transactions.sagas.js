@@ -1,11 +1,13 @@
-import { put, putResolve } from 'redux-saga/effects'
+import { put, putResolve, select } from 'redux-saga/effects'
 import {
   fetchTransactionList,
   addTransaction,
   fetchById,
   editTransaction,
   deleteTransaction,
-  fetchIncome
+  fetchIncome,
+  updateExpenses,
+  updateIncome
 } from 'services/firebase'
 import TransactionsActions from 'redux/Transactions'
 
@@ -15,7 +17,7 @@ export function* getAllTransactions() {
     const income = yield fetchIncome()
 
     yield put(TransactionsActions.transactionsSuccess(response))
-    yield put(TransactionsActions.updateExpectedIncomeRequest(income.expected))
+    yield put(TransactionsActions.updateExpectedIncomeRequest(income.expected || 0))
     yield put(TransactionsActions.categoriesRequest())
     return { success: true }
   } catch (error) {
@@ -68,6 +70,13 @@ export function* updateBudget({ payload }) {
     yield put(TransactionsActions.updateBudgetSuccess(payload))
     yield put(TransactionsActions.updateSuggestionsRequest())
     yield put(TransactionsActions.categoriesUpdateRequest())
+
+    const expectedExpenses = yield select((state) => state.transactions?.expense?.expected || 0)
+    yield updateExpenses({ expected: expectedExpenses })
+
+    const expectedIncome = yield select((state) => state.transactions?.income?.expected || 0)
+    yield updateIncome({ expected: expectedIncome })
+
     yield
   } catch (error) {
     yield put(TransactionsActions.updateBudgetFailure(error))

@@ -24,7 +24,6 @@ const Budget = ({
   expectedExpense,
   updateBudget,
   expensesSuggestions,
-
   expenseCategories,
   incomeCategories,
   list
@@ -141,8 +140,9 @@ const Budget = ({
                 <div className={styles.settings__budget}>
                   <div className={styles.settings__budget__expense}>
                     <div className={styles.settings__budget__header}>
-                      <p>Total Expenses</p>
+                      <p style={{ color: 'var(--red)' }}>Total Expenses</p>
                       <input
+                        style={{ color: 'var(--red)' }}
                         id='expense-btn'
                         type='tel'
                         placeholder='$'
@@ -187,9 +187,10 @@ const Budget = ({
                   </div>
                   <div className={styles.settings__budget__income}>
                     <div className={styles.settings__budget__header}>
-                      <p>Total Income</p>
+                      <p style={{ color: 'var(--green)' }}>Total Income</p>
 
                       <input
+                        style={{ color: 'var(--green)' }}
                         id='income-btn'
                         type='tel'
                         placeholder='$'
@@ -493,16 +494,8 @@ const Budget = ({
                   height='4px'
                   maxCompleted={1}
                   isLabelVisible={false}
-                  bgColor={`${
-                    (income - expenses) / (expectedIncome - expectedExpense) > 0
-                      ? 'var(--green)'
-                      : 'var(--red)'
-                  }`}
-                  baseBgColor={`${
-                    (income - expenses) / (expectedIncome - expectedExpense) < 0
-                      ? 'var(--green)'
-                      : '#e0e0ed'
-                  }`}
+                  bgColor={`${income - expenses > 0 ? 'var(--green)' : 'var(--red)'}`}
+                  baseBgColor={`${income - expenses < 0 ? 'var(--green)' : '#e0e0ed'}`}
                   width='100%'
                 />
               </div>
