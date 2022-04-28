@@ -227,7 +227,7 @@
                 youtube: {
                     index: 'youtube.com/',
                     id: 'v=',
-                    src: '//www.youtube.com/embed/%id%?autoplay=1'
+                    src: '//www.youtube.com/embed/eJ1kxX8GdQc?autoplay=1'
                 }
             },
             srcAction: 'iframe_src',
