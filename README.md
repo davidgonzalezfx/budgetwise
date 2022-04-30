@@ -1,34 +1,99 @@
-This is a [Next.js](https://nextjs.org/) project bootstrapped with [`create-next-app`](https://github.com/vercel/next.js/tree/canary/packages/create-next-app).
+<p align="center">
+  <img src="https://budgetwise.vercel.app/assets/images/logo/logo.png" width="80" height="80">
+  <h3 align="center">Budgetwise - davidgonzalezfx</h3>
 
-## Getting Started
+  <p align="center">
+    <a href="https://www.instagram.com/davidgonzalezfx/">Instagram</a> |
+    <a href="https://twitter.com/davidgonzalezfx">Twitter</a> |
+    <a href="https://www.linkedin.com/in/davidgonzalezfx/">LinkedIn</a>
+  </p>
+</p>
 
-First, run the development server:
 
-```bash
-npm run dev
-# or
-yarn dev
-```
+<strong>Description</strong>
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+Budgetwise is not the common expenses tracker you can find on app stores. Budgetwise aims to helps people with zero knowledge on budgeting, in their first steps on financial wellbeing. That's why we have built an mobile and web application where users will enjoy to learn about personal finances and strategies according to their objectives. But also to make budgeting smooth, we provide budget suggestions ready to use so users won't have to think so much how to budget. 
 
-You can start editing the page by modifying `pages/index.js`. The page auto-updates as you edit the file.
+Since the first steps on financial well-being starts where your money goes, with our intuitive UI user will make expense tracking a habit. Then when they control their monthly expenses, we will guide them making of saving and investing a habit. 
 
-[API routes](https://nextjs.org/docs/api-routes/introduction) can be accessed on [http://localhost:3000/api/hello](http://localhost:3000/api/hello). This endpoint can be edited in `pages/api/hello.js`.
+<br />
 
-The `pages/api` directory is mapped to `/api/*`. Files in this directory are treated as [API routes](https://nextjs.org/docs/api-routes/introduction) instead of React pages.
+<strong>Tech stack & Third party services</strong>
 
-## Learn More
+The code base was built with [NextJs](https://nextjs.org/) on the frontend, we used [Firebase](https://firebase.google.com/?hl=es) as a backend service (beacuse it allowed us to set auth and database so fast). And all the pipeline and deployment workflow works with [Vercel](https://vercel.com/)
 
-To learn more about Next.js, take a look at the following resources:
+<br />
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+<strong>Color Palette</strong>
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js/) - your feedback and contributions are welcome!
+* [dopelycolors](https://colors.dopely.top/palettes/1YNFGchPfQf)
 
-## Deploy on Vercel
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/deployment) for more details.
+<br />
+
+<strong>Try for free</strong>
+
+* [Landing page](https://budgetwise.vercel.app/landing.html)
+* [App live](https://budgetwise.vercel.app)
+
+<br />
+
+<strong>Run the project</strong>
+
+* Clone the project
+
+  ```shell
+  $ git clone https://github.com/davidgonzalezfx/budgetwise
+  ```
+
+* Install dependencies
+
+  ```shell
+  $ cd budgetwise
+  ```
+  ```shell
+  $ yarn install
+  ```
+* Setup Firebase app: go to `services/firebase.js` and replace `firebaseConfig`:
+
+  ```shell
+  $ code services/firebase.js
+  ```
+  
+  ```js
+  const firebaseConfig = {
+    apiKey: '',
+    authDomain: '',
+    projectId: '',
+    storageBucket: '',
+    messagingSenderId: '',
+    appId: '',
+    measurementId: ''
+  }
+  ```
+
+* Run the app:
+
+  ```shell
+    $ yarn dev
+  ```
+
+
+<strong>Roadmap</strong>
+
+- [X] PWA
+- [X] Goals
+- [X] Custom budget 
+- [X] Expense tracker
+- [X] Cross-device support
+- [X] User login and signup
+- [X] Budgeting made easy with suggestions
+- [ ] Offline
+- [ ] Insights
+- [ ] Improve UX
+- [ ] Multiple accounts
+- [ ] Share budget link
+- [ ] Schedule and bills reminders
+- [ ] Next 3 month pre-made budget
+- [ ] Deploy to iOS & Android app store
